@@ -1,0 +1,33 @@
+{
+  "name": "homebridge-scout",
+  "version": "0.1.0",
+  "description": "A Homebridge plugin that enables HomeKit integration for the Scout alarm system.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jordanryanmoore/homebridge-scout.git"
+  },
+  "keywords": [
+    "homebridge-plugin",
+    "homebridge",
+    "homekit",
+    "scout"
+  ],
+  "author": "Jordan Ryan Moore",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jordanryanmoore/homebridge-scout/issues"
+  },
+  "homepage": "https://github.com/jordanryanmoore/homebridge-scout#readme",
+  "engines": {
+    "homebridge": ">=0.4.50"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8"
+  }
+}
