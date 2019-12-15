@@ -6,7 +6,7 @@ A [Scout alarm](https://scoutalarm.com/) plug-in for [Homebridge](https://homebr
 
 1. Install Homebridge using: `npm install -g homebridge`
 
-2. Install this plug-in using: `npm install -g homebridge-nest`
+2. Install this plug-in using: `npm install -g homebridge-scout`
 
 3. Update your Homebridge configuration file (`~/.homebridge/config.json`). See configuration options below.
 
@@ -49,3 +49,13 @@ Update the `platforms` section of your `~/.homebridge/config.json`:
   ]
 }
 ```
+
+## Device Support
+
+The plug-in currently offers support for the hub and any of the connected device types:
+
+* door panel
+* access sensor
+* smoke alarm
+
+If you have device types that are not yet supported (water sensors, motion sensors, etc.), let me know (via issues). I'd love to add support for the remaining device types — I just don't own them personally, so I can't test them.
