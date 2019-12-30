@@ -10,21 +10,23 @@ module.exports = (homebridge) => {
         let platform = new ScoutPlatform(homebridge, logger, api, config.location, config.modes);
 
         homebridge.on('didFinishLaunching', () => {
-            logger("Registering accesories…");
-
-            platform.registerAccessories().then(() => {
-                logger("Finished registering accessories.");
-            }).catch(e => logger(e));
+            platform.registerAccessories().catch(e => logger(e));
         });
 
         platform.on('addAccessory', accessory => {
-            logger('Registering accessory', accessory.displayName);
-            homebridge.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+            try {
+                homebridge.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+            } catch (e) {
+                this.logger(e);
+            }
         });
 
         platform.on('removeAccessory', accessory => {
-            logger('Unregistering accessory', accessory.displayName);
-            homebridge.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+            try {
+                homebridge.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+            } catch (e) {
+                this.logger(e);
+            }
         });
 
         return platform;
