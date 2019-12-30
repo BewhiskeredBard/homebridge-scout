@@ -1,11 +1,16 @@
 const ScoutPlatform = require('./lib/scout-platform');
 const ScoutApi = require('./lib/scout-api');
+const fs = require('fs');
 
 const PLUGIN_NAME = 'homebridge-scout';
 const PLATFORM_NAME = 'ScoutAlarm';
 
 module.exports = (homebridge) => {
+    let pluginVersion = JSON.parse(fs.readFileSync('./package.json')).version;
+
     homebridge.registerPlatform(PLUGIN_NAME, PLATFORM_NAME, function(logger, config) {
+        logger(`Running ${PLUGIN_NAME}-${pluginVersion} on homebridge-${homebridge.serverVersion}.`);
+
         let api = new ScoutApi(logger, config.auth.email, config.auth.password);
         let platform = new ScoutPlatform(homebridge, logger, api, config.location, config.modes);
 
