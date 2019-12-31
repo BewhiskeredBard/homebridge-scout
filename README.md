@@ -1,12 +1,12 @@
 # homebridge-scout
 
-A [Scout alarm](https://scoutalarm.com/) plug-in for [Homebridge](https://homebridge.io/).
+A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration for the [Scout](https://scoutalarm.com/) security system.
 
 ## Installation
 
-1. Install Homebridge using: `npm install -g homebridge`
+1. [Install Homebridge](https://www.npmjs.com/package/homebridge#installation).
 
-2. Install this plug-in using: `npm install -g homebridge-scout`
+2. Install this plug-in: `npm install -g homebridge-scout`
 
 3. Update your Homebridge configuration file (`~/.homebridge/config.json`). See configuration options below.
 
