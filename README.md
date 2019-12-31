@@ -52,10 +52,12 @@ Update the `platforms` section of your `~/.homebridge/config.json`:
 
 ## Device Support
 
-The plug-in currently offers support for the hub and any of the connected device types:
+This plug-in currently offers support for the Scout hub and any of the following device types:
 
-* door panel
-* access sensor
-* smoke alarm
+* door panels
+* access sensors
+* motion sensors
+* water sensors
+* smoke alarms
 
-If you have device types that are not yet supported (water sensors, motion sensors, etc.), let me know (via issues). I'd love to add support for the remaining device types — I just don't own them personally, so I can't test them.
+If you have device types that are not yet supported (glass break sensors, cameras, etc.), [let me know](https://github.com/jordanryanmoore/homebridge-scout/issues). I'd love to add support for the remaining device types — I just don't own them personally, so I can't test them.
