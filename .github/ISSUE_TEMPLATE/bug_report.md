@@ -2,28 +2,28 @@
 name: Bug report
 about: Create a bug report to help improve this project
 title: ''
-labels: ''
+labels: 'bug'
 assignees: ''
 
 ---
 
-**Describe the bug**
+### Description
 A clear and concise description of what the bug is.
 
-**To Reproduce**
+### Reproduction Steps
 Steps to reproduce the behavior:
 1. …
 2. …
 3. …
 
-**Expected behavior**
+### Expected Behavior
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+### Screenshots
+If applicable, add screenshots of the Home app, Scout mobile app, and/or Scout dashboard to help explain your problem.
 
-**Logs**
-If applicable, include any relevant portions of Homebridge logs.
+### Logs
+If applicable, include any relevant portions of Homebridge logs (especially those tagged with `[ScoutAlarm]`).
 
-**Additional context**
+### Additional Context
 Add any other context about the problem here.
