@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Bug Report
 about: Create a bug report to help improve this project
 title: ''
 labels: 'bug'
@@ -19,11 +19,11 @@ Steps to reproduce the behavior:
 ### Expected Behavior
 A clear and concise description of what you expected to happen.
 
+### Logs
+Run Homebridge in debug mode (`homebridge --debug`) and include any Homebridge logs tagged with `[ScoutAlarm]`.
+
 ### Screenshots
 If applicable, add screenshots of the Home app, Scout mobile app, and/or Scout dashboard to help explain your problem.
-
-### Logs
-If applicable, include any relevant portions of Homebridge logs (especially those tagged with `[ScoutAlarm]`).
 
 ### Additional Context
 Add any other context about the problem here.
