@@ -8,20 +8,20 @@ module.exports = (homebridge) => {
     let pluginVersion = require('./package.json').version;
 
     homebridge.registerPlatform(PLUGIN_NAME, PLATFORM_NAME, function(logger, config) {
-        logger(`Running ${PLUGIN_NAME}-${pluginVersion} on homebridge-${homebridge.serverVersion}.`);
+        logger.info(`Running ${PLUGIN_NAME}-${pluginVersion} on homebridge-${homebridge.serverVersion}.`);
 
         let api = new ScoutApi(logger, config.auth.email, config.auth.password);
         let platform = new ScoutPlatform(homebridge, logger, api, config.location, config.modes);
 
         homebridge.on('didFinishLaunching', () => {
-            platform.registerAccessories().catch(e => logger(e));
+            platform.registerAccessories().catch(e => logger.error(e));
         });
 
         platform.on('addAccessory', accessory => {
             try {
                 homebridge.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
             } catch (e) {
-                this.logger(e);
+                this.logger.error(e);
             }
         });
 
@@ -29,7 +29,7 @@ module.exports = (homebridge) => {
             try {
                 homebridge.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
             } catch (e) {
-                this.logger(e);
+                this.logger.error(e);
             }
         });
 
