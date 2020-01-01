@@ -61,3 +61,8 @@ This plug-in currently offers support for the Scout hub and any of the following
 * smoke alarms
 
 If you have device types that are not yet supported (glass break sensors, cameras, etc.), [let me know](https://github.com/jordanryanmoore/homebridge-scout/issues). I'd love to add support for the remaining device types — I just don't own them personally, so I can't test them.
+
+## Credits
+
+* Authored by [@jordanryanmoore](https://github.com/jordanryanmoore).
+* Special thanks to [@Tom2527](https://github.com/Tom2527) for their assistance in debugging and testing v1 hardware support.
