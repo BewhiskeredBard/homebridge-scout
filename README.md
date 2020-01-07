@@ -2,6 +2,17 @@
 
 A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration for the [Scout](https://scoutalarm.com/) security system.
 
+![npm version](https://img.shields.io/npm/v/homebridge-scout)
+![npm downloads](https://img.shields.io/npm/dw/homebridge-scout)
+![license](https://img.shields.io/npm/l/homebridge-scout)
+
+## Table of Contents
+
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Device Support](#device-support)
+* [Credits](#credits)
+
 ## Installation
 
 1. [Install Homebridge](https://www.npmjs.com/package/homebridge#installation).
@@ -17,14 +28,14 @@ A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration 
 All of the following configuration options are required. If any are missing or invalid, Homebridge will fail to start with an error message describing the problem.
 
 * **`platform`:** Must be `ScoutAlarm`.
-* **`auth`:** Your Scout login credentials. I recommend setting up a new non-administrator user for this purpose.
+* **`auth`:** Your Scout login credentials. Use a member account, not an admin account.
   * **`email`:** Your Scout email.
-  * **`password`:** Your Scout password. Don't forget to slash-escape any quotes.
+  * **`password`:** Your Scout password. Don't forget to backslash-escape any quotes.
 * **`location`:** The name of your Scout location. It's probably `Home` if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.
-* **`modes`:** These map the HomeKit modes to your Scout modes. These can also be found in the left-hand menu of the Scout app or dashboard.
+* **`modes`:** These map the HomeKit modes to your Scout mode names. These can also be found in the left-hand menu of the Scout app or dashboard.
   * **`stay`:** Probably `Home`.
   * **`away`:** Probably `Away`.
-  * **`night`:** You may not have one. I recommend adding one to your Scout system if you don't, but you *can* use the same value you did for `stay` here.
+  * **`night`:** You should add one to your Scout system if you don't have one, but you *can* use the same value you did for `stay` here.
 
 ### Example
 
@@ -60,9 +71,10 @@ This plug-in currently offers support for the Scout hub and any of the following
 * water sensors
 * smoke alarms
 
-If you have device types that are not yet supported (glass break sensors, cameras, etc.), [let me know](https://github.com/jordanryanmoore/homebridge-scout/issues). I'd love to add support for the remaining device types — I just don't own them personally, so I can't test them.
+If you have device types that are not yet supported (glass break sensors, cameras, etc.), please [get in touch](https://github.com/jordanryanmoore/homebridge-scout/issues). The biggest barrier to adding support is just having access to the devices.
 
 ## Credits
 
-* Authored by [@jordanryanmoore](https://github.com/jordanryanmoore).
-* Special thanks to [@Tom2527](https://github.com/Tom2527) for their assistance in debugging and testing v1 hardware support.
+* [@jordanryanmoore](https://github.com/jordanryanmoore), the original author.
+* [@Tom2527](https://github.com/Tom2527), for their assistance in debugging and testing v1 hardware support.
+* [Scout Security Inc](https://www.scoutalarm.com), for providing a well-designed API *and* supplying free hardware for this project.
