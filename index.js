@@ -14,7 +14,7 @@ module.exports = (homebridge) => {
 
         let api = new ScoutApi(logger, config.auth.email, config.auth.password);
         let hubManager = new HubManager(homebridge, logger, api);
-        let deviceManager = new DeviceManager(homebridge, logger, api);
+        let deviceManager = new DeviceManager(homebridge, logger, api, config.reverseSensorState);
         let platform = new ScoutPlatform(homebridge, logger, api, hubManager, deviceManager, config.location, config.modes);
 
         homebridge.on('didFinishLaunching', () => {
