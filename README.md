@@ -25,7 +25,9 @@ A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration 
 
 ### Options
 
-All of the following configuration options are required. If any are missing or invalid, Homebridge will fail to start with an error message describing the problem.
+#### Required
+
+All of the following configuration options are required. If any are missing or invalid, Homebridge will log an erorr message describing the problem.
 
 * **`platform`:** Must be `ScoutAlarm`.
 * **`auth`:** Your Scout login credentials. Use a member account, not an admin account.
@@ -36,6 +38,12 @@ All of the following configuration options are required. If any are missing or i
   * **`stay`:** Probably `Home`.
   * **`away`:** Probably `Away`.
   * **`night`:** You should add one to your Scout system if you don't have one, but you *can* use the same value you did for `stay` here.
+
+#### Optional
+
+The following configuration options are optional and change the default behavior.
+
+* **`reverseSensorState`:** V1 Scout systems can get into a state where all of the sensor states are reversed. If this option is set to `true`, it reverses the sensor state of access sensors, door panels, and motion sensors reported to HomeKit so they work correctly in this scenario.
 
 ### Example
 
