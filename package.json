@@ -1,7 +1,7 @@
 {
   "name": "homebridge-scout",
-  "version": "0.5.1",
-  "description": "A Homebridge plugin that enables HomeKit integration for the Scout alarm system.",
+  "version": "0.5.2",
+  "description": "A Homebridge plugin that enables HomeKit integration for the Scout security system.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
