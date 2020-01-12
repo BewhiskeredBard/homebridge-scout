@@ -27,7 +27,7 @@ A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration 
 
 #### Required
 
-All of the following configuration options are required. If any are missing or invalid, Homebridge will log an erorr message describing the problem.
+All of the following configuration options are required. If any are missing or invalid, Homebridge will log an error message describing the problem.
 
 * **`platform`:** Must be `ScoutAlarm`.
 * **`auth`:** Your Scout login credentials. Use a member account, not an admin account.
