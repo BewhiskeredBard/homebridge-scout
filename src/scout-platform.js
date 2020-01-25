@@ -84,17 +84,14 @@ ScoutPlatform.prototype.registerAccessories = async function() {
 
     this.deregisterCachedAccessories();
 
-    let channel = await this.api.subscribe(location.id);
+    let listener = await this.api.subscribe();
 
-    channel.bind('mode', event => this.hubManager.onModeEvent(event));
-    channel.bind('hub', event => this.hubManager.onHubEvent(event));
-    channel.bind('device', event => this.deviceManager.onDeviceEvent(event));
+    listener.addModeListener(location.id, event => this.hubManager.onModeEvent(event));
+    listener.addHubListener(location.id, event => this.hubManager.onHubEvent(event));
+    listener.addDeviceTriggerListener(location.id, event => this.deviceManager.onDeviceEvent(event));
+    listener.addDevicePairListener(location.id, event => this.deviceManager.onDeviceEvent(event));
 
-    channel.pusher.connection.bind('error', error => {
-        this.logger.error(`An event subscription connection error has occurred: ${JSON.stringify(error.error)}`);
-    });
-
-    channel.pusher.connection.bind('state_change', states => {
+    listener.addConnectionStateListener(states => {
         this.logger.info(`Event subscription connection is ${states.current}`);
         this.logger.debug(`Event subscription connection state: ${JSON.stringify(states)}`);
     });

@@ -33,10 +33,7 @@
     "homebridge": ">=0.4.50"
   },
   "dependencies": {
-    "jsonwebtoken": "^8.5.1",
-    "pusher-js": "^5.0.3",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.8"
+    "scout-api": "^0.2.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
