@@ -8,7 +8,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "test": "echo 'No tests…'",
+    "test": "jest --passWithNoTests",
     "lint": "eslint src/**/*.ts --no-error-on-unmatched-pattern",
     "precompile": "rm -rf lib/*",
     "compile": "tsc",
@@ -37,10 +37,13 @@
     "scout-api": "^0.2.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.9.1",
     "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.17.0",
     "eslint": "^6.8.0",
+    "jest": "^25.1.0",
     "npm-run-all": "^4.1.5",
+    "ts-jest": "^25.0.0",
     "typescript": "^3.7.5"
   }
 }
