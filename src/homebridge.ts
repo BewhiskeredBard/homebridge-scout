@@ -1,25 +1,26 @@
 import { EventEmitter } from "events";
+import * as Hap from "./hap";
+
+export declare type Config = any;
 
 export declare type Plugin = (homebridge: API) => void;
 
-export declare type PlatformConstructor = (platformLogger: Logger, platformConfig: any, api: API) => Platform;
+export declare type PlatformConstructor = (platformLogger: Logger, platformConfig: Config, api: API) => Platform;
 
-export declare type ServiceConstructor = new (...args: any[]) => any;
-
-export declare type AccessoryConstructor = new (logger: Logger, config: any) => any;
+export declare type AccessoryConstructor = new (logger: Logger, config: Config) => any;
 
 export declare type PlatformAccessoryConstructor = new (displayName: string, UUID: string, category: number) => PlatformAccessory;
 
-export declare type ConfigurationRequestHandler = (config: any) => void;
+export declare type ConfigurationRequestHandler = (config: Config) => void;
 
-export declare type PlatformResponseHandler = (response: unknown | undefined, type: string, replace: boolean, config: any | undefined) => void;
+export declare type PlatformResponseHandler = (response: unknown | undefined, type: string, replace: boolean, config: Config | undefined) => void;
 
 export declare interface API extends EventEmitter {
     version: number;
     serverVersion: number;
-    user: any;
-    hap: any;
-    hapLegacyTypes: any;
+    user: unknown;
+    hap: Hap.Hap;
+    hapLegacyTypes: unknown;
     platformAccessory: PlatformAccessoryConstructor;
 
     accessory(name: string): PlatformAccessory;
@@ -33,18 +34,18 @@ export declare interface API extends EventEmitter {
     unregisterPlatformAccessories(pluginName: string, platformName: string, accessories: PlatformAccessory[]): void;
 }
 
-export declare interface PlatformAccessory {
+export declare interface PlatformAccessory extends EventEmitter {
     displayName: string;
     UUID: string;
     category: number;
-    services: any[];
+    services: Hap.Service[];
     reachable: boolean;
     context: any;
 
-    addService<T>(service: ServiceConstructor | T, ...args: any[]): T;
+    addService(service: Hap.ServiceConstructor | Hap.Service, ...args: any[]): Hap.Service;
     removeService<T>(service: T): void;
-    getService<T>(name: ServiceConstructor | string): T | undefined;
-    getServiceByUUIDAndSubType<T>(UUID: string, subtype: string): T | undefined;
+    getService(name: Hap.ServiceConstructor | string): Hap.Service | undefined;
+    getServiceByUUIDAndSubType<T extends Hap.Service>(UUID: string, subtype: string): T | undefined;
     updateReachability(reachable: boolean): void;
     configureCameraSource(cameraSource: unknown): void;
 }

@@ -10,7 +10,7 @@ const PLATFORM_NAME = "ScoutAlarm";
 const plugin: Homebridge.Plugin = (homebridge: Homebridge.API): void => {
     const pluginVersion = require("../package.json").version;
 
-    homebridge.registerPlatform(PLUGIN_NAME, PLATFORM_NAME, function(logger: Homebridge.Logger, config: any): Homebridge.Platform {
+    homebridge.registerPlatform(PLUGIN_NAME, PLATFORM_NAME, function(logger: Homebridge.Logger, config: Homebridge.Config): Homebridge.Platform {
         logger.info(`Running ${PLUGIN_NAME}-${pluginVersion} on homebridge-${homebridge.serverVersion}.`);
 
         const api = new ScoutApi(logger, config.auth.email, config.auth.password);
