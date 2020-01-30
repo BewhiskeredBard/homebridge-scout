@@ -1,4 +1,4 @@
-function HubManager(homebridge, logger, api) {
+export function HubManager(homebridge, logger, api) {
     this.homebridge = homebridge;
     this.logger = logger;
     this.api = api;
@@ -226,5 +226,3 @@ HubManager.prototype.setTargetState = async function(accessory, value) {
 HubManager.prototype.identify = async function(accessory, paired) {
     await this.api.chirpHub(accessory.context.hub.id);
 }
-
-module.exports = HubManager;

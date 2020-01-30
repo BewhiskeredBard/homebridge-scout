@@ -1,5 +1,5 @@
-const EventEmitter = require('events');
-const util = require('util');
+import { EventEmitter } from 'events';
+import * as util from 'util';
 
 const SUPPORTED_DEVICE_TYPES = [
     'door_panel',
@@ -9,7 +9,7 @@ const SUPPORTED_DEVICE_TYPES = [
     'smoke_alarm',
 ];
 
-function DeviceManager(homebridge, logger, api, reverseSensorState) {
+export function DeviceManager(homebridge, logger, api, reverseSensorState) {
     this.homebridge = homebridge;
     this.logger = logger;
     this.api = api;
@@ -240,5 +240,3 @@ DeviceManager.prototype.getCharacteristicValues = function(accessory) {
 
     return values;
 }
-
-module.exports = DeviceManager;

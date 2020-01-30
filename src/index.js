@@ -1,12 +1,12 @@
-const DeviceManager = require('./device-manager');
-const HubManager = require('./hub-manager');
-const ScoutApi = require('./scout-api');
-const ScoutPlatform = require('./scout-platform');
+import { DeviceManager } from './device-manager';
+import { HubManager } from './hub-manager';
+import { ScoutApi } from './scout-api';
+import { ScoutPlatform } from './scout-platform';
 
 const PLUGIN_NAME = 'homebridge-scout';
 const PLATFORM_NAME = 'ScoutAlarm';
 
-module.exports = (homebridge) => {
+export default (homebridge) => {
     let pluginVersion = require('../package.json').version;
 
     homebridge.registerPlatform(PLUGIN_NAME, PLATFORM_NAME, function(logger, config) {

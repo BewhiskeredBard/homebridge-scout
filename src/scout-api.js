@@ -1,6 +1,6 @@
-const Scout = require('scout-api');
+import * as Scout from 'scout-api';
 
-function ScoutApi(logger, email, password) {
+export function ScoutApi(logger, email, password) {
     this.logger = logger;
     this.authenticator = new Scout.AuthenticatorFactory().create({
         email,
@@ -72,5 +72,3 @@ ScoutApi.prototype.setMode = async function(modeId, arm) {
 ScoutApi.prototype.subscribe = async function() {
     return new Scout.LocationListener(await this.authenticator);
 };
-
-module.exports = ScoutApi;

@@ -1,7 +1,7 @@
-const EventEmitter = require('events');
-const util = require('util');
+import { EventEmitter } from 'events';
+import * as util  from 'util';
 
-function ScoutPlatform(homebridge, logger, api, hubManager, deviceManager, locationName, modeNames) {
+export function ScoutPlatform(homebridge, logger, api, hubManager, deviceManager, locationName, modeNames) {
     this.homebridge = homebridge;
     this.logger = logger;
     this.api = api;
@@ -154,5 +154,3 @@ ScoutPlatform.prototype.registerDevices = function(devices) {
                 this.deviceManager.configureAccessory(accessory);
             });
 }
-
-module.exports = ScoutPlatform;
