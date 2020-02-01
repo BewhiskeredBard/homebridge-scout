@@ -2,6 +2,7 @@
 
 A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration for the [Scout](https://scoutalarm.com/) security system.
 
+[![build status](https://img.shields.io/github/workflow/status/jordanryanmoore/homebridge-scout/Build)](https://github.com/jordanryanmoore/homebridge-scout/actions?query=workflow%3ABuild)
 [![npm version](https://img.shields.io/npm/v/homebridge-scout)](https://npmjs.com/package/homebridge-scout)
 [![npm downloads](https://img.shields.io/npm/dw/homebridge-scout)](https://npmjs.com/package/homebridge-scout)
 [![license](https://img.shields.io/npm/l/homebridge-scout)](https://npmjs.com/package/homebridge-scout)
