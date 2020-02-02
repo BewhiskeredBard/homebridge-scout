@@ -47,15 +47,15 @@ export class DeviceManager extends EventEmitter {
         const Service = this.homebridge.hap.Service;
         const Characteristic = this.homebridge.hap.Characteristic;
 
-        const device = accessory.context.device;
+        const device = (accessory.context as Context).device;
 
         this.logger.info(`Configuring device [${device.id}] as accessory [${accessory.UUID}].`);
 
         accessory.getService(Service.AccessoryInformation)!
-                .setCharacteristic(Characteristic.Manufacturer, device.reported.manufacturer || "Scout")
-                .setCharacteristic(Characteristic.Model, device.reported.model || "unknown")
+                .setCharacteristic(Characteristic.Manufacturer, device.reported?.manufacturer || "Scout")
+                .setCharacteristic(Characteristic.Model, device.reported?.model || "unknown")
                 .setCharacteristic(Characteristic.SerialNumber, device.id)
-                .setCharacteristic(Characteristic.FirmwareRevision, device.reported.fw_version);
+                .setCharacteristic(Characteristic.FirmwareRevision, device.reported?.fw_version || "unknown");
 
         const values = this.getCharacteristicValues(accessory);
 
