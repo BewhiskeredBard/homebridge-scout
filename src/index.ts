@@ -16,7 +16,7 @@ const plugin: Homebridge.Plugin = (homebridge: Homebridge.API): void => {
         const api = new ScoutApi(logger, config.auth.email, config.auth.password);
         const hubManager = new HubManager(homebridge, logger, api);
         const deviceManager = new DeviceManager(homebridge, logger, api, config.reverseSensorState);
-        const platform = new ScoutPlatform(homebridge, logger, api, hubManager, deviceManager, config.location, config.modes);
+        const platform = new ScoutPlatform(logger, api, hubManager, deviceManager, config.location, config.modes);
 
         homebridge.on("didFinishLaunching", () => {
             platform.registerAccessories().catch(e => logger.error(e));
