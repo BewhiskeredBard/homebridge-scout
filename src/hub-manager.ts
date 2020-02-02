@@ -2,7 +2,7 @@ import * as Scout from "scout-api";
 import * as Hap from "./hap";
 import * as Homebridge from "./homebridge";
 import { ScoutApi } from "./scout-api";
-import { Hub } from "scout-api";
+import { Hub, ModeState } from "scout-api";
 
 interface Context {
     hub: Hub;
@@ -151,9 +151,9 @@ export class HubManager {
         const context = accessory.context as Context;
         const values = new Map();
         const modeIds = context.modeIds;
-        const alarmedModeId = modeIds.find(modeId => "alarmed" == this.modeStates.get(modeId));
-        const armedModeId = modeIds.find(modeId => -1 < ["armed", "triggered"].indexOf(this.modeStates.get(modeId)!));
-        const armingModeId = modeIds.find(modeId => "arming" == this.modeStates.get(modeId));
+        const alarmedModeId = modeIds.find(modeId => ModeState.Alarmed == this.modeStates.get(modeId));
+        const armedModeId = modeIds.find(modeId => -1 < [ModeState.Armed, ModeState.Triggered].indexOf(this.modeStates.get(modeId)!));
+        const armingModeId = modeIds.find(modeId => ModeState.Arming == this.modeStates.get(modeId));
 
         const currentState = alarmedModeId ? 4 : (armedModeId ? modeIds.indexOf(armedModeId) : 3);
         const targetState = alarmedModeId
@@ -229,7 +229,7 @@ export class HubManager {
 
         if (3 == value) {
             const targetModeId = context.modeIds.find(modeId => {
-                return -1 != ["arming", "armed", "triggered", "alarmed"].indexOf(this.modeStates.get(modeId)!);
+                return -1 != [ModeState.Arming, ModeState.Armed, ModeState.Triggered, ModeState.Alarmed].indexOf(this.modeStates.get(modeId)!);
             });
 
             if (targetModeId) {
