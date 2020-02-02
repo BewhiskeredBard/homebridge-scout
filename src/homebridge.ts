@@ -24,7 +24,7 @@ export declare interface API extends EventEmitter {
     platformAccessory: PlatformAccessoryConstructor;
 
     accessory(name: string): PlatformAccessory;
-    registerAccessory<T>(pluginName: string, accessoryName: string, constructor: AccessoryConstructor, configurationRequestHandler?: ConfigurationRequestHandler): void;
+    registerAccessory(pluginName: string, accessoryName: string, constructor: AccessoryConstructor, configurationRequestHandler?: ConfigurationRequestHandler): void;
     publishCameraAccessories(pluginName: string, accessories: PlatformAccessory[]): void;
     publishExternalAccessories(pluginName: string, accessories: PlatformAccessory[]): void;
     platform(name: string): Platform;
@@ -43,7 +43,7 @@ export declare interface PlatformAccessory extends EventEmitter {
     context: any;
 
     addService(service: Hap.ServiceConstructor | Hap.Service, ...args: any[]): Hap.Service;
-    removeService<T>(service: T): void;
+    removeService<T extends Hap.Service>(service: T): void;
     getService(name: Hap.ServiceConstructor | string): Hap.Service | undefined;
     getServiceByUUIDAndSubType<T extends Hap.Service>(UUID: string, subtype: string): T | undefined;
     updateReachability(reachable: boolean): void;

@@ -74,14 +74,28 @@ export declare interface Hap {
             CHARGING: number;
             NOT_CHARGING: number;
         }>;
+        ContactSensorState: CharacteristicConstructor<{
+            CONTACT_DETECTED: number;
+            CONTACT_NOT_DETECTED: number;
+        }>;
+        CurrentRelativeHumidity: CharacteristicConstructor<{}>;
         CurrentTemperature: CharacteristicConstructor<{}>;
         FirmwareRevision: CharacteristicConstructor<{}>;
         HardwareRevision: CharacteristicConstructor<{}>;
+        LeakDetected: CharacteristicConstructor<{
+            LEAK_DETECTED: number;
+            LEAK_NOT_DETECTED: number;
+        }>;
         Manufacturer: CharacteristicConstructor<{}>;
         Model: CharacteristicConstructor<{}>;
+        MotionDetected: CharacteristicConstructor<{}>;
         SecuritySystemCurrentState: CharacteristicConstructor<{}>;
         SecuritySystemTargetState: CharacteristicConstructor<{}>;
         SerialNumber: CharacteristicConstructor<{}>;
+        SmokeDetected: CharacteristicConstructor<{
+            SMOKE_DETECTED: number;
+            SMOKE_NOT_DETECTED: number;
+        }>;
         StatusFault: CharacteristicConstructor<{
             NO_FAULT: number;
             GENERAL_FAULT: number;
@@ -90,13 +104,22 @@ export declare interface Hap {
             BATTERY_LEVEL_LOW: number;
             BATTERY_LEVEL_NORMAL: number;
         }>;
+        StatusTampered: CharacteristicConstructor<{
+            TAMPERED: number;
+            NOT_TAMPERED: number;
+        }>;
 
         new(): CharacteristicConstructor<unknown>;
     };
     Service: {
         AccessoryInformation: ServiceConstructor;
         BatteryService: ServiceConstructor;
+        ContactSensor: ServiceConstructor;
+        HumiditySensor: ServiceConstructor;
+        LeakSensor: ServiceConstructor;
+        MotionSensor: ServiceConstructor;
         SecuritySystem: ServiceConstructor;
+        SmokeSensor: ServiceConstructor;
         TemperatureSensor: ServiceConstructor;
 
         new(): ServiceConstructor;
