@@ -2,7 +2,7 @@ import { EventEmitter } from "events";
 import * as Hap from "./hap";
 import * as Homebridge from "./homebridge";
 import { ScoutApi } from "./scout-api";
-import { Device, DeviceEvent, DeviceTriggerEvent, DevicePairEvent, DeviceEventType, DeviceType, AccessSensorState, DoorPanelState, MotionSensorState, WaterSensorState, SmokeState, SmokeAlarmState } from "scout-api";
+import { Device, DeviceEvent, DeviceTriggerEvent, DevicePairEvent, DeviceEventType, DeviceType, AccessSensorState, DoorPanelState, MotionSensorState, WaterSensorState, SmokeState, SmokeAlarmState, ConnectionStateEvent, ConnectionState } from "scout-api";
 
 const SUPPORTED_DEVICE_TYPES = new Set<DeviceType>([
     DeviceType.DoorPanel,
@@ -18,6 +18,7 @@ interface Context {
 
 export class DeviceManager extends EventEmitter {
     private readonly accessories = new Map<string, Homebridge.PlatformAccessory>();
+    private isConnected = false;
 
     constructor(
             private readonly homebridge: Homebridge.API,
@@ -101,6 +102,10 @@ export class DeviceManager extends EventEmitter {
         });
 
         return service;
+    }
+
+    public onConnectionStateEvent(states: ConnectionStateEvent): void {
+        this.isConnected = ConnectionState.Connected === states.current;
     }
 
     public async onDeviceEvent(event: DeviceEvent): Promise<void> {
@@ -241,7 +246,7 @@ export class DeviceManager extends EventEmitter {
                 }
             }
 
-            serviceValues.set(Characteristic.StatusFault, isTimedOut
+            serviceValues.set(Characteristic.StatusFault, isTimedOut || !this.isConnected
                     ? Characteristic.StatusFault.GENERAL_FAULT
                     : Characteristic.StatusFault.NO_FAULT);
         });

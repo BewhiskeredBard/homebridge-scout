@@ -2,7 +2,7 @@ import * as Scout from "scout-api";
 import * as Hap from "./hap";
 import * as Homebridge from "./homebridge";
 import { ScoutApi } from "./scout-api";
-import { Hub, ModeState } from "scout-api";
+import { Hub, ModeState, ConnectionStateEvent, ConnectionState } from "scout-api";
 
 interface Context {
     hub: Hub;
@@ -13,6 +13,7 @@ interface Context {
 export class HubManager {
     private readonly accessories = new Map<string, Homebridge.PlatformAccessory>();
     private readonly modeStates = new Map<string, Scout.ModeState>();
+    private isConnected = false;
 
     public constructor(
             private readonly homebridge: Homebridge.API,
@@ -107,6 +108,10 @@ export class HubManager {
         this.accessories.set(hub.id, accessory);
     }
 
+    public onConnectionStateEvent(states: ConnectionStateEvent): void {
+        this.isConnected = ConnectionState.Connected === states.current;
+    }
+
     public onHubEvent(event: Scout.Hub): void {
         this.logger.info(`Hub [${event.id}] event fired.`);
         this.logger.debug(`Hub Event: ${JSON.stringify(event)}`);
@@ -174,7 +179,7 @@ export class HubManager {
             ]]));
         }
 
-        const fault = "active" === reported?.status
+        const fault = ("active" === reported?.status && this.isConnected)
                 ? Characteristic.StatusFault.NO_FAULT
                 : Characteristic.StatusFault.GENERAL_FAULT;
 

@@ -98,6 +98,9 @@ export class ScoutPlatform extends EventEmitter {
         listener.addConnectionStateListener(states => {
             this.logger.info(`Event subscription connection is ${states.current}`);
             this.logger.debug(`Event subscription connection state: ${JSON.stringify(states)}`);
+
+            this.hubManager.onConnectionStateEvent(states);
+            this.deviceManager.onConnectionStateEvent(states);
         });
     }
 
