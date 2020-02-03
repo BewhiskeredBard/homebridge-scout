@@ -120,13 +120,13 @@ export class ScoutPlatform extends EventEmitter {
 
     private registerHub(hub: Hub, modes: Mode[], modeIds: string[]): Homebridge.PlatformAccessory {
         let accessory = this.hubManager.createAccessory(hub, modes, modeIds);
+        const cachedAccessory = this.cachedAccessories.get(accessory.UUID);
 
-        if (this.cachedAccessories.has(accessory.UUID)) {
+        if (undefined !== cachedAccessory) {
             this.logger.info(`Using cached hub accessory [${accessory.UUID}].`);
 
-            const cachedAccessory = this.cachedAccessories.get(accessory.UUID);
-            cachedAccessory!.context = accessory.context;
-            accessory = cachedAccessory!;
+            cachedAccessory.context = accessory.context;
+            accessory = cachedAccessory;
 
             this.cachedAccessories.delete(accessory.UUID);
         } else {
@@ -144,12 +144,13 @@ export class ScoutPlatform extends EventEmitter {
         devices.filter(device => this.deviceManager.isSupported(device))
                 .map(device => this.deviceManager.createAccessory(device))
                 .forEach(accessory => {
-                    if (this.cachedAccessories.has(accessory.UUID)) {
+                    const cachedAccessory = this.cachedAccessories.get(accessory.UUID);
+
+                    if (undefined !== cachedAccessory) {
                         this.logger.info(`Using cached device accessory [${accessory.UUID}].`);
 
-                        const cachedAccessory = this.cachedAccessories.get(accessory.UUID);
-                        cachedAccessory!.context = accessory.context;
-                        accessory = cachedAccessory!;
+                        cachedAccessory.context = accessory.context;
+                        accessory = cachedAccessory;
 
                         this.cachedAccessories.delete(accessory.UUID);
                     } else {
