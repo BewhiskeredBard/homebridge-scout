@@ -73,15 +73,19 @@ Update the `platforms` section of your `~/.homebridge/config.json`:
 
 ## Device Support
 
-This plug-in currently offers support for the Scout hub and any of the following device types:
+| Scout Device       | HomeKit Services                                                     |
+|--------------------|----------------------------------------------------------------------|
+| Hub                | SecuritySystem<br>BatteryService<br>TemperatureSensor²               |
+| Door Panel         | ContactSensor<br>HumiditySensor²<br>TemperatureSensor²               |
+| Access Sensor      | ContactSensor<br>TemperatureSensor²                                  |
+| Motion Sensor²     | MotionSensor<br>TemperatureSensor                                    |
+| Water Sensor       | LeakSensor<br>TemperatureSensor                                      |
+| Smoke Alarm        | SmokeSensor                                                          |
+| Glass Break Sensor | [#27](https://github.com/jordanryanmoore/homebridge-scout/issues/27) |
+| Video Doorbell     | [#18](https://github.com/jordanryanmoore/homebridge-scout/issues/18) |
+| Indoor Camera      | [#17](https://github.com/jordanryanmoore/homebridge-scout/issues/17) |
 
-* door panels
-* access sensors
-* motion sensors
-* water sensors
-* smoke alarms
-
-If you have device types that are not yet supported (glass break sensors, cameras, etc.), please [get in touch](https://github.com/jordanryanmoore/homebridge-scout/issues). The biggest barrier to adding support is just having access to the devices.
+*² Only supported for V2 devices. V1 devices do not have humidity or temperature sensors. V1 motion sensors do not properly trigger motion events.*
 
 ## Credits
 
