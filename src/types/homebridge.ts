@@ -1,13 +1,13 @@
 import { EventEmitter } from "events";
 import * as Hap from "./hap";
 
-export declare type Config = any;
+export declare type Config = object;
 
 export declare type Plugin = (homebridge: API) => void;
 
 export declare type PlatformConstructor = (platformLogger: Logger, platformConfig: Config, api: API) => Platform;
 
-export declare type AccessoryConstructor = new (logger: Logger, config: Config) => any;
+export declare type AccessoryConstructor = new (logger: Logger, config: Config) => unknown;
 
 export declare type PlatformAccessoryConstructor = new (displayName: string, UUID: string, category: number) => PlatformAccessory;
 
@@ -40,9 +40,9 @@ export declare interface PlatformAccessory extends EventEmitter {
     category: number;
     services: Hap.Service[];
     reachable: boolean;
-    context: any;
+    context: unknown;
 
-    addService(service: Hap.ServiceConstructor | Hap.Service, ...args: any[]): Hap.Service;
+    addService(service: Hap.ServiceConstructor | Hap.Service, ...args: unknown[]): Hap.Service;
     removeService<T extends Hap.Service>(service: T): void;
     getService(name: Hap.ServiceConstructor | string): Hap.Service | undefined;
     getServiceByUUIDAndSubType<T extends Hap.Service>(UUID: string, subtype: string): T | undefined;
@@ -52,7 +52,7 @@ export declare interface PlatformAccessory extends EventEmitter {
 
 export declare interface Platform {
     configureAccessory?(accessory: PlatformAccessory): void;
-    configurationRequestHandler?(context: any, request: unknown | null, responseHandler: PlatformResponseHandler): void;
+    configurationRequestHandler?(context: unknown, request: unknown | null, responseHandler: PlatformResponseHandler): void;
 }
 
 export declare class Logger {

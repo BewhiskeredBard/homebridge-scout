@@ -34,7 +34,7 @@
     "homebridge": ">=0.4.50"
   },
   "dependencies": {
-    "scout-api": "^0.2.0"
+    "scout-api": "^0.3.0"
   },
   "devDependencies": {
     "@types/jest": "^24.9.1",

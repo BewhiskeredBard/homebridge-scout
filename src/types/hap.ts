@@ -50,7 +50,7 @@ export declare type ServiceConstructor = WithUUID<(new () => Service)>;
 export declare interface Service extends EventEmitter {
     UUID: string;
 
-    addCharacteristic<T>(characteristic: CharacteristicConstructor<T> | Characteristic, ...constructorArgs: any[]): Characteristic;
+    addCharacteristic<T>(characteristic: CharacteristicConstructor<T> | Characteristic, ...constructorArgs: unknown[]): Characteristic;
     removeCharacteristic(characteristic: Characteristic): void;
     getCharacteristic(name: CharacteristicConstructor<unknown> | string): Characteristic;
     testCharacteristic(name: Characteristic | string): boolean;
@@ -62,9 +62,9 @@ export declare interface Characteristic extends EventEmitter {
     displayName?: string;
     UUID?: string;
 
-    getValue(callback?: CharacteristicGetCallback, context?: any, connectionID?: string): void;
-    setValue(newValue: Nullable<CharacteristicValue | Error>, callback?: CharacteristicSetCallback, context?: any, connectionID?: string): Characteristic;
-    updateValue(newValue: Nullable<CharacteristicValue | Error>, callback?: () => void, context?: any): Characteristic;
+    getValue(callback?: CharacteristicGetCallback, context?: unknown, connectionID?: string): void;
+    setValue(newValue: Nullable<CharacteristicValue | Error>, callback?: CharacteristicSetCallback, context?: unknown, connectionID?: string): Characteristic;
+    updateValue(newValue: Nullable<CharacteristicValue | Error>, callback?: () => void, context?: unknown): Characteristic;
 }
 
 export declare interface Hap {
@@ -89,8 +89,19 @@ export declare interface Hap {
         Manufacturer: CharacteristicConstructor<{}>;
         Model: CharacteristicConstructor<{}>;
         MotionDetected: CharacteristicConstructor<{}>;
-        SecuritySystemCurrentState: CharacteristicConstructor<{}>;
-        SecuritySystemTargetState: CharacteristicConstructor<{}>;
+        SecuritySystemCurrentState: CharacteristicConstructor<{
+            STAY_ARM: number;
+            AWAY_ARM: number;
+            NIGHT_ARM: number;
+            DISARMED: number;
+            ALARM_TRIGGERED: number;
+        }>;
+        SecuritySystemTargetState: CharacteristicConstructor<{
+            STAY_ARM: number;
+            AWAY_ARM: number;
+            NIGHT_ARM: number;
+            DISARM: number;
+        }>;
         SerialNumber: CharacteristicConstructor<{}>;
         SmokeDetected: CharacteristicConstructor<{
             SMOKE_DETECTED: number;
