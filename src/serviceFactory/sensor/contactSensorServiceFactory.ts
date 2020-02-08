@@ -1,4 +1,4 @@
-import { Device, AccessSensorState, DoorPanelState, DeviceType } from "scout-api";
+import { Device, AccessSensorState, DoorPanelState, DeviceType, DeviceEvent } from "scout-api";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
@@ -30,9 +30,10 @@ export class ContactSensorServiceFactory extends SensorServiceFactory {
     private getSensorState(context: AccessoryContext<SensorAccessoryContext>): number | undefined {
         const ContactSensorState = this.homebridge.api.hap.Characteristic.ContactSensorState;
 
+        const device = context.custom.device;
         let isContactDetected: boolean | undefined;
 
-        switch (this.getDeviceState(context.custom.device)) {
+        switch (this.getDeviceState(device)) {
             case AccessSensorState.Open:
             case DoorPanelState.Open:
                 isContactDetected = false;
@@ -44,7 +45,7 @@ export class ContactSensorServiceFactory extends SensorServiceFactory {
         }
 
         if (isContactDetected !== undefined) {
-            if (this.homebridge.config.reverseSensorState) {
+            if (this.shouldReverseSensorState(device)) {
                 isContactDetected = !isContactDetected;
             }
 
@@ -59,5 +60,21 @@ export class ContactSensorServiceFactory extends SensorServiceFactory {
             case DeviceType.DoorPanel:
                 return (device?.reported?.trigger?.state as DoorPanelState);
         }
+    }
+
+    /**
+     * Scout systems that are inversely reporting contact sensor state only do so for device events,
+     * not for calls to the Scout API. Thus, the sensor state should only be reversed if:
+     *
+     * 1) The configuration option is enabled.
+     * AND
+     * 2) The current context data is from a DeviceEvent, not the original Device data.
+     */
+    private shouldReverseSensorState(device: Device): boolean {
+        return true === this.homebridge.config.reverseSensorState && this.isDeviceEvent(device);
+    }
+
+    private isDeviceEvent(device: Device | DeviceEvent): device is DeviceEvent {
+        return 'event' in device;
     }
 }
