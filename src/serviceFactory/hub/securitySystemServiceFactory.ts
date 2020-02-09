@@ -120,9 +120,9 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
 
         if (mode && SecuritySystemServiceFactory.ACTIVE_MODE_STATES.has(mode.state)) {
             switch (mode.name) {
-                case this.homebridge.config.modes.stay:
-                    return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM;
                 case this.homebridge.config.modes.away:
+                    return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM;
+                case this.homebridge.config.modes.stay:
                     return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM;
                 case this.homebridge.config.modes.night:
                     return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM;
