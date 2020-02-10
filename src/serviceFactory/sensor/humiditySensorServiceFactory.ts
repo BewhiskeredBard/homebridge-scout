@@ -20,7 +20,7 @@ export class HumiditySensorServiceFactory extends SensorServiceFactory {
         const humidity = this.getHumidity(context);
 
         if (humidity !== undefined) {
-            characteristics.set(this.homebridge.api.hap.Characteristic.CurrentRelativeHumidity, humidity);    
+            characteristics.set(this.homebridge.api.hap.Characteristic.CurrentRelativeHumidity, humidity);
         }
 
         return characteristics;

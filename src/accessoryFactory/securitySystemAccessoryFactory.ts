@@ -16,10 +16,7 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
     private readonly accessories = new Map<string, TypedPlatformAccessory<SecuritySystemContext>>();
     private readonly locationHubs = new Map<string, string>();
 
-    public constructor(
-            homebridge: HomebridgeContext,
-            scout: ScoutContext,
-            serviceFactories: ServiceFactory<SecuritySystemContext>[]) {
+    public constructor(homebridge: HomebridgeContext, scout: ScoutContext, serviceFactories: ServiceFactory<SecuritySystemContext>[]) {
         super(homebridge, scout, serviceFactories);
     }
 
@@ -35,8 +32,8 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
 
         accessory.on("identify", (paired: boolean, callback) => {
             this.identify(accessory.context)
-                    .then(() => callback())
-                    .catch(callback);
+                .then(() => callback())
+                .catch(callback);
         });
     }
 
@@ -47,20 +44,22 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
         this.homebridge.logger.debug(`Hub: ${JSON.stringify(hub)}`);
         this.homebridge.logger.debug(`Modes: ${JSON.stringify(modes)}`);
 
-        return [{
-            name: SecuritySystemAccessoryFactory.NAME,
-            id: hub.id,
-            category: Categories.SECURITY_SYSTEM,
-            context: {
-                hub,
-                modes,
+        return [
+            {
+                name: SecuritySystemAccessoryFactory.NAME,
+                id: hub.id,
+                category: Categories.SECURITY_SYSTEM,
+                context: {
+                    hub,
+                    modes,
+                },
+                manufacturer: SecuritySystemAccessoryFactory.MANUFACTURER,
+                model: hub.type,
+                serialNumber: hub.serial_number,
+                firmwareRevision: hub?.reported?.fw_version || "unknown",
+                hardwareRevision: hub?.reported?.hw_version,
             },
-            manufacturer: SecuritySystemAccessoryFactory.MANUFACTURER,
-            model: hub.type,
-            serialNumber: hub.serial_number,
-            firmwareRevision: hub?.reported?.fw_version || "unknown",
-            hardwareRevision: hub?.reported?.hw_version,
-        }];
+        ];
     }
 
     protected addLocationListeners(locationId: string): void {
@@ -96,9 +95,11 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
             const accessory = this.accessories.get(hubId);
 
             if (accessory) {
-                accessory.context.custom.modes.filter(mode => mode.id === event.mode_id).forEach(mode => {
-                    mode.state = event.event;
-                });
+                accessory.context.custom.modes
+                    .filter(mode => mode.id === event.mode_id)
+                    .forEach(mode => {
+                        mode.state = event.event;
+                    });
 
                 this.updateAccessory(accessory);
             }

@@ -30,9 +30,10 @@ export abstract class AccessoryFactory<T> {
     private readonly listeningLocations = new Set<string>();
 
     public constructor(
-            protected readonly homebridge: HomebridgeContext,
-            protected readonly scout: ScoutContext,
-            protected readonly serviceFactories: ServiceFactory<T>[]) {
+        protected readonly homebridge: HomebridgeContext,
+        protected readonly scout: ScoutContext,
+        protected readonly serviceFactories: ServiceFactory<T>[],
+    ) {
         this.scout.listener.addConnectionStateListener(event => {
             this.onConnectionStateEvent(event);
         });
@@ -92,10 +93,10 @@ export abstract class AccessoryFactory<T> {
 
         if (accessoryInfoService) {
             accessoryInfoService
-                    .setCharacteristic(Characteristic.Manufacturer, accessoryInfo.manufacturer)
-                    .setCharacteristic(Characteristic.Model, accessoryInfo.model)
-                    .setCharacteristic(Characteristic.SerialNumber, accessoryInfo.serialNumber)
-                    .setCharacteristic(Characteristic.FirmwareRevision, accessoryInfo.firmwareRevision);
+                .setCharacteristic(Characteristic.Manufacturer, accessoryInfo.manufacturer)
+                .setCharacteristic(Characteristic.Model, accessoryInfo.model)
+                .setCharacteristic(Characteristic.SerialNumber, accessoryInfo.serialNumber)
+                .setCharacteristic(Characteristic.FirmwareRevision, accessoryInfo.firmwareRevision);
 
             if (undefined !== accessoryInfo.hardwareRevision) {
                 accessoryInfoService.setCharacteristic(Characteristic.HardwareRevision, accessoryInfo.hardwareRevision);

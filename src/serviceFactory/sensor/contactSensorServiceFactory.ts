@@ -21,7 +21,7 @@ export class ContactSensorServiceFactory extends SensorServiceFactory {
         const state = this.getSensorState(context);
 
         if (state !== undefined) {
-            characteristics.set(this.homebridge.api.hap.Characteristic.ContactSensorState, state);    
+            characteristics.set(this.homebridge.api.hap.Characteristic.ContactSensorState, state);
         }
 
         return characteristics;
@@ -56,9 +56,9 @@ export class ContactSensorServiceFactory extends SensorServiceFactory {
     private getDeviceState(device: Device): AccessSensorState | DoorPanelState | undefined {
         switch (device.type) {
             case DeviceType.AccessSensor:
-                return (device?.reported?.trigger?.state as AccessSensorState);
+                return device?.reported?.trigger?.state as AccessSensorState;
             case DeviceType.DoorPanel:
-                return (device?.reported?.trigger?.state as DoorPanelState);
+                return device?.reported?.trigger?.state as DoorPanelState;
         }
     }
 
@@ -75,6 +75,6 @@ export class ContactSensorServiceFactory extends SensorServiceFactory {
     }
 
     private isDeviceEvent(device: Device | DeviceEvent): device is DeviceEvent {
-        return 'event' in device;
+        return "event" in device;
     }
 }

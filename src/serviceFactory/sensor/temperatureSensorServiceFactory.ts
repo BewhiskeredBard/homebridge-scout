@@ -21,7 +21,7 @@ export class TemperatureSensorServiceFactory extends SensorServiceFactory {
         const temp = this.getTemperature(context);
 
         if (temp !== undefined) {
-            characteristics.set(this.homebridge.api.hap.Characteristic.CurrentTemperature, temp);    
+            characteristics.set(this.homebridge.api.hap.Characteristic.CurrentTemperature, temp);
         }
 
         return characteristics;

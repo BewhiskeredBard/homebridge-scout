@@ -23,23 +23,28 @@ export abstract class SensorServiceFactory extends ServiceFactory<SensorAccessor
             hasFault = isTimedOut;
 
             if (undefined !== trigger?.tamper) {
-                characteristics.set(Characteristic.StatusTampered, trigger.tamper
-                        ? Characteristic.StatusTampered.TAMPERED
-                        : Characteristic.StatusTampered.NOT_TAMPERED);
+                characteristics.set(
+                    Characteristic.StatusTampered,
+                    trigger.tamper ? Characteristic.StatusTampered.TAMPERED : Characteristic.StatusTampered.NOT_TAMPERED,
+                );
             }
 
             if (!isTimedOut) {
                 if (undefined !== reported.battery) {
-                    characteristics.set(Characteristic.StatusLowBattery, undefined === reported.battery.low
+                    characteristics.set(
+                        Characteristic.StatusLowBattery,
+                        undefined === reported.battery.low
                             ? Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL
-                            : Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW);
+                            : Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW,
+                    );
                 }
             }
         }
 
-        characteristics.set(Characteristic.StatusFault, !hasFault && context.isConnected
-            ? Characteristic.StatusFault.NO_FAULT
-            : Characteristic.StatusFault.GENERAL_FAULT);
+        characteristics.set(
+            Characteristic.StatusFault,
+            !hasFault && context.isConnected ? Characteristic.StatusFault.NO_FAULT : Characteristic.StatusFault.GENERAL_FAULT,
+        );
 
         return characteristics;
     }

@@ -21,7 +21,7 @@ export class MotionSensorServiceFactory extends SensorServiceFactory {
         const state = this.getSensorState(context);
 
         if (state !== undefined) {
-            characteristics.set(this.homebridge.api.hap.Characteristic.MotionDetected, state);    
+            characteristics.set(this.homebridge.api.hap.Characteristic.MotionDetected, state);
         }
 
         return characteristics;
@@ -38,7 +38,7 @@ export class MotionSensorServiceFactory extends SensorServiceFactory {
 
     private getDeviceState(device: Device): MotionSensorState | undefined {
         if (device.type === DeviceType.MotionSensor) {
-            return (device?.reported?.trigger?.state as MotionSensorState);
+            return device?.reported?.trigger?.state as MotionSensorState;
         }
     }
 }

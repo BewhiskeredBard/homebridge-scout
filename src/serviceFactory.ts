@@ -3,11 +3,7 @@ import { HomebridgeContext, ScoutContext } from "./context";
 import { AccessoryContext } from "./accessoryFactory";
 
 export abstract class ServiceFactory<T> {
-    protected constructor(
-        protected readonly homebridge: HomebridgeContext,
-        protected readonly scout: ScoutContext) {
-
-    }
+    protected constructor(protected readonly homebridge: HomebridgeContext, protected readonly scout: ScoutContext) {}
 
     public configureService(service: Service, context: AccessoryContext<T>): void {
         this.updateService(service, context);

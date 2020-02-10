@@ -1,4 +1,4 @@
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory"
+import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor, Service, CharacteristicSetCallback } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 import { ModeState, ModeStateUpdateType } from "scout-api";
@@ -6,19 +6,9 @@ import { HomebridgeContext, ScoutContext } from "../../context";
 import { AccessoryContext } from "../../accessoryFactory";
 
 export class SecuritySystemServiceFactory extends HubServiceFactory {
-    private static readonly ARMING_MODE_STATES = new Set<ModeState>([
-        ModeState.Arming,
-    ]);
-
-    private static readonly ARMED_MODE_STATES = new Set<ModeState>([
-        ModeState.Armed,
-        ModeState.Triggered,
-    ]);
-
-    private static readonly ALARMING_MODE_STATES = new Set<ModeState>([
-        ModeState.Alarmed,
-    ]);
-
+    private static readonly ARMING_MODE_STATES = new Set<ModeState>([ModeState.Arming]);
+    private static readonly ARMED_MODE_STATES = new Set<ModeState>([ModeState.Armed, ModeState.Triggered]);
+    private static readonly ALARMING_MODE_STATES = new Set<ModeState>([ModeState.Alarmed]);
     private static readonly ACTIVE_MODE_STATES = new Set<ModeState>([
         ...SecuritySystemServiceFactory.ARMING_MODE_STATES,
         ...SecuritySystemServiceFactory.ARMED_MODE_STATES,
@@ -38,10 +28,11 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
 
         super.configureService(service, context);
 
-        service.getCharacteristic(Characteristic.SecuritySystemTargetState)
-                .on("set", (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-                    this.setTargetState(context, value).then(() => callback()).catch(callback);
-                });
+        service.getCharacteristic(Characteristic.SecuritySystemTargetState).on("set", (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
+            this.setTargetState(context, value)
+                .then(() => callback())
+                .catch(callback);
+        });
     }
 
     protected getCharacteristics(context: AccessoryContext<SecuritySystemContext>): Map<CharacteristicConstructor<unknown>, CharacteristicValue> {

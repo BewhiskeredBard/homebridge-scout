@@ -24,7 +24,12 @@ export declare interface API extends EventEmitter {
     platformAccessory: PlatformAccessoryConstructor;
 
     accessory(name: string): PlatformAccessory;
-    registerAccessory(pluginName: string, accessoryName: string, constructor: AccessoryConstructor, configurationRequestHandler?: ConfigurationRequestHandler): void;
+    registerAccessory(
+        pluginName: string,
+        accessoryName: string,
+        constructor: AccessoryConstructor,
+        configurationRequestHandler?: ConfigurationRequestHandler,
+    ): void;
     publishCameraAccessories(pluginName: string, accessories: PlatformAccessory[]): void;
     publishExternalAccessories(pluginName: string, accessories: PlatformAccessory[]): void;
     platform(name: string): Platform;

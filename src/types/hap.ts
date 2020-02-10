@@ -35,17 +35,17 @@ export enum Categories {
     SHOWER_HEAD = 30,
     TELEVISION = 31,
     TARGET_CONTROLLER = 32, // Remote Control
-    ROUTER = 33 // HomeKit enabled router
+    ROUTER = 33, // HomeKit enabled router
 }
 
 export declare type Nullable<T> = T | null;
 export declare type WithUUID<T> = T & { UUID: string };
 export declare type PrimitiveTypes = string | number | boolean;
 export declare type CharacteristicValue = PrimitiveTypes | PrimitiveTypes[] | { [key: string]: PrimitiveTypes };
-export declare type CharacteristicGetCallback<T = Nullable<CharacteristicValue>> = (error?: Error | null , value?: T) => void
-export declare type CharacteristicSetCallback = (error?: Error | null, value?: CharacteristicValue) => void
+export declare type CharacteristicGetCallback<T = Nullable<CharacteristicValue>> = (error?: Error | null, value?: T) => void;
+export declare type CharacteristicSetCallback = (error?: Error | null, value?: CharacteristicValue) => void;
 export declare type CharacteristicConstructor<T> = WithUUID<(new () => Characteristic) & T>;
-export declare type ServiceConstructor = WithUUID<(new () => Service)>;
+export declare type ServiceConstructor = WithUUID<new () => Service>;
 
 export declare interface Service extends EventEmitter {
     UUID: string;
@@ -120,7 +120,7 @@ export declare interface Hap {
             NOT_TAMPERED: number;
         }>;
 
-        new(): CharacteristicConstructor<unknown>;
+        new (): CharacteristicConstructor<unknown>;
     };
     Service: {
         AccessoryInformation: ServiceConstructor;
@@ -133,7 +133,7 @@ export declare interface Hap {
         SmokeSensor: ServiceConstructor;
         TemperatureSensor: ServiceConstructor;
 
-        new(): ServiceConstructor;
+        new (): ServiceConstructor;
     };
     uuid: {
         generate: (data: string | Buffer | NodeJS.TypedArray | DataView) => string;

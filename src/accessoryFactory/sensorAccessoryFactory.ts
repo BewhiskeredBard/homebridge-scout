@@ -20,10 +20,7 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
 
     private readonly accessories = new Map<string, TypedPlatformAccessory<SensorAccessoryContext>>();
 
-    public constructor(
-            homebridge: HomebridgeContext,
-            scout: ScoutContext,
-            serviceFactories: ServiceFactory<SensorAccessoryContext>[]) {
+    public constructor(homebridge: HomebridgeContext, scout: ScoutContext, serviceFactories: ServiceFactory<SensorAccessoryContext>[]) {
         super(homebridge, scout, serviceFactories);
     }
 
@@ -38,11 +35,7 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
 
         this.homebridge.logger.debug(`Devices: ${JSON.stringify(devices)}`);
 
-        return devices.filter(device => {
-            return SensorAccessoryFactory.SUPPORTED_DEVICE_TYPES.has(device.type);
-        }).map(device => {
-            return this.createDeviceAccessoryInfo(device);
-        });
+        return devices.filter(device => SensorAccessoryFactory.SUPPORTED_DEVICE_TYPES.has(device.type)).map(device => this.createDeviceAccessoryInfo(device));
     }
 
     protected createDeviceAccessoryInfo(device: Device): AccessoryInfo<SensorAccessoryContext> {

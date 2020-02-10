@@ -1,4 +1,4 @@
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory"
+import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 import { HomebridgeContext, ScoutContext } from "../../context";

@@ -1,4 +1,4 @@
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory"
+import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 import { HubType } from "scout-api";
@@ -22,13 +22,17 @@ export class BatteryServiceFactory extends HubServiceFactory {
         const batteryLevel = this.getBatteryLevel(context);
 
         if (undefined !== batteryLevel) {
-            characteristics.set(Characteristic.ChargingState, context.custom.hub.reported?.battery.active
-                    ? Characteristic.ChargingState.NOT_CHARGING
-                    : Characteristic.ChargingState.CHARGING);
+            characteristics.set(
+                Characteristic.ChargingState,
+                context.custom.hub.reported?.battery.active ? Characteristic.ChargingState.NOT_CHARGING : Characteristic.ChargingState.CHARGING,
+            );
 
-            characteristics.set(Characteristic.StatusLowBattery, context.custom.hub.reported?.battery.low
+            characteristics.set(
+                Characteristic.StatusLowBattery,
+                context.custom.hub.reported?.battery.low
                     ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
-                    : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL);
+                    : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL,
+            );
 
             characteristics.set(Characteristic.BatteryLevel, batteryLevel);
         }

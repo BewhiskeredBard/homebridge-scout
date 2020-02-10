@@ -21,7 +21,7 @@ export class SmokeSensorServiceFactory extends SensorServiceFactory {
         const state = this.getSensorState(context);
 
         if (state !== undefined) {
-            characteristics.set(this.homebridge.api.hap.Characteristic.SmokeDetected, state);    
+            characteristics.set(this.homebridge.api.hap.Characteristic.SmokeDetected, state);
         }
 
         return characteristics;

@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "jest --passWithNoTests",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint . --ext .ts",
     "precompile": "rm -rf lib/*",
     "schema:config": "typescript-json-schema tsconfig.json HomebridgeConfig --noExtraProps --required --strictNullChecks --out schema/config.json",
     "compile": "tsc",
@@ -44,8 +44,11 @@
     "@typescript-eslint/eslint-plugin": "^2.17.0",
     "@typescript-eslint/parser": "^2.17.0",
     "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
     "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
     "ts-jest": "^25.0.0",
     "typescript": "^3.7.5",
     "typescript-json-schema": "^0.42.0"

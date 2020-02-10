@@ -1,5 +1,5 @@
 import { ServiceFactory } from "../../serviceFactory";
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory"
+import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { HomebridgeContext, ScoutContext } from "../../context";
 import { AccessoryContext } from "../../accessoryFactory";
@@ -15,7 +15,8 @@ export abstract class HubServiceFactory extends ServiceFactory<SecuritySystemCon
         const Characteristic = this.homebridge.api.hap.Characteristic;
         const characteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
-        const faultStatus = ("active" === context.custom.hub.reported?.status) && context.isConnected
+        const faultStatus =
+            "active" === context.custom.hub.reported?.status && context.isConnected
                 ? Characteristic.StatusFault.NO_FAULT
                 : Characteristic.StatusFault.GENERAL_FAULT;
 

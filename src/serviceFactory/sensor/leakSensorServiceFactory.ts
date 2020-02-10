@@ -21,7 +21,7 @@ export class LeakSensorServiceFactory extends SensorServiceFactory {
         const state = this.getSensorState(context);
 
         if (state !== undefined) {
-            characteristics.set(this.homebridge.api.hap.Characteristic.LeakDetected, state);    
+            characteristics.set(this.homebridge.api.hap.Characteristic.LeakDetected, state);
         }
 
         return characteristics;
@@ -40,7 +40,7 @@ export class LeakSensorServiceFactory extends SensorServiceFactory {
 
     private getDeviceState(device: Device): WaterSensorState | undefined {
         if (device.type === DeviceType.WaterSensor) {
-            return (device?.reported?.trigger?.state as WaterSensorState);
+            return device?.reported?.trigger?.state as WaterSensorState;
         }
     }
 }
