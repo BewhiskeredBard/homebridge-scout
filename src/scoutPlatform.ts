@@ -1,7 +1,7 @@
 import { Location } from "scout-api";
-import { Platform, PlatformAccessory } from "./types";
 import { AccessoryFactory, TypedPlatformAccessory } from "./accessoryFactory";
 import { HomebridgeContext, ScoutContextFactory, ScoutContext } from "./context";
+import { Platform, PlatformAccessory } from "./types";
 
 export class ScoutPlatform implements Platform {
     public static PLUGIN_NAME = "homebridge-scout";

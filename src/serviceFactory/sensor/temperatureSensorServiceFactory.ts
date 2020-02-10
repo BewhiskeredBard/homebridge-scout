@@ -1,8 +1,8 @@
 import { DeviceType } from "scout-api";
-import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { AccessoryContext } from "../../accessoryFactory";
+import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
+import { HomebridgeContext, ScoutContext } from "../../context";
+import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class TemperatureSensorServiceFactory extends SensorServiceFactory {

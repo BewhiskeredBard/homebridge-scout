@@ -1,8 +1,8 @@
 import { Device, DeviceType, SmokeAlarmState, SmokeState } from "scout-api";
-import { HomebridgeContext, ScoutContext } from "../../context";
-import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
+import { HomebridgeContext, ScoutContext } from "../../context";
+import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class SmokeSensorServiceFactory extends SensorServiceFactory {

@@ -1,7 +1,7 @@
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { AccessoryContext } from "../../accessoryFactory";
+import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
+import { HomebridgeContext, ScoutContext } from "../../context";
+import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 
 export class TemperatureServiceFactory extends HubServiceFactory {

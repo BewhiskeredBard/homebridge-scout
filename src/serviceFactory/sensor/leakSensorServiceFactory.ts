@@ -1,8 +1,8 @@
 import { Device, DeviceType, WaterSensorState } from "scout-api";
-import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
+import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../context";
-import { AccessoryContext } from "../../accessoryFactory";
+import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class LeakSensorServiceFactory extends SensorServiceFactory {

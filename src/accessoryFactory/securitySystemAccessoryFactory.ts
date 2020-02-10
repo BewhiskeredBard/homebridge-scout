@@ -1,8 +1,8 @@
 import { Hub, HubChirpType, ModeEvent, Mode } from "scout-api";
 import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory, AccessoryContext } from "../accessoryFactory";
+import { HomebridgeContext, ScoutContext } from "../context";
 import { ServiceFactory } from "../serviceFactory";
 import { Categories } from "../types";
-import { HomebridgeContext, ScoutContext } from "../context";
 
 export interface SecuritySystemContext {
     hub: Hub;

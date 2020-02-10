@@ -1,17 +1,17 @@
-import { HomebridgeContext, ScoutContextFactory, HomebridgeContextFactory } from "./context";
-import { API, Plugin, Logger, Config, Platform } from "./types";
 import { SecuritySystemAccessoryFactory } from "./accessoryFactory/securitySystemAccessoryFactory";
 import { SensorAccessoryFactory } from "./accessoryFactory/sensorAccessoryFactory";
+import { HomebridgeContext, ScoutContextFactory, HomebridgeContextFactory } from "./context";
+import { ScoutPlatform } from "./scoutPlatform";
 import { BatteryServiceFactory } from "./serviceFactory/hub/batteryServiceFactory";
 import { SecuritySystemServiceFactory } from "./serviceFactory/hub/securitySystemServiceFactory";
 import { TemperatureServiceFactory } from "./serviceFactory/hub/temperatureServiceFactory";
 import { ContactSensorServiceFactory } from "./serviceFactory/sensor/contactSensorServiceFactory";
-import { MotionSensorServiceFactory } from "./serviceFactory/sensor/motionSensorServiceFactory";
-import { LeakSensorServiceFactory } from "./serviceFactory/sensor/leakSensorServiceFactory";
-import { SmokeSensorServiceFactory } from "./serviceFactory/sensor/smokeSensorServiceFactory";
 import { HumiditySensorServiceFactory } from "./serviceFactory/sensor/humiditySensorServiceFactory";
+import { LeakSensorServiceFactory } from "./serviceFactory/sensor/leakSensorServiceFactory";
+import { MotionSensorServiceFactory } from "./serviceFactory/sensor/motionSensorServiceFactory";
+import { SmokeSensorServiceFactory } from "./serviceFactory/sensor/smokeSensorServiceFactory";
 import { TemperatureSensorServiceFactory } from "./serviceFactory/sensor/temperatureSensorServiceFactory";
-import { ScoutPlatform } from "./scoutPlatform";
+import { API, Plugin, Logger, Config, Platform } from "./types";
 
 const plugin: Plugin = (api: API): void => {
     api.registerPlatform(

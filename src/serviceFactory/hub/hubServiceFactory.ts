@@ -1,8 +1,8 @@
-import { ServiceFactory } from "../../serviceFactory";
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { AccessoryContext } from "../../accessoryFactory";
+import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
+import { HomebridgeContext, ScoutContext } from "../../context";
+import { ServiceFactory } from "../../serviceFactory";
+import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 
 export abstract class HubServiceFactory extends ServiceFactory<SecuritySystemContext> {
     protected constructor(homebridge: HomebridgeContext, scout: ScoutContext) {

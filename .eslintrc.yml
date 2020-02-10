@@ -13,4 +13,7 @@ extends:
     - plugin:import/warnings
     - plugin:import/typescript
 rules:
-    import/order: 2
+    import/order:
+        - error
+        - alphabetize:
+            order: asc

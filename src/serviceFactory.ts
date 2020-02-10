@@ -1,6 +1,6 @@
-import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue, Service } from "./types/hap";
-import { HomebridgeContext, ScoutContext } from "./context";
 import { AccessoryContext } from "./accessoryFactory";
+import { HomebridgeContext, ScoutContext } from "./context";
+import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue, Service } from "./types/hap";
 
 export abstract class ServiceFactory<T> {
     protected constructor(protected readonly homebridge: HomebridgeContext, protected readonly scout: ScoutContext) {}

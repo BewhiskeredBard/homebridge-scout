@@ -1,9 +1,9 @@
 import { Device, DeviceType, DeviceEventType, DeviceTriggerEvent, DevicePairEvent } from "scout-api";
-import { ServiceFactory } from "../serviceFactory";
 import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory } from "../accessoryFactory";
-import { Categories } from "../types";
 import { HomebridgeContext, ScoutContext } from "../context";
 import { ScoutPlatform } from "../scoutPlatform";
+import { ServiceFactory } from "../serviceFactory";
+import { Categories } from "../types";
 
 export interface SensorAccessoryContext {
     device: Device;
