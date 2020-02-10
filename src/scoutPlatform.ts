@@ -76,17 +76,19 @@ export class ScoutPlatform implements Platform {
                     this.cachedAccessories.delete(accessory.UUID);
                 } else {
                     this.homebridge.logger.info(`Creating new accessory [${accessory.UUID}].`);
+
+                    newAccessories.push(accessory);
                 }
 
                 accessoryFactory.configureAccessory(accessory);
             }
         }
 
-        this.homebridge.logger.info(`Registering new accessories [${[...this.cachedAccessories.values()].join(", ")}].`);
+        this.homebridge.logger.info(`Registering new accessories [${[...newAccessories.map(accessory => accessory.UUID)].join(", ")}].`);
 
         this.homebridge.api.registerPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, newAccessories);
 
-        this.homebridge.logger.info(`Removing old cached accessories [${[...this.cachedAccessories.values()].join(", ")}].`);
+        this.homebridge.logger.info(`Removing old cached accessories [${[...this.cachedAccessories.keys()].join(", ")}].`);
 
         this.homebridge.api.unregisterPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, [...this.cachedAccessories.values()]);
 
