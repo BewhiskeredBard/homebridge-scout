@@ -1,9 +1,9 @@
-import { Device, AccessSensorState, DoorPanelState, DeviceType, DeviceEvent } from "scout-api";
-import { SensorServiceFactory } from "./sensorServiceFactory";
-import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
-import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
+import { AccessSensorState, Device, DeviceEvent, DeviceType, DoorPanelState } from "scout-api";
+import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { HomebridgeContext, ScoutContext } from "../../context";
 import { AccessoryContext } from "../../accessoryFactory";
+import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
+import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class ContactSensorServiceFactory extends SensorServiceFactory {
     public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {

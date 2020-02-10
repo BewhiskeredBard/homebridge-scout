@@ -1,9 +1,9 @@
+import { ModeState, ModeStateUpdateType } from "scout-api";
 import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor, Service, CharacteristicSetCallback } from "../../types";
-import { HubServiceFactory } from "./hubServiceFactory";
-import { ModeState, ModeStateUpdateType } from "scout-api";
 import { HomebridgeContext, ScoutContext } from "../../context";
 import { AccessoryContext } from "../../accessoryFactory";
+import { HubServiceFactory } from "./hubServiceFactory";
 
 export class SecuritySystemServiceFactory extends HubServiceFactory {
     private static readonly ARMING_MODE_STATES = new Set<ModeState>([ModeState.Arming]);

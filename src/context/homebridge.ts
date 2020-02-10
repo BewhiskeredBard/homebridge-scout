@@ -1,5 +1,5 @@
-import { API, Logger } from "../types";
 import * as Ajv from "ajv";
+import { API, Logger } from "../types";
 
 export enum HomebridgeConfigMode {
     Stay = "stay",

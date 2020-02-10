@@ -1,6 +1,6 @@
+import { Location } from "scout-api";
 import { Platform, PlatformAccessory } from "./types";
 import { AccessoryFactory, TypedPlatformAccessory } from "./accessoryFactory";
-import { Location } from "scout-api";
 import { HomebridgeContext, ScoutContextFactory, ScoutContext } from "./context";
 
 export class ScoutPlatform implements Platform {

@@ -1,9 +1,9 @@
+import { HubType } from "scout-api";
 import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
-import { HubServiceFactory } from "./hubServiceFactory";
-import { HubType } from "scout-api";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { AccessoryContext } from "../../accessoryFactory";
+import { HomebridgeContext, ScoutContext } from "../../context";
+import { HubServiceFactory } from "./hubServiceFactory";
 
 export class BatteryServiceFactory extends HubServiceFactory {
     public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {

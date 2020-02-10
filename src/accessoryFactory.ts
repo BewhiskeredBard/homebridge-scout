@@ -1,5 +1,5 @@
-import { Categories, PlatformAccessory } from "./types";
 import { ConnectionState, ConnectionStateEvent } from "scout-api";
+import { Categories, PlatformAccessory } from "./types";
 import { ServiceFactory } from "./serviceFactory";
 import { HomebridgeContext, ScoutContext } from "./context";
 
