@@ -11,18 +11,6 @@ export class MotionSensorServiceFactory extends SensorServiceFactory {
     }
 
     public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor | undefined {
-        if (DeviceType.MotionSensor !== context.custom.device.type) {
-            return;
-        }
-
-        // Scout's original mesh-based motion sensors do not properly trigger motion events.
-        // See https://github.com/jordanryanmoore/homebridge-scout/issues/51 for more details.
-        if (undefined !== context.custom.device.reported?.mesh_address) {
-            this.homebridge.logger.warn(`Ignoring unsupported motion sensor [${context.custom.device.id}].`);
-
-            return;
-        }
-
         if (undefined !== this.getSensorState(context)) {
             return this.homebridge.api.hap.Service.MotionSensor;
         }

@@ -35,7 +35,21 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
 
         this.homebridge.logger.debug(`Devices: ${JSON.stringify(devices)}`);
 
-        return devices.filter(device => SensorAccessoryFactory.SUPPORTED_DEVICE_TYPES.has(device.type)).map(device => this.createDeviceAccessoryInfo(device));
+        return devices.filter(device => this.isSupportedDevice(device)).map(device => this.createDeviceAccessoryInfo(device));
+    }
+
+    protected isSupportedDevice(device: Device): boolean {
+        if (!SensorAccessoryFactory.SUPPORTED_DEVICE_TYPES.has(device.type)) {
+            return false;
+        }
+
+        // Scout's original mesh-based motion sensors do not properly trigger motion events.
+        // See https://github.com/jordanryanmoore/homebridge-scout/issues/51 for more details.
+        if (DeviceType.MotionSensor === device.type && undefined !== device.reported?.mesh_address) {
+            return false;
+        }
+
+        return true;
     }
 
     protected createDeviceAccessoryInfo(device: Device): AccessoryInfo<SensorAccessoryContext> {
