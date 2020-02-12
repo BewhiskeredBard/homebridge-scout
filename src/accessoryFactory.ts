@@ -1,7 +1,7 @@
 import { ConnectionState, ConnectionStateEvent } from "scout-api";
 import { HomebridgeContext, ScoutContext } from "./context";
 import { ServiceFactory } from "./serviceFactory";
-import { Categories, PlatformAccessory } from "./types";
+import { Categories, PlatformAccessory, Service, ServiceConstructor } from "./types";
 
 export interface AccessoryInfo<T> {
     name: string;
@@ -51,13 +51,11 @@ export abstract class AccessoryFactory<T> {
             const serviceConstructor = serviceFactory.getService(context);
 
             if (serviceConstructor !== undefined) {
-                const service = accessory.getService(serviceConstructor);
+                const service = this.getService(accessory, serviceConstructor);
 
-                if (service !== undefined) {
-                    serviceFactory.configureService(service, context);
+                serviceFactory.configureService(service, context);
 
-                    services.add(service.UUID);
-                }
+                services.add(service.UUID);
             }
         });
 
@@ -117,11 +115,9 @@ export abstract class AccessoryFactory<T> {
             const serviceConstructor = serviceFactory.getService(accessory.context);
 
             if (serviceConstructor !== undefined) {
-                const service = accessory.getService(serviceConstructor);
+                const service = this.getService(accessory, serviceConstructor);
 
-                if (service !== undefined) {
-                    serviceFactory.updateService(service, accessory.context);
-                }
+                serviceFactory.updateService(service, accessory.context);
             }
         });
     }
@@ -137,4 +133,14 @@ export abstract class AccessoryFactory<T> {
     }
 
     protected abstract createAccessoryInfo(locationId: string): Promise<AccessoryInfo<T>[]>;
+
+    private getService(accessory: TypedPlatformAccessory<T>, serviceConstructor: ServiceConstructor): Service {
+        let service = accessory.getService(serviceConstructor);
+
+        if (!service) {
+            service = accessory.addService(serviceConstructor);
+        }
+
+        return service;
+    }
 }
