@@ -56,12 +56,12 @@ describe(`${HomebridgeContextFactory.name}`, () => {
         test("missing config.modes", () => {
             delete config.modes;
 
-            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config should have required property 'modes'");
+            expect(factory.create(api, logger, config).config).toEqual(config);
         });
 
         Object.values(HomebridgeConfigMode).forEach(mode => {
             test(`missing config.modes.${mode}`, () => {
-                delete config.modes[mode];
+                delete config.modes![mode];
 
                 expect(() => factory.create(api, logger, config)).toThrowError(`Configuration error: config.modes should have required property '${mode}'`);
             });

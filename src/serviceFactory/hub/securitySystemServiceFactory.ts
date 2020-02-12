@@ -83,15 +83,15 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
                 break;
             case Characteristic.SecuritySystemTargetState.AWAY_ARM:
                 targetState = ModeStateUpdateType.Arming;
-                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes.away)?.id;
+                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes?.away)?.id;
                 break;
             case Characteristic.SecuritySystemTargetState.NIGHT_ARM:
                 targetState = ModeStateUpdateType.Arming;
-                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes.night)?.id;
+                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes?.night)?.id;
                 break;
             case Characteristic.SecuritySystemTargetState.STAY_ARM:
                 targetState = ModeStateUpdateType.Arming;
-                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes.stay)?.id;
+                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes?.stay)?.id;
                 break;
         }
 
@@ -111,11 +111,11 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
 
         if (mode && SecuritySystemServiceFactory.ACTIVE_MODE_STATES.has(mode.state)) {
             switch (mode.name) {
-                case this.homebridge.config.modes.away:
+                case this.homebridge.config.modes?.away:
                     return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM;
-                case this.homebridge.config.modes.stay:
+                case this.homebridge.config.modes?.stay:
                     return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM;
-                case this.homebridge.config.modes.night:
+                case this.homebridge.config.modes?.night:
                     return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM;
             }
         }
