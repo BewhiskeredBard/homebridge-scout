@@ -29,7 +29,7 @@ export class ScoutPlatform implements Platform {
         const scout = await this.scoutContextFactory.create(this.homebridge);
         const location = await this.getLocation(scout);
 
-        this.registerAccessories(scout, location.id);
+        await this.registerAccessories(scout, location.id);
     }
 
     private async getLocation(scout: ScoutContext): Promise<Location> {
