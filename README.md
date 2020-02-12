@@ -63,7 +63,7 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
       "location": "Home",
       "modes": {
         "stay": "Home",
-        "away": "Away",
+        "away": ["Away", "Vacation"],
         "night": "Night"
       }
     }
