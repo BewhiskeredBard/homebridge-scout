@@ -8,7 +8,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "test": "jest --passWithNoTests",
+    "test": "jest",
     "lint": "eslint . --ext .ts",
     "precompile": "rm -rf lib/*",
     "schema:config": "typescript-json-schema tsconfig.json HomebridgeConfig --noExtraProps --required --strictNullChecks --out schema/config.json",
