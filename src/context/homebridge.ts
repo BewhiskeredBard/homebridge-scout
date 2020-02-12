@@ -14,7 +14,7 @@ export interface HomebridgeConfig {
         password: string;
     };
     location: string;
-    modes: {
+    modes?: {
         [key in HomebridgeConfigMode]: string;
     };
     reverseSensorState?: boolean;

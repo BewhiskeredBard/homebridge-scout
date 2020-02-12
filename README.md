@@ -31,25 +31,25 @@ A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration 
 
 All of the following configuration options are required. If any are missing or invalid, Homebridge will log an error message describing the problem.
 
-* **`platform`:** Must be `ScoutAlarm`.
-* **`auth`:** Your Scout login credentials. Use a member account, not an admin account.
-  * **`email`:** Your Scout email.
-  * **`password`:** Your Scout password. Don't forget to backslash-escape any quotes.
-* **`location`:** The name of your Scout location. It's probably `Home` if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.
-* **`modes`:** These map the HomeKit modes to your Scout mode names. These can also be found in the left-hand menu of the Scout app or dashboard.
-  * **`stay`:** Probably `Home`.
-  * **`away`:** Probably `Away`.
-  * **`night`:** You should add one to your Scout system if you don't have one, but you *can* use the same value you did for `stay` here.
+* **`"platform"`:** Must be `"ScoutAlarm"`.
+* **`"auth"`:** Your Scout login credentials. Use a member account, not an admin account.
+  * **`"email"`:** Your Scout email.
+  * **`"password"`:** Your Scout password. Don't forget to backslash-escape any quotes.
+* **`"location"`:** The name of your Scout location. It's probably `"Home"` if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.
 
 #### Optional
 
 The following configuration options are optional and change the default behavior.
 
-* **`reverseSensorState`:** V1 Scout systems can get into a state where all of the sensor states are reversed. If this option is set to `true`, it reverses the sensor state of access sensors, door panels, and motion sensors reported to HomeKit so they work correctly in this scenario.
+* **`"modes"`:** If present, this option will add your Scout system as a HomeKit security system. It maps the HomeKit modes to your Scout mode names. Your Scout mode names can be found in the Scout app or dashboard.
+  * **`"stay"`:** Probably `"Home"`.
+  * **`"away"`:** Probably `"Away"`.
+  * **`"night"`:** Probably `"Night"`.
+* **`"reverseSensorState"`:** V1 Scout systems can get into a state where all of the sensor states are reversed. If this option is set to `true`, it reverses the sensor state of access sensors, door panels, and motion sensors reported to HomeKit so they work correctly in this scenario.
 
 ### Example
 
-Update the `platforms` section of your `~/.homebridge/config.json`:
+Update the `"platforms"` section of your `~/.homebridge/config.json`:
 
 ```json
 {

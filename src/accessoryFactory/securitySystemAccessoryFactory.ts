@@ -38,6 +38,10 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
     }
 
     protected async createAccessoryInfo(locationId: string): Promise<AccessoryInfo<SecuritySystemContext>[]> {
+        if (!this.homebridge.config.modes) {
+            return [];
+        }
+
         const hub = (await this.scout.api.getHub(locationId)).data;
         const modes = (await this.scout.api.getModes(locationId)).data;
 
