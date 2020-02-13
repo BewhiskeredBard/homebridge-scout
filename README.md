@@ -32,19 +32,27 @@ A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration 
 All of the following configuration options are required. If any are missing or invalid, Homebridge will log an error message describing the problem.
 
 * **`"platform"`:** Must be `"ScoutAlarm"`.
+
 * **`"auth"`:** Your Scout login credentials. Use a member account, not an admin account.
+
   * **`"email"`:** Your Scout email.
-  * **`"password"`:** Your Scout password. Don't forget to backslash-escape any quotes.
+
+  * **`"password"`:** Your Scout password. Don't forget to backslash-escape any double-quotes (e.g. `pwd"23` should be `"pwd\"123"`).
+
 * **`"location"`:** The name of your Scout location. It's probably `"Home"` if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.
 
 #### Optional
 
 The following configuration options are optional and change the default behavior.
 
-* **`"modes"`:** If present, this option will add your Scout system as a HomeKit security system. It maps the HomeKit modes to your Scout mode names. Your Scout mode names can be found in the Scout app or dashboard.
-  * **`"stay"`:** Probably `"Home"`.
-  * **`"away"`:** Probably `"Away"`.
-  * **`"night"`:** Probably `"Night"`.
+* **`"modes"`:** If present, this option will add your Scout system as a HomeKit security system. It maps the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit mode must be mapped to one (or more†) Scout mode(s) (e.g., `"Mode A"` or `["Mode A", "Mode B"]`).
+
+  * **`"stay"`:** Possibly `"Home"`.
+  * **`"away"`:** Possibly `"Away"`.
+  * **`"night"`:** Possibly `"Night"`.
+
+  *† There are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (**Home**, **Away**, **Vacation**, and **Night**) and have mapped the **Away** HomeKit mode to your **Away** and **Vacation** Scout modes. If you arm either the **Away** or **Vacation** Scout modes from the Scout app, HomeKit will report the mode as **Away** with no way to differentiate between the two. Additionally, if you arm the **Away** HomeKit mode via HomeKit, **the plug-in will arm whichever Scout mode is listed first**. There would be no way to arm your **Vacation** mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.*
+
 * **`"reverseSensorState"`:** V1 Scout systems can get into a state where all of the sensor states are reversed. If this option is set to `true`, it reverses the sensor state of access sensors, door panels, and motion sensors reported to HomeKit so they work correctly in this scenario.
 
 ### Example
@@ -75,17 +83,17 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
 
 | Scout Device       | HomeKit Services                                                     |
 |--------------------|----------------------------------------------------------------------|
-| Hub                | SecuritySystem<br>BatteryService<br>TemperatureSensor²               |
-| Door Panel         | ContactSensor<br>HumiditySensor²<br>TemperatureSensor²               |
-| Access Sensor      | ContactSensor<br>TemperatureSensor²                                  |
-| Motion Sensor²     | MotionSensor<br>TemperatureSensor                                    |
+| Hub                | SecuritySystem<br>BatteryService<br>TemperatureSensor‡               |
+| Door Panel         | ContactSensor<br>HumiditySensor‡<br>TemperatureSensor‡               |
+| Access Sensor      | ContactSensor<br>TemperatureSensor‡                                  |
+| Motion Sensor‡     | MotionSensor<br>TemperatureSensor                                    |
 | Water Sensor       | LeakSensor<br>TemperatureSensor                                      |
 | Smoke Alarm        | SmokeSensor                                                          |
 | Glass Break Sensor | [#27](https://github.com/jordanryanmoore/homebridge-scout/issues/27) |
 | Video Doorbell     | [#18](https://github.com/jordanryanmoore/homebridge-scout/issues/18) |
 | Indoor Camera      | [#17](https://github.com/jordanryanmoore/homebridge-scout/issues/17) |
 
-*² Only supported for V2 devices. V1 devices do not have humidity or temperature sensors. V1 motion sensors do not properly trigger motion events.*
+*‡ Not supported by Scout's original mesh-based hardware. These devices do not have humidity or temperature sensors, and the motion sensors do not properly trigger motion events.*
 
 ## Credits
 
