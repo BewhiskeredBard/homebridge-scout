@@ -15,7 +15,7 @@ export interface HomebridgeConfig {
     };
     location: string;
     modes?: {
-        [key in HomebridgeConfigMode]: string;
+        [key in HomebridgeConfigMode]: string | string[];
     };
     reverseSensorState?: boolean;
 }

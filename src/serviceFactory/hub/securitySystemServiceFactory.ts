@@ -1,7 +1,7 @@
-import { ModeState, ModeStateUpdateType } from "scout-api";
+import { ModeState, ModeStateUpdateType, Mode } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../context";
+import { HomebridgeContext, ScoutContext, HomebridgeConfigMode } from "../../context";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor, Service, CharacteristicSetCallback } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 
@@ -19,7 +19,25 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         super(homebridge, scout);
     }
 
-    public getService(): ServiceConstructor | undefined {
+    public getService(context: AccessoryContext<SecuritySystemContext>): ServiceConstructor | undefined {
+        if (!this.homebridge.config.modes || 0 === Object.values(this.homebridge.config.modes).length) {
+            return;
+        }
+
+        // Validate that each Scout mode has a mapping to a HAP mode…
+        context.custom.modes.forEach(mode => this.getTargetState(mode));
+
+        // Validate that each HAP mode's Scout mode name(s) exist(s).
+        Object.values(HomebridgeConfigMode).forEach(key => {
+            const modeNames = this.getModeNames(key);
+
+            modeNames.forEach(modeName => {
+                if (!this.findModeByName(context, modeName)) {
+                    throw new Error(`Could not find a Scout mode named ${modeName}.`);
+                }
+            });
+        });
+
         return this.homebridge.api.hap.Service.SecuritySystem;
     }
 
@@ -29,7 +47,7 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         super.configureService(service, context);
 
         service.getCharacteristic(Characteristic.SecuritySystemTargetState).on("set", (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-            this.setTargetState(context, value)
+            this.setTargetState(service, context, value)
                 .then(() => callback())
                 .catch(callback);
         });
@@ -39,25 +57,17 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         const Characteristic = this.homebridge.api.hap.Characteristic;
         const characteristics = super.getCharacteristics(context);
 
-        let currentState: number;
-        let targetState: number;
+        const activeMode = this.getActiveMode(context);
+        let currentState = this.homebridge.api.hap.Characteristic.SecuritySystemCurrentState.DISARMED;
+        let targetState = this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM;
 
-        const alarmedModeId = this.getModeIdForStateSet(SecuritySystemServiceFactory.ALARMING_MODE_STATES, context);
+        if (activeMode) {
+            targetState = this.getTargetState(activeMode);
 
-        if (alarmedModeId) {
-            currentState = Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED;
-            targetState = this.getTargetState(context, alarmedModeId);
-        } else {
-            const armedModeId = this.getModeIdForStateSet(SecuritySystemServiceFactory.ARMED_MODE_STATES, context);
-
-            if (armedModeId) {
-                currentState = this.getTargetState(context, armedModeId);
-                targetState = currentState;
-            } else {
-                const armingModeId = this.getModeIdForStateSet(SecuritySystemServiceFactory.ARMING_MODE_STATES, context);
-
-                currentState = Characteristic.SecuritySystemCurrentState.DISARMED;
-                targetState = armingModeId ? this.getTargetState(context, armingModeId) : currentState;
+            if (SecuritySystemServiceFactory.ALARMING_MODE_STATES.has(activeMode.state)) {
+                currentState = this.homebridge.api.hap.Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED;
+            } else if (SecuritySystemServiceFactory.ARMED_MODE_STATES.has(activeMode.state)) {
+                currentState = targetState;
             }
         }
 
@@ -67,59 +77,91 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         return characteristics;
     }
 
-    private async setTargetState(context: AccessoryContext<SecuritySystemContext>, value: CharacteristicValue): Promise<void> {
-        const Characteristic = this.homebridge.api.hap.Characteristic;
+    private async setTargetState(service: Service, context: AccessoryContext<SecuritySystemContext>, state: CharacteristicValue): Promise<void> {
+        const SecuritySystemTargetState = this.homebridge.api.hap.Characteristic.SecuritySystemTargetState;
 
-        const modes = context.custom.modes;
-        let targetModeId: string | undefined;
-        let targetState: ModeStateUpdateType | undefined;
+        let configKey: HomebridgeConfigMode | undefined;
 
-        switch (value) {
-            case Characteristic.SecuritySystemTargetState.DISARM:
-                targetState = ModeStateUpdateType.Disarm;
-                targetModeId = modes.find(mode => {
-                    return SecuritySystemServiceFactory.ACTIVE_MODE_STATES.has(mode.state);
-                })?.id;
+        switch (state) {
+            case SecuritySystemTargetState.AWAY_ARM:
+                configKey = HomebridgeConfigMode.Away;
                 break;
-            case Characteristic.SecuritySystemTargetState.AWAY_ARM:
-                targetState = ModeStateUpdateType.Arming;
-                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes?.away)?.id;
+            case SecuritySystemTargetState.NIGHT_ARM:
+                configKey = HomebridgeConfigMode.Night;
                 break;
-            case Characteristic.SecuritySystemTargetState.NIGHT_ARM:
-                targetState = ModeStateUpdateType.Arming;
-                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes?.night)?.id;
-                break;
-            case Characteristic.SecuritySystemTargetState.STAY_ARM:
-                targetState = ModeStateUpdateType.Arming;
-                targetModeId = modes.find(mode => mode.name === this.homebridge.config.modes?.stay)?.id;
+            case SecuritySystemTargetState.STAY_ARM:
+                configKey = HomebridgeConfigMode.Stay;
                 break;
         }
 
-        if (targetModeId && targetState) {
-            await this.scout.api.toggleRecipe(targetModeId, {
-                state: targetState,
+        let targetMode: Mode | undefined;
+        let stateUpdate: ModeStateUpdateType | undefined;
+
+        if (configKey) {
+            const modeName = this.getModeNames(configKey)[0];
+
+            if (undefined !== modeName) {
+                targetMode = this.findModeByName(context, modeName);
+                stateUpdate = ModeStateUpdateType.Arming;
+            }
+        }
+
+        if (!targetMode) {
+            targetMode = this.getActiveMode(context);
+            stateUpdate = ModeStateUpdateType.Disarm;
+        }
+
+        if (targetMode && stateUpdate) {
+            await this.scout.api.toggleRecipe(targetMode.id, {
+                state: stateUpdate,
             });
         }
     }
 
-    private getModeIdForStateSet(modeStates: Set<ModeState>, context: AccessoryContext<SecuritySystemContext>): string | undefined {
-        return context.custom.modes.find(mode => modeStates.has(mode.state))?.id;
-    }
+    private getTargetState(mode: Mode): number {
+        for (const key of Object.values(HomebridgeConfigMode)) {
+            const modeNames = new Set(this.getModeNames(key));
 
-    private getTargetState(context: AccessoryContext<SecuritySystemContext>, modeId: string): number {
-        const mode = context.custom.modes.find(mode => mode.id === modeId);
-
-        if (mode && SecuritySystemServiceFactory.ACTIVE_MODE_STATES.has(mode.state)) {
-            switch (mode.name) {
-                case this.homebridge.config.modes?.away:
-                    return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM;
-                case this.homebridge.config.modes?.stay:
-                    return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM;
-                case this.homebridge.config.modes?.night:
-                    return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM;
+            if (modeNames.has(mode.name)) {
+                switch (key) {
+                    case HomebridgeConfigMode.Away:
+                        return this.homebridge.api.hap.Characteristic.SecuritySystemCurrentState.AWAY_ARM;
+                    case HomebridgeConfigMode.Night:
+                        return this.homebridge.api.hap.Characteristic.SecuritySystemCurrentState.NIGHT_ARM;
+                    case HomebridgeConfigMode.Stay:
+                        return this.homebridge.api.hap.Characteristic.SecuritySystemCurrentState.STAY_ARM;
+                }
             }
         }
 
-        return this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM;
+        throw new Error(`No configuration for Scout mode named "${mode.name}".`);
+    }
+
+    private findModeByName(context: AccessoryContext<SecuritySystemContext>, modeName: string): Mode | undefined {
+        return context.custom.modes.find(mode => mode.name === modeName);
+    }
+
+    private getActiveMode(context: AccessoryContext<SecuritySystemContext>): Mode | undefined {
+        return context.custom.modes.find(mode => SecuritySystemServiceFactory.ACTIVE_MODE_STATES.has(mode.state));
+    }
+
+    private getModeNames(mode: HomebridgeConfigMode): string[] {
+        const modes = this.homebridge.config.modes;
+
+        if (!modes) {
+            return [];
+        }
+
+        const modeNames = modes[mode];
+
+        if (Array.isArray(modeNames)) {
+            return modeNames.slice();
+        }
+
+        if (undefined === modeNames) {
+            return [];
+        }
+
+        return [modeNames];
     }
 }
