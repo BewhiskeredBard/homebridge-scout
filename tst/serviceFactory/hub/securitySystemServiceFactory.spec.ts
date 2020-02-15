@@ -1,10 +1,10 @@
+import { Mode } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SecuritySystemContext } from "../../../src/accessoryFactory/securitySystemAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
 import { SecuritySystemServiceFactory } from "../../../src/serviceFactory/hub/securitySystemServiceFactory";
 import { Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
 import * as mocks from "../../mocks";
-import { Mode } from "scout-api";
 
 describe(`${SecuritySystemServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
