@@ -8,11 +8,14 @@ export function mockHomebridgeContext(): HomebridgeContext {
                 Characteristic: {
                     LeakDetected: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
                     CurrentTemperature: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
+                    MotionDetected: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
                     StatusFault: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
                     StatusLowBattery: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
                 },
                 Service: {
+                    HumiditySensor: (jest.fn() as unknown) as ServiceConstructor,
                     LeakSensor: (jest.fn() as unknown) as ServiceConstructor,
+                    MotionSensor: (jest.fn() as unknown) as ServiceConstructor,
                     TemperatureSensor: (jest.fn() as unknown) as ServiceConstructor,
                 },
             },
