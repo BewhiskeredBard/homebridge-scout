@@ -6,6 +6,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
         api: {
             hap: {
                 Characteristic: {
+                    ContactSensorState: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
                     LeakDetected: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
                     CurrentTemperature: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
                     MotionDetected: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
@@ -13,6 +14,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
                     StatusLowBattery: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
                 },
                 Service: {
+                    ContactSensor: (jest.fn() as unknown) as ServiceConstructor,
                     HumiditySensor: (jest.fn() as unknown) as ServiceConstructor,
                     LeakSensor: (jest.fn() as unknown) as ServiceConstructor,
                     MotionSensor: (jest.fn() as unknown) as ServiceConstructor,
@@ -20,7 +22,11 @@ export function mockHomebridgeContext(): HomebridgeContext {
                 },
             },
         },
+        config: {},
     } as HomebridgeContext;
+
+    homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_DETECTED = 123;
+    homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED = 234;
 
     homebridge.api.hap.Characteristic.LeakDetected.LEAK_DETECTED = 123;
     homebridge.api.hap.Characteristic.LeakDetected.LEAK_NOT_DETECTED = 234;
