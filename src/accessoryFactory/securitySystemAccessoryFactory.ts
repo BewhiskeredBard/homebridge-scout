@@ -1,7 +1,5 @@
 import { Hub, HubChirpType, ModeEvent, Mode } from "scout-api";
 import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory, AccessoryContext } from "../accessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../context";
-import { ServiceFactory } from "../serviceFactory";
 import { Categories } from "../types";
 
 export interface SecuritySystemContext {
@@ -15,10 +13,6 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
 
     private readonly accessories = new Map<string, TypedPlatformAccessory<SecuritySystemContext>>();
     private readonly locationHubs = new Map<string, string>();
-
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext, serviceFactories: ServiceFactory<SecuritySystemContext>[]) {
-        super(homebridge, scout, serviceFactories);
-    }
 
     public configureAccessory(accessory: TypedPlatformAccessory<SecuritySystemContext>): void {
         super.configureAccessory(accessory);
@@ -73,7 +67,7 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
             this.onHubEvent(event);
         });
 
-        this.scout.listener.addModeListener(locationId, (event, locationId) => {
+        this.scout.listener.addModeListener(locationId, event => {
             this.onModeEvent(event, locationId);
         });
     }

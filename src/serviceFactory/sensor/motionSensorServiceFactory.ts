@@ -1,15 +1,10 @@
 import { Device, DeviceType, MotionSensorState } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class MotionSensorServiceFactory extends SensorServiceFactory {
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {
-        super(homebridge, scout);
-    }
-
     public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor | undefined {
         if (undefined !== this.getSensorState(context)) {
             return this.homebridge.api.hap.Service.MotionSensor;

@@ -1,15 +1,10 @@
 import { HubType } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 
 export class BatteryServiceFactory extends HubServiceFactory {
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {
-        super(homebridge, scout);
-    }
-
     public getService(context: AccessoryContext<SecuritySystemContext>): ServiceConstructor | undefined {
         if (undefined !== this.getBatteryLevel(context)) {
             return this.homebridge.api.hap.Service.BatteryService;
@@ -46,12 +41,12 @@ export class BatteryServiceFactory extends HubServiceFactory {
         let batteryLevel = undefined;
 
         if (undefined !== battery) {
-            if (HubType.Scout1 == hub.type) {
+            if (HubType.Scout1 === hub.type) {
                 // The v1 hub appears to report an unsigned byte value. When plugged in, the value is 255.
                 const MAX_BATTERY_LEVEL = 255;
                 batteryLevel = Math.min(battery.level, MAX_BATTERY_LEVEL);
                 batteryLevel = Math.round((batteryLevel / MAX_BATTERY_LEVEL) * 100);
-            } else if (HubType.Scout1S == hub.type) {
+            } else if (HubType.Scout1S === hub.type) {
                 // The v2 hub appears to report a direct voltage reading. When plugged in, the value is 5.0,
                 // which is the voltage of the power adapter"s output. The value drops to just above 4.0
                 // once it"s on battery power. The logic below is an extremely poor approximation.

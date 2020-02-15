@@ -1,14 +1,9 @@
 import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class HumiditySensorServiceFactory extends SensorServiceFactory {
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {
-        super(homebridge, scout);
-    }
-
     public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor | undefined {
         if (undefined !== this.getHumidity(context)) {
             return this.homebridge.api.hap.Service.HumiditySensor;

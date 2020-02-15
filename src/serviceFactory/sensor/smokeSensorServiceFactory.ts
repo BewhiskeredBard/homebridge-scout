@@ -1,15 +1,10 @@
 import { Device, DeviceType, SmokeAlarmState, SmokeState } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class SmokeSensorServiceFactory extends SensorServiceFactory {
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {
-        super(homebridge, scout);
-    }
-
     public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor | undefined {
         if (undefined !== this.getSensorState(context)) {
             return this.homebridge.api.hap.Service.SmokeSensor;

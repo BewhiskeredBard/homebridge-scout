@@ -81,13 +81,14 @@ export abstract class AccessoryFactory<T> {
     }
 
     protected createAccessory(locationId: string, accessoryInfo: AccessoryInfo<T>): TypedPlatformAccessory<T> {
-        const PlatformAccessory = this.homebridge.api.platformAccessory;
         const Characteristic = this.homebridge.api.hap.Characteristic;
-        const Service = this.homebridge.api.hap.Service;
+        const AccessoryInformation = this.homebridge.api.hap.Service.AccessoryInformation;
 
-        const uuid = this.homebridge.api.hap.uuid.generate(accessoryInfo.id);
-        const accessory = new PlatformAccessory(accessoryInfo.name, uuid, accessoryInfo.category) as TypedPlatformAccessory<T>;
-        const accessoryInfoService = accessory.getService(Service.AccessoryInformation);
+        const generateId = this.homebridge.api.hap.uuid.generate;
+        const uuid = generateId(accessoryInfo.id);
+        const platformAccessory = this.homebridge.api.platformAccessory;
+        const accessory = new platformAccessory(accessoryInfo.name, uuid, accessoryInfo.category) as TypedPlatformAccessory<T>;
+        const accessoryInfoService = accessory.getService(AccessoryInformation);
 
         if (accessoryInfoService) {
             accessoryInfoService
@@ -132,8 +133,6 @@ export abstract class AccessoryFactory<T> {
         });
     }
 
-    protected abstract createAccessoryInfo(locationId: string): Promise<AccessoryInfo<T>[]>;
-
     private getService(accessory: TypedPlatformAccessory<T>, serviceConstructor: ServiceConstructor): Service {
         let service = accessory.getService(serviceConstructor);
 
@@ -143,4 +142,6 @@ export abstract class AccessoryFactory<T> {
 
         return service;
     }
+
+    protected abstract createAccessoryInfo(locationId: string): Promise<AccessoryInfo<T>[]>;
 }

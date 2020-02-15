@@ -37,10 +37,9 @@ export class HomebridgeContextFactory {
 
     public create(api: API, logger: Logger, config: unknown): HomebridgeContext {
         const ajv = new Ajv();
+        const isValid = ajv.validate(this.schema, config) as boolean;
 
-        ajv.validate(this.schema, config);
-
-        if (ajv.errors && 0 < ajv.errors.length) {
+        if (!isValid && ajv.errors && 0 < ajv.errors.length) {
             const error = ajv.errors[0];
             const message = `Configuration error: config${error.dataPath} ${error.message}`;
 

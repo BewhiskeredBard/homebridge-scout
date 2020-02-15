@@ -1,8 +1,6 @@
 import { Device, DeviceType, DeviceEventType, DeviceTriggerEvent, DevicePairEvent } from "scout-api";
 import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory } from "../accessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../context";
 import { ScoutPlatform } from "../scoutPlatform";
-import { ServiceFactory } from "../serviceFactory";
 import { Categories } from "../types";
 
 export interface SensorAccessoryContext {
@@ -19,10 +17,6 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
     ]);
 
     private readonly accessories = new Map<string, TypedPlatformAccessory<SensorAccessoryContext>>();
-
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext, serviceFactories: ServiceFactory<SensorAccessoryContext>[]) {
-        super(homebridge, scout, serviceFactories);
-    }
 
     public configureAccessory(accessory: TypedPlatformAccessory<SensorAccessoryContext>): void {
         super.configureAccessory(accessory);

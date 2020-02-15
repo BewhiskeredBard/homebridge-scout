@@ -1,55 +1,49 @@
 import { AccessSensorState, Device, DeviceEvent, DeviceType, DoorPanelState } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class ContactSensorServiceFactory extends SensorServiceFactory {
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {
-        super(homebridge, scout);
-    }
-
     public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor | undefined {
-        if (undefined !== this.getSensorState(context)) {
+        if (undefined !== this.isContactDetected(context)) {
             return this.homebridge.api.hap.Service.ContactSensor;
         }
     }
 
     protected getCharacteristics(context: AccessoryContext<SensorAccessoryContext>): Map<CharacteristicConstructor<unknown>, CharacteristicValue> {
         const characteristics = super.getCharacteristics(context);
-        const state = this.getSensorState(context);
 
-        if (state !== undefined) {
-            characteristics.set(this.homebridge.api.hap.Characteristic.ContactSensorState, state);
-        }
+        this.withContactSensorState(characteristics, context);
 
         return characteristics;
     }
 
-    private getSensorState(context: AccessoryContext<SensorAccessoryContext>): number | undefined {
+    private withContactSensorState(
+        characteristics: Map<CharacteristicConstructor<unknown>, CharacteristicValue>,
+        context: AccessoryContext<SensorAccessoryContext>,
+    ): void {
         const ContactSensorState = this.homebridge.api.hap.Characteristic.ContactSensorState;
 
-        const device = context.custom.device;
-        let isContactDetected: boolean | undefined;
-
-        switch (this.getDeviceState(device)) {
-            case AccessSensorState.Open:
-            case DoorPanelState.Open:
-                isContactDetected = false;
-                break;
-            case AccessSensorState.Close:
-            case DoorPanelState.Close:
-                isContactDetected = true;
-                break;
-        }
+        let isContactDetected = this.isContactDetected(context);
 
         if (isContactDetected !== undefined) {
-            if (this.shouldReverseSensorState(device)) {
+            if (this.shouldReverseSensorState(context)) {
                 isContactDetected = !isContactDetected;
             }
 
-            return isContactDetected ? ContactSensorState.CONTACT_DETECTED : ContactSensorState.CONTACT_NOT_DETECTED;
+            characteristics.set(ContactSensorState, isContactDetected ? ContactSensorState.CONTACT_DETECTED : ContactSensorState.CONTACT_NOT_DETECTED);
+        }
+    }
+
+    private isContactDetected(context: AccessoryContext<SensorAccessoryContext>): boolean | undefined {
+        switch (this.getDeviceState(context.custom.device)) {
+            case AccessSensorState.Open:
+            case DoorPanelState.Open:
+                return false;
+            case AccessSensorState.Close:
+            case DoorPanelState.Close:
+                return true;
         }
     }
 
@@ -70,8 +64,8 @@ export class ContactSensorServiceFactory extends SensorServiceFactory {
      * AND
      * 2) The current context data is from a DeviceEvent, not the original Device data.
      */
-    private shouldReverseSensorState(device: Device): boolean {
-        return true === this.homebridge.config.reverseSensorState && this.isDeviceEvent(device);
+    private shouldReverseSensorState(context: AccessoryContext<SensorAccessoryContext>): boolean {
+        return true === this.homebridge.config.reverseSensorState && this.isDeviceEvent(context.custom.device);
     }
 
     private isDeviceEvent(device: Device | DeviceEvent): device is DeviceEvent {

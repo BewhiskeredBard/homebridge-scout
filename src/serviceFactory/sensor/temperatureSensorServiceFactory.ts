@@ -1,15 +1,10 @@
 import { DeviceType } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class TemperatureSensorServiceFactory extends SensorServiceFactory {
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {
-        super(homebridge, scout);
-    }
-
     public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor | undefined {
         if (this.getTemperature(context) !== undefined) {
             return this.homebridge.api.hap.Service.TemperatureSensor;

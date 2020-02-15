@@ -61,11 +61,11 @@ export declare interface Platform {
 }
 
 export declare class Logger {
-    static withPrefix(prefix: string): Logger;
+    public static withPrefix(prefix: string): Logger;
 
-    debug(msg: string): void;
-    info(msg: string): void;
-    warn(msg: string): void;
-    error(msg: string): void;
-    log(level: string, msg: string): void;
+    public debug(msg: string): void;
+    public info(msg: string): void;
+    public warn(msg: string): void;
+    public error(msg: string): void;
+    public log(level: string, msg: string): void;
 }

@@ -1,14 +1,9 @@
 import { AccessoryContext } from "../../accessoryFactory";
 import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../context";
 import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 
 export class TemperatureServiceFactory extends HubServiceFactory {
-    public constructor(homebridge: HomebridgeContext, scout: ScoutContext) {
-        super(homebridge, scout);
-    }
-
     public getService(context: AccessoryContext<SecuritySystemContext>): ServiceConstructor | undefined {
         if (undefined !== this.getTemperature(context)) {
             return this.homebridge.api.hap.Service.TemperatureSensor;

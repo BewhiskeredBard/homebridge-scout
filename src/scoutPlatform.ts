@@ -43,19 +43,19 @@ export class ScoutPlatform implements Platform {
             locations.map(location => location.admin_ids),
         );
 
-        if (adminIds.find(adminId => adminId == memberId)) {
+        if (adminIds.find(adminId => adminId === memberId)) {
             this.homebridge.logger.warn(`The authenticated member [${memberId}] is an admin. It is highly recommended to use a non-admin member.`);
         }
 
-        const location = locations.find(location => location.name == this.homebridge.config.location);
+        const matchingLocation = locations.find(location => location.name === this.homebridge.config.location);
 
-        if (!location) {
+        if (!matchingLocation) {
             throw new Error(`No location found for "${this.homebridge.config.location}".`);
         }
 
-        this.homebridge.logger.info(`Using "${this.homebridge.config.location}" location [${location.id}].`);
+        this.homebridge.logger.info(`Using "${this.homebridge.config.location}" location [${matchingLocation.id}].`);
 
-        return location;
+        return matchingLocation;
     }
 
     private async registerAccessories(scout: ScoutContext, locationId: string): Promise<void> {
