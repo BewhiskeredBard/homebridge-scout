@@ -15,8 +15,9 @@
     ],
     "coverageThreshold": {
         "global": {
-            "lines": 15,
-            "statements": 15
+            "branches": 50,
+            "lines": 60,
+            "statements": 60
         }
     },
     "verbose": true
