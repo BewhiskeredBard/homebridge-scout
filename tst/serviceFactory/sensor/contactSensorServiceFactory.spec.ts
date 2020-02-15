@@ -1,4 +1,4 @@
-import { DeviceType, AccessSensorState, DoorPanelState } from "scout-api";
+import { DeviceType, AccessSensorState, DoorPanelState, DeviceEventType, DeviceTriggerEvent } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
@@ -142,8 +142,53 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
             );
         });
 
-        test.todo("non-event reversed state");
+        describe("with reverseSensorState", () => {
+            beforeEach(() => {
+                homebridge.config.reverseSensorState = true;
+                context.custom.device.type = DeviceType.AccessSensor;
+            });
 
-        test.todo("event reversed state");
+            test("initial state close", () => {
+                context.custom.device.reported!.trigger!.state = AccessSensorState.Close;
+
+                serviceFactory.configureService(service, context);
+
+                expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.ContactSensorState)).toStrictEqual(
+                    homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_DETECTED,
+                );
+            });
+
+            test("initial state open", () => {
+                context.custom.device.reported!.trigger!.state = AccessSensorState.Open;
+
+                serviceFactory.configureService(service, context);
+
+                expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.ContactSensorState)).toStrictEqual(
+                    homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED,
+                );
+            });
+
+            test("event state close", () => {
+                (context.custom.device as DeviceTriggerEvent).event = DeviceEventType.Triggered;
+                context.custom.device.reported!.trigger!.state = AccessSensorState.Close;
+
+                serviceFactory.configureService(service, context);
+
+                expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.ContactSensorState)).toStrictEqual(
+                    homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED,
+                );
+            });
+
+            test("event state open", () => {
+                (context.custom.device as DeviceTriggerEvent).event = DeviceEventType.Triggered;
+                context.custom.device.reported!.trigger!.state = AccessSensorState.Open;
+
+                serviceFactory.configureService(service, context);
+
+                expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.ContactSensorState)).toStrictEqual(
+                    homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_DETECTED,
+                );
+            });
+        });
     });
 });
