@@ -1,4 +1,4 @@
-import { Mode } from "scout-api";
+import { ModeState } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SecuritySystemContext } from "../../../src/accessoryFactory/securitySystemAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
@@ -28,18 +28,22 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                     {
                         id: "mode0",
                         name: "name0",
+                        state: ModeState.Disarmed,
                     },
                     {
                         id: "mode1",
                         name: "name1",
+                        state: ModeState.Disarmed,
                     },
                     {
                         id: "mode2",
                         name: "name2",
+                        state: ModeState.Disarmed,
                     },
                     {
                         id: "mode3",
                         name: "name3",
+                        state: ModeState.Disarmed,
                     },
                 ],
             },
@@ -90,8 +94,77 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                     updateValue: jest.fn().mockImplementation((value: CharacteristicValue) => {
                         updatedCharacteristics.set(type, value);
                     }) as unknown,
+                    on: jest.fn() as unknown,
                 } as Characteristic;
             });
+        });
+
+        test("disarmed", () => {
+            serviceFactory.configureService(service, context);
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemCurrentState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemCurrentState.DISARMED,
+            );
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM,
+            );
+        });
+
+        test("arming", () => {
+            context.custom.modes[0].state = ModeState.Arming;
+
+            serviceFactory.configureService(service, context);
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemCurrentState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemCurrentState.DISARMED,
+            );
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM,
+            );
+        });
+
+        test("armed", () => {
+            context.custom.modes[1].state = ModeState.Armed;
+
+            serviceFactory.configureService(service, context);
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemCurrentState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemCurrentState.NIGHT_ARM,
+            );
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM,
+            );
+        });
+
+        test("triggered", () => {
+            context.custom.modes[0].state = ModeState.Triggered;
+
+            serviceFactory.configureService(service, context);
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemCurrentState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemCurrentState.AWAY_ARM,
+            );
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM,
+            );
+        });
+
+        test("alarmed", () => {
+            context.custom.modes[0].state = ModeState.Alarmed;
+
+            serviceFactory.configureService(service, context);
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemCurrentState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED,
+            );
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM,
+            );
         });
 
         test.todo("so many use cases…");

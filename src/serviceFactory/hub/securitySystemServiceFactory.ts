@@ -65,7 +65,7 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
             if (SecuritySystemServiceFactory.ALARMING_MODE_STATES.has(activeMode.state)) {
                 currentState = SecuritySystemCurrentState.ALARM_TRIGGERED;
             } else if (SecuritySystemServiceFactory.ARMED_MODE_STATES.has(activeMode.state)) {
-                currentState = targetState;
+                currentState = this.getCurrentState(activeMode);
             }
         }
 
@@ -98,20 +98,45 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         }
     }
 
-    private getTargetState(mode: Mode): number {
+    private getCurrentState(mode: Mode): number {
         const SecuritySystemCurrentState = this.homebridge.api.hap.Characteristic.SecuritySystemCurrentState;
 
+        return this.getState(mode, config => {
+            switch (config) {
+                case HomebridgeConfigMode.Away:
+                    return SecuritySystemCurrentState.AWAY_ARM;
+                case HomebridgeConfigMode.Night:
+                    return SecuritySystemCurrentState.NIGHT_ARM;
+                case HomebridgeConfigMode.Stay:
+                    return SecuritySystemCurrentState.STAY_ARM;
+            }
+        });
+    }
+
+    private getTargetState(mode: Mode): number {
+        const SecuritySystemTargetState = this.homebridge.api.hap.Characteristic.SecuritySystemTargetState;
+
+        return this.getState(mode, config => {
+            switch (config) {
+                case HomebridgeConfigMode.Away:
+                    return SecuritySystemTargetState.AWAY_ARM;
+                case HomebridgeConfigMode.Night:
+                    return SecuritySystemTargetState.NIGHT_ARM;
+                case HomebridgeConfigMode.Stay:
+                    return SecuritySystemTargetState.STAY_ARM;
+            }
+        });
+    }
+
+    private getState(mode: Mode, mapper: (key: HomebridgeConfigMode) => number | undefined): number {
         for (const key of Object.values(HomebridgeConfigMode)) {
             const modeNames = new Set(this.getModeNames(key));
 
             if (modeNames.has(mode.name)) {
-                switch (key) {
-                    case HomebridgeConfigMode.Away:
-                        return SecuritySystemCurrentState.AWAY_ARM;
-                    case HomebridgeConfigMode.Night:
-                        return SecuritySystemCurrentState.NIGHT_ARM;
-                    case HomebridgeConfigMode.Stay:
-                        return SecuritySystemCurrentState.STAY_ARM;
+                const state = mapper(key);
+
+                if (undefined !== state) {
+                    return state;
                 }
             }
         }

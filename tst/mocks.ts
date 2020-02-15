@@ -43,16 +43,16 @@ export function mockHomebridgeContext(): HomebridgeContext {
     homebridge.api.hap.Characteristic.LeakDetected.LEAK_DETECTED = 123;
     homebridge.api.hap.Characteristic.LeakDetected.LEAK_NOT_DETECTED = 234;
 
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED = 123;
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.AWAY_ARM = 234;
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.DISARMED = 345;
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.NIGHT_ARM = 456;
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.STAY_ARM = 567;
+    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED = 12;
+    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.AWAY_ARM = 23;
+    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.DISARMED = 34;
+    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.NIGHT_ARM = 45;
+    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.STAY_ARM = 56;
 
-    homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM = 123;
-    homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM = 234;
-    homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM = 345;
-    homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM = 456;
+    homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM = 21;
+    homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM = 32;
+    homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM = 43;
+    homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM = 54;
 
     homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_DETECTED = 123;
     homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_NOT_DETECTED = 234;
