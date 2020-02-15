@@ -27,16 +27,16 @@ export class SmokeSensorServiceFactory extends SensorServiceFactory {
 
         switch (this.getDeviceState(context.custom.device)) {
             case SmokeState.Ok:
-            case SmokeState.Testing:
                 return SmokeDetected.SMOKE_NOT_DETECTED;
             case SmokeState.Emergency:
+            case SmokeState.Testing:
                 return SmokeDetected.SMOKE_DETECTED;
         }
     }
 
     private getDeviceState(device: Device): SmokeState | undefined {
         if (device.type === DeviceType.SmokeAlarm) {
-            return (device?.reported?.trigger?.state as SmokeAlarmState).smoke;
+            return (device?.reported?.trigger?.state as SmokeAlarmState)?.smoke;
         }
     }
 }
