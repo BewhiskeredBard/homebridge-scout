@@ -3,7 +3,8 @@ import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
 import { TemperatureSensorServiceFactory } from "../../../src/serviceFactory/sensor/temperatureSensorServiceFactory";
-import { ServiceConstructor, Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
+import { Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
+import * as mocks from "../../mocks";
 
 describe(`${TemperatureSensorServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
@@ -12,20 +13,7 @@ describe(`${TemperatureSensorServiceFactory.name}`, () => {
     let serviceFactory: TemperatureSensorServiceFactory;
 
     beforeEach(() => {
-        homebridge = {
-            api: {
-                hap: {
-                    Characteristic: {
-                        StatusFault: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                        StatusLowBattery: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                        CurrentTemperature: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    },
-                    Service: {
-                        TemperatureSensor: (jest.fn() as unknown) as ServiceConstructor,
-                    },
-                },
-            },
-        } as HomebridgeContext;
+        homebridge = mocks.mockHomebridgeContext();
 
         context = {
             custom: {
