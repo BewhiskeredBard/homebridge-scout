@@ -15,10 +15,33 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
     beforeEach(() => {
         homebridge = mocks.mockHomebridgeContext();
 
+        homebridge.config.modes = {
+            away: "name0",
+            night: ["name1"],
+            stay: ["name2", "name3"],
+        };
+
         context = {
             custom: {
                 hub: {},
-                modes: [] as Array<Mode>,
+                modes: [
+                    {
+                        id: "mode0",
+                        name: "name0",
+                    },
+                    {
+                        id: "mode1",
+                        name: "name1",
+                    },
+                    {
+                        id: "mode2",
+                        name: "name2",
+                    },
+                    {
+                        id: "mode3",
+                        name: "name3",
+                    },
+                ],
             },
         } as AccessoryContext<SecuritySystemContext>;
 
@@ -27,32 +50,28 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
 
     describe(".getService()", () => {
         test("without configured modes", () => {
+            delete homebridge.config.modes;
+
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
 
         test("with configured modes", () => {
-            homebridge.config.modes = {
-                away: ["mode1"],
-                night: ["mode2"],
-                stay: ["mode3"],
-            };
-
-            context.custom.modes = [
-                {
-                    name: "mode1",
-                },
-                {
-                    name: "mode2",
-                },
-                {
-                    name: "mode3",
-                },
-            ] as Array<Mode>;
-
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.SecuritySystem);
         });
 
-        test.todo("with invalid configured modes");
+        test("missing configured mode", () => {
+            context.custom.modes[0].name = "nameMissing";
+
+            expect(() => serviceFactory.getService(context)).toThrowError(`No configuration for Scout mode named "nameMissing"`);
+        });
+
+        test("missing Scout mode", () => {
+            homebridge.config.modes!.away = "nameMissing";
+
+            context.custom.modes.shift();
+
+            expect(() => serviceFactory.getService(context)).toThrowError(`Could not find a Scout mode named "nameMissing".`);
+        });
     });
 
     describe(".configureService()", () => {

@@ -29,7 +29,7 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
 
             modeNames.forEach(modeName => {
                 if (!this.findModeByName(context, modeName)) {
-                    throw new Error(`Could not find a Scout mode named ${modeName}.`);
+                    throw new Error(`Could not find a Scout mode named "${modeName}".`);
                 }
             });
         });
