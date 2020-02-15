@@ -12,5 +12,11 @@
     "coveragePathIgnorePatterns": [
         "/node_modules/"
     ],
+    "coverageThreshold": {
+        "global": {
+            "lines": 15,
+            "statements": 15
+        }
+    },
     "verbose": true
 }
