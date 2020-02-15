@@ -10,7 +10,8 @@
     },
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
-        "/node_modules/"
+        "/node_modules/",
+        "/tst/"
     ],
     "coverageThreshold": {
         "global": {
