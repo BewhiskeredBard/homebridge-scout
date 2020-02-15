@@ -5,6 +5,17 @@ import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } fr
 import { HubServiceFactory } from "./hubServiceFactory";
 
 export class BatteryServiceFactory extends HubServiceFactory {
+    private static readonly MAX_BATTERY_LEVELS = new Map([
+        // The v1 hub appears to report an unsigned byte value. When plugged in, the value is 255.
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        [HubType.Scout1, 255],
+        // The v2 hub appears to report a direct voltage reading. When plugged in, the value is 5.0,
+        // which is the voltage of the power adapter"s output. The value drops to just above 4.0
+        // once it"s on battery power. The logic below is an extremely poor approximation.
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+        [HubType.Scout1S, 5.0],
+    ]);
+
     public getService(context: AccessoryContext<SecuritySystemContext>): ServiceConstructor | undefined {
         if (undefined !== this.getBatteryLevel(context)) {
             return this.homebridge.api.hap.Service.BatteryService;
@@ -38,24 +49,13 @@ export class BatteryServiceFactory extends HubServiceFactory {
     private getBatteryLevel(context: AccessoryContext<SecuritySystemContext>): number | undefined {
         const hub = context.custom.hub;
         const battery = hub.reported?.battery;
-        let batteryLevel = undefined;
+        const maxBatteryLevel = BatteryServiceFactory.MAX_BATTERY_LEVELS.get(hub.type);
 
-        if (undefined !== battery) {
-            if (HubType.Scout1 === hub.type) {
-                // The v1 hub appears to report an unsigned byte value. When plugged in, the value is 255.
-                const MAX_BATTERY_LEVEL = 255;
-                batteryLevel = Math.min(battery.level, MAX_BATTERY_LEVEL);
-                batteryLevel = Math.round((batteryLevel / MAX_BATTERY_LEVEL) * 100);
-            } else if (HubType.Scout1S === hub.type) {
-                // The v2 hub appears to report a direct voltage reading. When plugged in, the value is 5.0,
-                // which is the voltage of the power adapter"s output. The value drops to just above 4.0
-                // once it"s on battery power. The logic below is an extremely poor approximation.
-                const MAX_BATTERY_LEVEL = 5;
-                batteryLevel = Math.min(battery.level, MAX_BATTERY_LEVEL);
-                batteryLevel = Math.round((batteryLevel / MAX_BATTERY_LEVEL) * 100);
-            }
+        if (undefined !== battery && undefined !== maxBatteryLevel) {
+            let batteryLevel = Math.min(battery.level, maxBatteryLevel);
+            batteryLevel = Math.round((batteryLevel / maxBatteryLevel) * 100);
+
+            return batteryLevel;
         }
-
-        return batteryLevel;
     }
 }
