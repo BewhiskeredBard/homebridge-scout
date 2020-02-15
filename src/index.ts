@@ -1,6 +1,6 @@
 import { SecuritySystemAccessoryFactory } from "./accessoryFactory/securitySystemAccessoryFactory";
 import { SensorAccessoryFactory } from "./accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContextFactory, HomebridgeContextFactory } from "./context";
+import { ScoutContextFactory, HomebridgeContextFactory } from "./context";
 import { ScoutPlatform } from "./scoutPlatform";
 import { BatteryServiceFactory } from "./serviceFactory/hub/batteryServiceFactory";
 import { SecuritySystemServiceFactory } from "./serviceFactory/hub/securitySystemServiceFactory";
