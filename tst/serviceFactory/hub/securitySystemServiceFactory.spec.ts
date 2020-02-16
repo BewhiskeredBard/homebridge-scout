@@ -194,7 +194,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM, resolve);
             }).then(() => {
                 // eslint-disable-next-line @typescript-eslint/unbound-method
-                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith("mode1", {
+                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith("mode2", {
                     state: ModeStateUpdateType.Arming,
                 });
             });
