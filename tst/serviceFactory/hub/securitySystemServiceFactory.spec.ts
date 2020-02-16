@@ -1,4 +1,4 @@
-import { ModeState } from "scout-api";
+import { ModeState, Mode, ModeStateUpdateType } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SecuritySystemContext } from "../../../src/accessoryFactory/securitySystemAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
@@ -13,6 +13,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
     let serviceFactory: SecuritySystemServiceFactory;
 
     beforeEach(() => {
+        scout = mocks.mockScoutContext();
         homebridge = mocks.mockHomebridgeContext();
 
         homebridge.config.modes = {
@@ -80,6 +81,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
 
     describe(".configureService()", () => {
         let service: Service;
+        let characteristics: Map<CharacteristicConstructor<unknown>, Characteristic>;
         let updatedCharacteristics: Map<CharacteristicConstructor<unknown>, CharacteristicValue>;
 
         beforeEach(() => {
@@ -87,15 +89,24 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 getCharacteristic: jest.fn() as unknown,
             } as Service;
 
+            characteristics = new Map();
             updatedCharacteristics = new Map();
 
             (service.getCharacteristic as jest.Mock<Characteristic>).mockImplementation((type: CharacteristicConstructor<unknown>) => {
-                return {
-                    updateValue: jest.fn().mockImplementation((value: CharacteristicValue) => {
-                        updatedCharacteristics.set(type, value);
-                    }) as unknown,
-                    on: jest.fn() as unknown,
-                } as Characteristic;
+                let characteristic = characteristics.get(type);
+
+                if (!characteristic) {
+                    characteristic = {
+                        updateValue: jest.fn().mockImplementation((value: CharacteristicValue) => {
+                            updatedCharacteristics.set(type, value);
+                        }) as unknown,
+                        on: jest.fn() as unknown,
+                    } as Characteristic;
+
+                    characteristics.set(type, characteristic);
+                }
+
+                return characteristic;
             });
         });
 
@@ -165,6 +176,78 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual(
                 homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM,
             );
+        });
+
+        test("arm when disarmed", () => {
+            (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
+                return new Promise(resolve => {
+                    resolve();
+                });
+            });
+
+            serviceFactory.configureService(service, context);
+
+            const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
+            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1];
+
+            return new Promise(resolve => {
+                listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM, resolve);
+            }).then(() => {
+                // eslint-disable-next-line @typescript-eslint/unbound-method
+                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith("mode1", {
+                    state: ModeStateUpdateType.Arming,
+                });
+            });
+        });
+
+        test("arm when already armed", () => {
+            (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
+                return new Promise(resolve => {
+                    resolve();
+                });
+            });
+
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            context.custom.modes[2].state = ModeState.Armed;
+
+            serviceFactory.configureService(service, context);
+
+            const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
+            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1];
+
+            return new Promise(resolve => {
+                listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM, resolve);
+            }).then(() => {
+                // eslint-disable-next-line @typescript-eslint/unbound-method
+                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith("mode1", {
+                    state: ModeStateUpdateType.Arming,
+                });
+            });
+        });
+
+        test("disarm when already armed", () => {
+            (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
+                return new Promise(resolve => {
+                    resolve();
+                });
+            });
+
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+            context.custom.modes[2].state = ModeState.Armed;
+
+            serviceFactory.configureService(service, context);
+
+            const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
+            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1];
+
+            return new Promise(resolve => {
+                listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM, resolve);
+            }).then(() => {
+                // eslint-disable-next-line @typescript-eslint/unbound-method
+                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith("mode2", {
+                    state: ModeStateUpdateType.Disarm,
+                });
+            });
         });
 
         test.todo("so many use cases…");

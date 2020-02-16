@@ -1,4 +1,4 @@
-import { HomebridgeContext } from "../src/context";
+import { HomebridgeContext, ScoutContext } from "../src/context";
 import { CharacteristicConstructor, ServiceConstructor } from "../src/types";
 
 export function mockHomebridgeContext(): HomebridgeContext {
@@ -6,28 +6,28 @@ export function mockHomebridgeContext(): HomebridgeContext {
         api: {
             hap: {
                 Characteristic: {
-                    BatteryLevel: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    ChargingState: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    ContactSensorState: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    CurrentRelativeHumidity: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    CurrentTemperature: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    LeakDetected: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    MotionDetected: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    SecuritySystemCurrentState: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    SecuritySystemTargetState: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    SmokeDetected: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    StatusFault: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
-                    StatusLowBattery: (jest.fn() as unknown) as CharacteristicConstructor<unknown>,
+                    BatteryLevel: jest.fn() as unknown,
+                    ChargingState: jest.fn() as unknown,
+                    ContactSensorState: jest.fn() as unknown,
+                    CurrentRelativeHumidity: jest.fn() as unknown,
+                    CurrentTemperature: jest.fn() as unknown,
+                    LeakDetected: jest.fn() as unknown,
+                    MotionDetected: jest.fn() as unknown,
+                    SecuritySystemCurrentState: jest.fn() as unknown,
+                    SecuritySystemTargetState: jest.fn() as unknown,
+                    SmokeDetected: jest.fn() as unknown,
+                    StatusFault: jest.fn() as unknown,
+                    StatusLowBattery: jest.fn() as unknown,
                 },
                 Service: {
-                    BatteryService: (jest.fn() as unknown) as ServiceConstructor,
-                    ContactSensor: (jest.fn() as unknown) as ServiceConstructor,
-                    HumiditySensor: (jest.fn() as unknown) as ServiceConstructor,
-                    LeakSensor: (jest.fn() as unknown) as ServiceConstructor,
-                    MotionSensor: (jest.fn() as unknown) as ServiceConstructor,
-                    SecuritySystem: (jest.fn() as unknown) as ServiceConstructor,
-                    SmokeSensor: (jest.fn() as unknown) as ServiceConstructor,
-                    TemperatureSensor: (jest.fn() as unknown) as ServiceConstructor,
+                    BatteryService: jest.fn() as unknown,
+                    ContactSensor: jest.fn() as unknown,
+                    HumiditySensor: jest.fn() as unknown,
+                    LeakSensor: jest.fn() as unknown,
+                    MotionSensor: jest.fn() as unknown,
+                    SecuritySystem: jest.fn() as unknown,
+                    SmokeSensor: jest.fn() as unknown,
+                    TemperatureSensor: jest.fn() as unknown,
                 },
             },
         },
@@ -58,4 +58,12 @@ export function mockHomebridgeContext(): HomebridgeContext {
     homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_NOT_DETECTED = 234;
 
     return homebridge;
+}
+
+export function mockScoutContext(): ScoutContext {
+    return {
+        api: {
+            toggleRecipe: jest.fn() as unknown,
+        },
+    } as ScoutContext;
 }
