@@ -34,6 +34,10 @@ export function mockHomebridgeContext(): HomebridgeContext {
             unregisterPlatformAccessories: jest.fn() as unknown,
         },
         config: {
+            auth: {
+                email: "email1",
+                password: "password1",
+            },
             location: "locationName1",
         },
         logger: {
