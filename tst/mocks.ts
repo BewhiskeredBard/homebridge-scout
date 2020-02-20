@@ -1,9 +1,9 @@
 import { HomebridgeContext, ScoutContext } from "../src/context";
-import { CharacteristicConstructor, ServiceConstructor } from "../src/types";
 
 export function mockHomebridgeContext(): HomebridgeContext {
     const homebridge = {
         api: {
+            on: jest.fn() as unknown,
             hap: {
                 Characteristic: {
                     BatteryLevel: jest.fn() as unknown,
@@ -30,8 +30,19 @@ export function mockHomebridgeContext(): HomebridgeContext {
                     TemperatureSensor: jest.fn() as unknown,
                 },
             },
+            registerPlatformAccessories: jest.fn() as unknown,
+            unregisterPlatformAccessories: jest.fn() as unknown,
         },
-        config: {},
+        config: {
+            location: "locationName1",
+        },
+        logger: {
+            debug: jest.fn() as unknown,
+            error: jest.fn() as unknown,
+            info: jest.fn() as unknown,
+            log: jest.fn() as unknown,
+            warn: jest.fn() as unknown,
+        },
     } as HomebridgeContext;
 
     homebridge.api.hap.Characteristic.ChargingState.CHARGING = 123;
@@ -62,7 +73,9 @@ export function mockHomebridgeContext(): HomebridgeContext {
 
 export function mockScoutContext(): ScoutContext {
     return {
+        memberId: "memberId1",
         api: {
+            getLocations: jest.fn() as unknown,
             toggleRecipe: jest.fn() as unknown,
         },
     } as ScoutContext;
