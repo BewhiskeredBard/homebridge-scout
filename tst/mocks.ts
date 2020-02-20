@@ -5,6 +5,9 @@ export function mockHomebridgeContext(): HomebridgeContext {
         api: {
             on: jest.fn() as unknown,
             hap: {
+                uuid: {
+                    generate: jest.fn() as unknown,
+                },
                 Characteristic: {
                     BatteryLevel: jest.fn() as unknown,
                     ChargingState: jest.fn() as unknown,
@@ -20,6 +23,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
                     StatusLowBattery: jest.fn() as unknown,
                 },
                 Service: {
+                    AccessoryInformation: jest.fn() as unknown,
                     BatteryService: jest.fn() as unknown,
                     ContactSensor: jest.fn() as unknown,
                     HumiditySensor: jest.fn() as unknown,
@@ -30,6 +34,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
                     TemperatureSensor: jest.fn() as unknown,
                 },
             },
+            platformAccessory: jest.fn() as unknown,
             registerPlatformAccessories: jest.fn() as unknown,
             unregisterPlatformAccessories: jest.fn() as unknown,
         },
@@ -39,6 +44,11 @@ export function mockHomebridgeContext(): HomebridgeContext {
                 password: "password1",
             },
             location: "locationName1",
+            modes: {
+                away: "awayModeName",
+                night: "nightModeName",
+                stay: "stayModeName",
+            },
         },
         logger: {
             debug: jest.fn() as unknown,
@@ -79,8 +89,14 @@ export function mockScoutContext(): ScoutContext {
     return {
         memberId: "memberId1",
         api: {
+            getHub: jest.fn() as unknown,
+            getModes: jest.fn() as unknown,
             getLocations: jest.fn() as unknown,
             toggleRecipe: jest.fn() as unknown,
+        },
+        listener: {
+            addConnectionStateListener: jest.fn() as unknown,
+            getConnectionState: jest.fn() as unknown,
         },
     } as ScoutContext;
 }
