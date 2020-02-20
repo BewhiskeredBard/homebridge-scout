@@ -99,4 +99,4 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
 
 * [@jordanryanmoore](https://github.com/jordanryanmoore), the original author.
 * [@Tom2527](https://github.com/Tom2527), for their assistance in debugging and testing v1 hardware support.
-* [Scout Security Inc](https://www.scoutalarm.com), for providing a well-designed API *and* supplying free hardware for this project.
+* [Scout Security Inc](https://www.scoutalarm.com), for providing a open, well-designed API *and* supplying free motion and water sensors for this project.
