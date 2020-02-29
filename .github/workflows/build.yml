@@ -11,8 +11,10 @@ jobs:
         node-version: [10.x, 12.x]
 
     steps:
+    - name: Install Dependencies
+      run: sudo apt-get install jq
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
@@ -28,3 +30,14 @@ jobs:
         file: ./coverage/coverage-final.json
         flags: unittests
         fail_ci_if_error: true
+    - name: Pack
+      run: npm pack
+    - name: Get Package Name/Version
+      run: |
+        NPM_PACKAGE=`cat package.json | jq -r '"\(.name)-\(.version)"'`
+        echo "::set-env name=NPM_PACKAGE::$NPM_PACKAGE"
+    - name: Upload
+      uses: actions/upload-artifact@v1
+      with:
+        name: ${{ env.NPM_PACKAGE }}
+        path: ${{ env.NPM_PACKAGE }}.tgz
