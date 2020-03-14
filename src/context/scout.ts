@@ -8,11 +8,15 @@ export interface ScoutContext {
 }
 
 export class ScoutContextFactory {
+    private static readonly AUTH_REFRESH_MS = 86400000;
+
     public async create(homebridge: HomebridgeContext): Promise<ScoutContext> {
         const authenticator = await new AuthenticatorFactory().create({
             email: homebridge.config.auth.email,
             password: homebridge.config.auth.password,
         });
+
+        authenticator.refresh(ScoutContextFactory.AUTH_REFRESH_MS);
 
         return {
             memberId: authenticator.getPayload().id,
