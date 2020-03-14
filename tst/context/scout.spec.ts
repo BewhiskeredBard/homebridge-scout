@@ -24,6 +24,7 @@ describe(`${ScoutContextFactory.name}`, () => {
                     id: memberId,
                 };
             },
+            refresh: jest.fn() as unknown,
         } as Authenticator;
         const authenticatedApi = {} as AuthenticatedApi;
         const locationListener = {} as LocationListener;
@@ -49,5 +50,7 @@ describe(`${ScoutContextFactory.name}`, () => {
         expect(scoutContext.api).toBe(authenticatedApi);
         expect(scoutContext.listener).toBe(locationListener);
         expect(scoutContext.memberId).toEqual(memberId);
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        expect(authenticator.refresh as jest.Mock).toBeCalled();
     });
 });
