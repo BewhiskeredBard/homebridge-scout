@@ -1,5 +1,5 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Homebridge Slack
-    url: https://homebridge-slackin.glitch.me/
-    about: "Join the #homebridge-scout channel for plugin-specific support and updates."
+  - name: Discord
+    url: https://discord.gg/qpkS9z6
+    about: "Join the #scout channel for plugin-specific support and updates."
