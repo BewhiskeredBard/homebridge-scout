@@ -32,7 +32,7 @@ describe(`${HomebridgeContextFactory.name}`, () => {
         });
 
         test("empty config", () => {
-            expect(() => factory.create(api, logger, {})).toThrowError("Configuration error: config should have required property 'auth'");
+            expect(() => factory.create(api, logger, {})).toThrowError("Configuration error: config should have required property 'platform'");
         });
 
         test("missing config.auth.email", () => {
