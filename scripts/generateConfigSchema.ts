@@ -33,6 +33,7 @@ const schema = {
                 {
                     key: "location",
                     title: "Location Name",
+                    placeholder: "e.g., Home",
                     description:
                         "The name of your Scout location. It's probably <em>Home</em> if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.",
                 },
