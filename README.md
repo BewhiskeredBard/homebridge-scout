@@ -1,4 +1,4 @@
-# homebridge-scout
+![homebridge-scout](https://raw.githubusercontent.com/jordanryanmoore/homebridge-scout/master/logo.png)
 
 A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration for the [Scout](https://scoutalarm.com/) security system.
 
