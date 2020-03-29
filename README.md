@@ -95,7 +95,7 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
 | Video Doorbell     | [#18](https://github.com/jordanryanmoore/homebridge-scout/issues/18) |
 | Indoor Camera      | [#17](https://github.com/jordanryanmoore/homebridge-scout/issues/17) |
 
-*‡ Not supported by Scout's original mesh-based hardware. These devices do not have humidity or temperature sensors, and the motion sensors do not properly trigger motion events.*
+<small>‡ Not supported by Scout's original mesh-based hardware. These devices do not have humidity or temperature sensors, and the motion sensors do not properly trigger motion events.</small>
 
 ## Credits
 
