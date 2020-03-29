@@ -1,9 +1,10 @@
 import * as fs from "fs";
 import * as tjs from "typescript-json-schema";
+import { ScoutPlatform } from "../src/scoutPlatform";
 
 const program = tjs.programFromConfig("tsconfig.json");
 const schema = {
-    pluginAlias: "Homebridge Scout",
+    pluginAlias: ScoutPlatform.PLATFORM_NAME,
     pluginType: "platform",
     singular: true,
     schema: tjs.generateSchema(program, "HomebridgeConfig", {
