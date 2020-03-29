@@ -53,7 +53,7 @@ The following configuration options are optional and change the default behavior
   * **`"away"`:** Possibly `["Away"]`.
   * **`"night"`:** Possibly `["Night"]`.
 
-  <small>† There are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (*Home*, *Away*, *Vacation*, and *Night*) and have mapped the *Away* HomeKit mode to your *Away* and *Vacation* Scout modes. If you arm either the *Away* or *Vacation* Scout modes from the Scout app, HomeKit will report the mode as *Away* with no way to differentiate between the two. Additionally, if you arm the *Away* HomeKit mode via HomeKit, **the plug-in will arm whichever Scout mode is listed first**. There would be no way to arm your **Vacation** mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.</small>
+  <small>† There are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (*Home*, *Away*, *Vacation*, and *Night*) and have mapped the *Away* HomeKit mode to your *Away* and *Vacation* Scout modes. If you arm either the *Away* or *Vacation* Scout modes from the Scout app, HomeKit will report the mode as *Away* with no way to differentiate between the two. Additionally, if you arm the *Away* HomeKit mode via HomeKit, **the plug-in will arm whichever Scout mode is listed first**. There would be no way to arm your *Vacation* mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.</small>
 
 * **`"reverseSensorState"`:** V1 Scout systems can get into a state where all of the sensor states are reversed. If this option is set to `true`, it reverses the sensor state of access sensors, door panels, and motion sensors reported to HomeKit so they work correctly in this scenario.
 
