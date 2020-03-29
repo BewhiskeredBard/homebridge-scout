@@ -27,13 +27,14 @@ const schema = {
                 {
                     key: "auth.password",
                     title: "Password",
+                    type: "password",
                     description: "Your Scout password.",
                 },
                 {
                     key: "location",
                     title: "Location Name",
                     description:
-                        "The name of your Scout location. It's probably \"Home\" if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.",
+                        "The name of your Scout location. It's probably <em>Home</em> if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.",
                 },
             ],
         },
@@ -46,7 +47,7 @@ const schema = {
                 {
                     type: "help",
                     helpvalue:
-                        "If present, this option will add your Scout system as a HomeKit security system. It maps the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit mode must be mapped to one Scout mode(s).\n\nThere are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (Home, Away, Vacation, and Night) and have mapped the Away HomeKit mode to your Away and Vacation Scout modes. If you arm either the Away or Vacation Scout modes from the Scout app, HomeKit will report the mode as Away with no way to differentiate between the two. Additionally, if you arm the Away HomeKit mode via HomeKit, the plug-in will arm whichever Scout mode is listed first. There would be no way to arm your Vacation mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.",
+                        "If modes are defined, your Scout system will be added as a HomeKit security system. These map the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit mode must be mapped to one (or more†) Scout mode(s).",
                 },
                 {
                     key: "modes.stay",
@@ -83,6 +84,11 @@ const schema = {
                             placeholder: "e.g., Night",
                         },
                     ],
+                },
+                {
+                    type: "help",
+                    helpvalue:
+                        "<small>†There are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (<em>Home</em>, <em>Away</em>, <em>Vacation</em>, and <em>Night</em>) and have mapped the <em>Away</em> HomeKit mode to your <em>Away</em> and <em>Vacation</em> Scout modes. If you arm either the <em>Away</em> or <em>Vacation</em> Scout modes from the Scout app, HomeKit will report the mode as <em>Away</em> with no way to differentiate between the two. Additionally, if you arm the <em>Away</em> HomeKit mode via HomeKit, the plug-in will arm whichever Scout mode is listed first. There would be no way to arm your <em>Vacation</em> mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.</small>",
                 },
             ],
         },
