@@ -41,9 +41,12 @@ const schema = {
             expandable: true,
             expanded: false,
             title: "Modes",
-            description:
-                "If present, this option will add your Scout system as a HomeKit security system. It maps the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit mode must be mapped to one Scout mode(s).\n\nThere are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (Home, Away, Vacation, and Night) and have mapped the Away HomeKit mode to your Away and Vacation Scout modes. If you arm either the Away or Vacation Scout modes from the Scout app, HomeKit will report the mode as Away with no way to differentiate between the two. Additionally, if you arm the Away HomeKit mode via HomeKit, the plug-in will arm whichever Scout mode is listed first. There would be no way to arm your Vacation mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.",
             items: [
+                {
+                    type: "help",
+                    helpvalue:
+                        "If present, this option will add your Scout system as a HomeKit security system. It maps the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit mode must be mapped to one Scout mode(s).\n\nThere are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (Home, Away, Vacation, and Night) and have mapped the Away HomeKit mode to your Away and Vacation Scout modes. If you arm either the Away or Vacation Scout modes from the Scout app, HomeKit will report the mode as Away with no way to differentiate between the two. Additionally, if you arm the Away HomeKit mode via HomeKit, the plug-in will arm whichever Scout mode is listed first. There would be no way to arm your Vacation mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.",
+                },
                 {
                     key: "modes.stay",
                     type: "array",
@@ -52,6 +55,7 @@ const schema = {
                         {
                             key: "modes.stay[]",
                             notitle: true,
+                            placeholder: "e.g., Home",
                         },
                     ],
                 },
@@ -63,6 +67,7 @@ const schema = {
                         {
                             key: "modes.away[]",
                             notitle: true,
+                            placeholder: "e.g., Away",
                         },
                     ],
                 },
@@ -74,6 +79,7 @@ const schema = {
                         {
                             key: "modes.night[]",
                             notitle: true,
+                            placeholder: "e.g., Night",
                         },
                     ],
                 },
@@ -83,7 +89,7 @@ const schema = {
             type: "fieldset",
             expandable: true,
             expanded: false,
-            title: "Optional Configuration",
+            title: "Other Options",
             items: [
                 {
                     key: "reverseSensorState",

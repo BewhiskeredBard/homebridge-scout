@@ -47,11 +47,11 @@ All of the following configuration options are required. If any are missing or i
 
 The following configuration options are optional and change the default behavior.
 
-* **`"modes"`:** If present, this option will add your Scout system as a HomeKit security system. It maps the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit mode must be mapped to one (or more†) Scout mode(s) (e.g., `"Mode A"` or `["Mode A", "Mode B"]`).
+* **`"modes"`:** If present, this option will add your Scout system as a HomeKit security system. It maps the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit mode must be mapped to one (or more†) Scout mode(s) (e.g., `["Mode A"]` or `["Mode A", "Mode B"]`).
 
-  * **`"stay"`:** Possibly `"Home"`.
-  * **`"away"`:** Possibly `"Away"`.
-  * **`"night"`:** Possibly `"Night"`.
+  * **`"stay"`:** Possibly `["Home"]`.
+  * **`"away"`:** Possibly `["Away"]`.
+  * **`"night"`:** Possibly `["Night"]`.
 
   *† There are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (**Home**, **Away**, **Vacation**, and **Night**) and have mapped the **Away** HomeKit mode to your **Away** and **Vacation** Scout modes. If you arm either the **Away** or **Vacation** Scout modes from the Scout app, HomeKit will report the mode as **Away** with no way to differentiate between the two. Additionally, if you arm the **Away** HomeKit mode via HomeKit, **the plug-in will arm whichever Scout mode is listed first**. There would be no way to arm your **Vacation** mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.*
 
@@ -72,9 +72,9 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
       },
       "location": "Home",
       "modes": {
-        "stay": "Home",
+        "stay": ["Home"],
         "away": ["Away", "Vacation"],
-        "night": "Night"
+        "night": ["Night"]
       }
     }
   ]

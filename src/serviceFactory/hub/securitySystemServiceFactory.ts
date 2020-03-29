@@ -177,14 +177,8 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
     private getModeNames(mode: HomebridgeConfigMode): string[] {
         const modes = this.homebridge.config.modes;
 
-        if (modes) {
-            const modeNames = modes[mode];
-
-            if (Array.isArray(modeNames)) {
-                return modeNames.slice();
-            } else {
-                return [modeNames];
-            }
+        if (modes && modes[mode]) {
+            return modes[mode].slice();
         }
 
         return [];

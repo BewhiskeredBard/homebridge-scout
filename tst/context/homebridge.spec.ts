@@ -19,9 +19,9 @@ describe(`${HomebridgeContextFactory.name}`, () => {
             },
             location: "location1",
             modes: {
-                away: "mode1",
-                stay: "mode2",
-                night: "mode3",
+                away: ["mode1"],
+                stay: ["mode2"],
+                night: ["mode3"],
             },
         };
     });
