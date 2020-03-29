@@ -45,9 +45,9 @@ export function mockHomebridgeContext(): HomebridgeContext {
             },
             location: "locationName1",
             modes: {
-                away: "awayModeName",
-                night: "nightModeName",
-                stay: "stayModeName",
+                away: ["awayModeName"],
+                night: ["nightModeName"],
+                stay: ["stayModeName"],
             },
         },
         logger: {

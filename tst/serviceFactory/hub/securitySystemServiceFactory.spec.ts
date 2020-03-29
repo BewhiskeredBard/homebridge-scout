@@ -17,7 +17,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
         homebridge = mocks.mockHomebridgeContext();
 
         homebridge.config.modes = {
-            away: "name0",
+            away: ["name0"],
             night: ["name1"],
             stay: ["name2", "name3"],
         };
@@ -71,7 +71,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
         });
 
         test("missing Scout mode", () => {
-            homebridge.config.modes!.away = "nameMissing";
+            homebridge.config.modes!.away = ["nameMissing"];
 
             context.custom.modes.shift();
 

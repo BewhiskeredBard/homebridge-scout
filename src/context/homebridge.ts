@@ -15,7 +15,7 @@ export interface HomebridgeConfig {
     };
     location: string;
     modes?: {
-        [key in HomebridgeConfigMode]: string | string[];
+        [key in HomebridgeConfigMode]: string[];
     };
     reverseSensorState?: boolean;
 }
@@ -27,12 +27,12 @@ export interface HomebridgeContext {
 }
 
 export class HomebridgeContextFactory {
-    private static readonly JSON_SCHEMA_PATH = "../../schema/config.json";
+    private static readonly JSON_SCHEMA_PATH = "../../config.schema.json";
 
     private readonly schema: object;
 
     public constructor() {
-        this.schema = require(HomebridgeContextFactory.JSON_SCHEMA_PATH);
+        this.schema = require(HomebridgeContextFactory.JSON_SCHEMA_PATH).schema;
     }
 
     public create(api: API, logger: Logger, config: unknown): HomebridgeContext {

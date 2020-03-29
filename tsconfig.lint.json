@@ -6,6 +6,6 @@
     "outDir": "./lib",
     "strict": true
   },
-  "include": ["src", "tst"],
+  "include": ["scripts", "src", "tst"],
   "exclude": ["node_modules"]
 }
