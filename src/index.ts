@@ -22,9 +22,7 @@ const plugin: Plugin = (api: API): void => {
 
             logger.info(`Running ${ScoutPlatform.PLUGIN_NAME}-${pluginVersion} on homebridge-${api.serverVersion}.`);
 
-            const homebridge = new HomebridgeContextFactory().create(api, logger, config);
-
-            return new ScoutPlatform(homebridge, new ScoutContextFactory(), scout => [
+            return new ScoutPlatform(api, logger, config, new HomebridgeContextFactory(), new ScoutContextFactory(), (homebridge, scout) => [
                 new SecuritySystemAccessoryFactory(homebridge, scout, [
                     new BatteryServiceFactory(homebridge, scout),
                     new SecuritySystemServiceFactory(homebridge, scout),

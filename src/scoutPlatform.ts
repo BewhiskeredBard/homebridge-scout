@@ -1,7 +1,7 @@
 import { Location } from "scout-api";
 import { AccessoryFactory, TypedPlatformAccessory } from "./accessoryFactory";
-import { HomebridgeContext, ScoutContextFactory, ScoutContext } from "./context";
-import { Platform, PlatformAccessory } from "./types";
+import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from "./context";
+import { Platform, PlatformAccessory, API, Logger } from "./types";
 
 export class ScoutPlatform implements Platform {
     public static PLUGIN_NAME = "homebridge-scout";
@@ -10,33 +10,37 @@ export class ScoutPlatform implements Platform {
     private readonly cachedAccessories = new Map<string, PlatformAccessory>();
 
     public constructor(
-        private readonly homebridge: HomebridgeContext,
+        private readonly api: API,
+        private readonly logger: Logger,
+        private readonly config: unknown,
+        private readonly homebridgeContextFactory: HomebridgeContextFactory,
         private readonly scoutContextFactory: ScoutContextFactory,
-        private readonly accessoryFactories: (scout: ScoutContext) => AccessoryFactory<unknown>[],
+        private readonly accessoryFactories: (homebridge: HomebridgeContext, scout: ScoutContext) => AccessoryFactory<unknown>[],
     ) {
-        homebridge.api.on("didFinishLaunching", () => {
-            this.init().catch(e => homebridge.logger.error(e));
+        api.on("didFinishLaunching", () => {
+            this.init().catch(e => logger.error(e));
         });
     }
 
     public configureAccessory(accessory: PlatformAccessory): void {
-        this.homebridge.logger.info(`Discovered cached accessory [${accessory.UUID}]`);
+        this.logger.info(`Discovered cached accessory [${accessory.UUID}]`);
 
         this.cachedAccessories.set(accessory.UUID, accessory);
     }
 
     private async init(): Promise<void> {
-        const scout = await this.scoutContextFactory.create(this.homebridge);
-        const location = await this.getLocation(scout);
+        const homebridge = this.homebridgeContextFactory.create(this.api, this.logger, this.config);
+        const scout = await this.scoutContextFactory.create(homebridge);
+        const location = await this.getLocation(homebridge, scout);
 
-        await this.registerAccessories(scout, location.id);
+        await this.registerAccessories(homebridge, scout, location.id);
     }
 
-    private async getLocation(scout: ScoutContext): Promise<Location> {
+    private async getLocation(homebridge: HomebridgeContext, scout: ScoutContext): Promise<Location> {
         const memberId = scout.memberId;
         const locations = (await scout.api.getLocations(memberId)).data;
 
-        this.homebridge.logger.debug(`Locations: ${JSON.stringify(locations)}`);
+        this.logger.debug(`Locations: ${JSON.stringify(locations)}`);
 
         const adminIds = Array.prototype.concat.apply(
             [],
@@ -44,24 +48,24 @@ export class ScoutPlatform implements Platform {
         );
 
         if (adminIds.find(adminId => adminId === memberId)) {
-            this.homebridge.logger.warn(`The authenticated member [${memberId}] is an admin. It is highly recommended to use a non-admin member.`);
+            this.logger.warn(`The authenticated member [${memberId}] is an admin. It is highly recommended to use a non-admin member.`);
         }
 
-        const matchingLocation = locations.find(location => location.name === this.homebridge.config.location);
+        const matchingLocation = locations.find(location => location.name === homebridge.config.location);
 
         if (!matchingLocation) {
-            throw new Error(`No location found for "${this.homebridge.config.location}".`);
+            throw new Error(`No location found for "${homebridge.config.location}".`);
         }
 
-        this.homebridge.logger.info(`Using "${this.homebridge.config.location}" location [${matchingLocation.id}].`);
+        this.logger.info(`Using "${homebridge.config.location}" location [${matchingLocation.id}].`);
 
         return matchingLocation;
     }
 
-    private async registerAccessories(scout: ScoutContext, locationId: string): Promise<void> {
+    private async registerAccessories(homebridge: HomebridgeContext, scout: ScoutContext, locationId: string): Promise<void> {
         const newAccessories = new Array<PlatformAccessory>();
 
-        for (const accessoryFactory of this.accessoryFactories(scout)) {
+        for (const accessoryFactory of this.accessoryFactories(homebridge, scout)) {
             const accessories = await accessoryFactory.createAccessories(locationId);
 
             for (let accessory of accessories) {
@@ -71,11 +75,11 @@ export class ScoutPlatform implements Platform {
                     cachedAccessory.context = accessory.context;
                     accessory = cachedAccessory as TypedPlatformAccessory<unknown>;
 
-                    this.homebridge.logger.info(`Using cached accessory [${accessory.UUID}].`);
+                    this.logger.info(`Using cached accessory [${accessory.UUID}].`);
 
                     this.cachedAccessories.delete(accessory.UUID);
                 } else {
-                    this.homebridge.logger.info(`Creating new accessory [${accessory.UUID}].`);
+                    this.logger.info(`Creating new accessory [${accessory.UUID}].`);
 
                     newAccessories.push(accessory);
                 }
@@ -84,13 +88,13 @@ export class ScoutPlatform implements Platform {
             }
         }
 
-        this.homebridge.logger.info(`Registering new accessories [${[...newAccessories.map(accessory => accessory.UUID)].join(", ")}].`);
+        this.logger.info(`Registering new accessories [${[...newAccessories.map(accessory => accessory.UUID)].join(", ")}].`);
 
-        this.homebridge.api.registerPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, newAccessories);
+        this.api.registerPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, newAccessories);
 
-        this.homebridge.logger.info(`Removing old cached accessories [${[...this.cachedAccessories.keys()].join(", ")}].`);
+        this.logger.info(`Removing old cached accessories [${[...this.cachedAccessories.keys()].join(", ")}].`);
 
-        this.homebridge.api.unregisterPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, [...this.cachedAccessories.values()]);
+        this.api.unregisterPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, [...this.cachedAccessories.values()]);
 
         this.cachedAccessories.clear();
     }

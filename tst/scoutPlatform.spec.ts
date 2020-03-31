@@ -2,18 +2,22 @@
 
 import { Location } from "scout-api";
 import { AccessoryFactory } from "../src/accessoryFactory";
-import { HomebridgeContext, ScoutContextFactory, ScoutContext } from "../src/context";
+import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from "../src/context";
 import { ScoutPlatform } from "../src/scoutPlatform";
-import { PlatformAccessory } from "../src/types";
+import { PlatformAccessory, API, Logger } from "../src/types";
 import * as mocks from "./mocks";
 
 describe(`${ScoutPlatform.name}`, () => {
+    let api: API;
+    let logger: Logger;
+    let config: unknown;
     let homebridge: HomebridgeContext;
+    let homebridgeContextFactory: HomebridgeContextFactory;
     let scout: ScoutContext;
     let scoutContextFactory: ScoutContextFactory;
     let location: Location;
     let scoutPlatform: ScoutPlatform;
-    let accessoryFactories: (scoutContext: ScoutContext) => AccessoryFactory<unknown>[];
+    let accessoryFactories: (homebridgeContext: HomebridgeContext, scoutContext: ScoutContext) => AccessoryFactory<unknown>[];
     let accessoryFactory: AccessoryFactory<unknown>;
     let accessory: PlatformAccessory;
     let cachedAccessory: PlatformAccessory;
@@ -28,7 +32,18 @@ describe(`${ScoutPlatform.name}`, () => {
 
     beforeEach(() => {
         homebridge = mocks.mockHomebridgeContext();
+        api = homebridge.api;
+        logger = homebridge.logger;
+        config = homebridge.config;
         scout = mocks.mockScoutContext();
+
+        homebridgeContextFactory = ({
+            create: jest.fn(),
+        } as unknown) as HomebridgeContextFactory;
+
+        (homebridgeContextFactory.create as jest.Mock).mockImplementation(() => {
+            return homebridge;
+        });
 
         scoutContextFactory = {
             create: jest.fn(),
@@ -63,7 +78,7 @@ describe(`${ScoutPlatform.name}`, () => {
             },
         } as PlatformAccessory;
 
-        scoutPlatform = new ScoutPlatform(homebridge, scoutContextFactory, accessoryFactories);
+        scoutPlatform = new ScoutPlatform(api, logger, config, homebridgeContextFactory, scoutContextFactory, accessoryFactories);
     });
 
     afterEach(() => {
