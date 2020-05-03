@@ -35,10 +35,7 @@ export abstract class SensorServiceFactory extends ServiceFactory<SensorAccessor
         const reported = context.custom.device.reported;
 
         if (true !== reported?.timedout && undefined !== reported?.battery) {
-            characteristics.set(
-                StatusLowBattery,
-                undefined === reported.battery.low ? StatusLowBattery.BATTERY_LEVEL_NORMAL : StatusLowBattery.BATTERY_LEVEL_LOW,
-            );
+            characteristics.set(StatusLowBattery, reported.battery.low ? StatusLowBattery.BATTERY_LEVEL_LOW : StatusLowBattery.BATTERY_LEVEL_NORMAL);
         }
     }
 
