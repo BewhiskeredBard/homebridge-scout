@@ -24,13 +24,9 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
         this.accessories.set(accessory.context.custom.hub.id, accessory);
 
         accessory.on("identify", () => {
-            this.identify(accessory.context)
-                .then(() => {
-                    // TODO
-                })
-                .catch(() => {
-                    // TODO
-                });
+            this.identify(accessory.context).catch(e => {
+                this.homebridge.logger.error(e);
+            });
         });
     }
 
