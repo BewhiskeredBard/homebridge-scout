@@ -112,6 +112,28 @@ describe(`${Orchestrator.name}`, () => {
         expect(homebridge.logger.error as jest.Mock).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
     });
 
+    test("using admin account", async () => {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        location.admin_ids = [scout.memberId];
+
+        (scout.api.getLocations as jest.Mock).mockImplementation(() => {
+            return {
+                data: [location],
+            };
+        });
+
+        (accessoryFactories as jest.Mock).mockImplementation(() => {
+            return [];
+        });
+
+        await listen();
+
+        expect(homebridge.logger.warn as jest.Mock).toBeCalledWith(
+            "The authenticated member [memberId1] is an admin. It is highly recommended to use a non-admin member.",
+        );
+        expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
+    });
+
     test("register new accessory", async () => {
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
