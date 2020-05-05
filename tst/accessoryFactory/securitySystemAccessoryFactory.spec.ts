@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 
 import { Service, Categories } from "homebridge";
-import { Hub, HubType, ConnectionState, Mode } from "scout-api";
+import { Hub, HubType, ConnectionState, Mode, HubChirpType } from "scout-api";
 import { TypedPlatformAccessory } from "../../src/accessoryFactory";
 import { SecuritySystemAccessoryFactory, SecuritySystemContext } from "../../src/accessoryFactory/securitySystemAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../src/context";
@@ -11,18 +11,29 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
     const locationId = "locationId1";
     let homebridge: HomebridgeContext;
     let scout: ScoutContext;
+    let hub: Hub;
     let accessoryFactory: SecuritySystemAccessoryFactory;
 
     beforeEach(() => {
         homebridge = mocks.mockHomebridgeContext();
         scout = mocks.mockScoutContext();
+        hub = {
+            id: "hubId1",
+            type: HubType.Scout1S,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            serial_number: "serial1",
+            reported: {
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                fw_version: "firmware1",
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                hw_version: "hardware1",
+            },
+        } as Hub;
+
+        accessoryFactory = new SecuritySystemAccessoryFactory(homebridge, scout, []);
     });
 
     describe(".createAccessories()", () => {
-        beforeEach(() => {
-            accessoryFactory = new SecuritySystemAccessoryFactory(homebridge, scout, []);
-        });
-
         test("without configuration", async () => {
             delete homebridge.config.modes;
 
@@ -43,19 +54,6 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
             const accessoryInfoService = {
                 setCharacteristic: jest.fn() as unknown,
             } as Service;
-
-            const hub = {
-                id: "hubId1",
-                type: HubType.Scout1S,
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                serial_number: "serial1",
-                reported: {
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    fw_version: "firmware1",
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    hw_version: "hardware1",
-                },
-            } as Hub;
 
             const modes = [
                 {
@@ -110,5 +108,61 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
         });
     });
 
-    test.todo(".configureAccessory()");
+    describe(".configureAccessory()", () => {
+        let accessory: TypedPlatformAccessory<SecuritySystemContext>;
+
+        beforeEach(() => {
+            accessory = {
+                context: {
+                    custom: {
+                        hub,
+                    },
+                    locationId,
+                },
+                on: jest.fn() as unknown,
+                services: new Array<Service>(),
+                getService: jest.fn() as unknown,
+            } as TypedPlatformAccessory<SecuritySystemContext>;
+        });
+
+        describe("identify event", () => {
+            test("success", async () => {
+                (scout.api.setChirp as jest.Mock).mockImplementation(() => {
+                    return accessory.context.custom.hub;
+                });
+
+                accessoryFactory.configureAccessory(accessory);
+
+                // invoke the "identify" event listener
+                (accessory.on as jest.Mock).mock.calls[0][1]();
+
+                await new Promise(resolve => setTimeout(resolve, 1));
+
+                expect(scout.api.setChirp).toBeCalledWith(accessory.context.custom.hub.id, {
+                    type: HubChirpType.Single,
+                });
+            });
+
+            test("failure", async () => {
+                const error = new Error();
+
+                (scout.api.setChirp as jest.Mock).mockImplementation(() => {
+                    throw error;
+                });
+
+                accessoryFactory.configureAccessory(accessory);
+
+                // invoke the "identify" event listener
+                (accessory.on as jest.Mock).mock.calls[0][1]();
+
+                await new Promise(resolve => setTimeout(resolve, 1));
+
+                expect(scout.api.setChirp).toBeCalledWith(accessory.context.custom.hub.id, {
+                    type: HubChirpType.Single,
+                });
+
+                expect(homebridge.logger.error).toBeCalledWith(error);
+            });
+        });
+    });
 });

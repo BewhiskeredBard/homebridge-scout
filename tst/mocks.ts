@@ -21,6 +21,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
                     SmokeDetected: jest.fn() as unknown,
                     StatusFault: jest.fn() as unknown,
                     StatusLowBattery: jest.fn() as unknown,
+                    StatusTampered: jest.fn() as unknown,
                 },
                 Service: {
                     AccessoryInformation: jest.fn() as unknown,
@@ -82,6 +83,9 @@ export function mockHomebridgeContext(): HomebridgeContext {
     (homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_DETECTED as unknown) = 123;
     (homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_NOT_DETECTED as unknown) = 234;
 
+    (homebridge.api.hap.Characteristic.StatusTampered.TAMPERED as unknown) = 12;
+    (homebridge.api.hap.Characteristic.StatusTampered.NOT_TAMPERED as unknown) = 23;
+
     return homebridge;
 }
 
@@ -92,11 +96,14 @@ export function mockScoutContext(): ScoutContext {
             getHub: jest.fn() as unknown,
             getModes: jest.fn() as unknown,
             getLocations: jest.fn() as unknown,
+            setChirp: jest.fn() as unknown,
             toggleRecipe: jest.fn() as unknown,
         },
         listener: {
             addConnectionStateListener: jest.fn() as unknown,
             getConnectionState: jest.fn() as unknown,
+            addHubListener: jest.fn() as unknown,
+            addModeListener: jest.fn() as unknown,
         },
     } as ScoutContext;
 }

@@ -20,8 +20,7 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
         const hubId = accessory.context.custom.hub.id;
 
         this.locationHubs.set(locationId, hubId);
-
-        this.accessories.set(accessory.context.custom.hub.id, accessory);
+        this.accessories.set(hubId, accessory);
 
         accessory.on("identify", () => {
             this.identify(accessory.context).catch(e => {
