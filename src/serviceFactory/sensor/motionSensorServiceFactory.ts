@@ -1,7 +1,8 @@
+import type { CharacteristicValue } from "homebridge";
 import { Device, DeviceType, MotionSensorState } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue } from "../../types";
+import { ServiceConstructor, CharacteristicConstructor } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class MotionSensorServiceFactory extends SensorServiceFactory {

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 
+import { Service, Categories } from "homebridge";
 import { Hub, HubType, ConnectionState, Mode } from "scout-api";
 import { TypedPlatformAccessory } from "../../src/accessoryFactory";
 import { SecuritySystemAccessoryFactory, SecuritySystemContext } from "../../src/accessoryFactory/securitySystemAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../src/context";
-import { Categories, Service } from "../../src/types";
 import * as mocks from "../mocks";
 
 describe(`${SecuritySystemAccessoryFactory.name}`, () => {
@@ -76,7 +76,7 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
             });
 
             (homebridge.api.hap.uuid.generate as jest.Mock).mockImplementation(() => uuid);
-            (homebridge.api.platformAccessory as jest.Mock).mockImplementation(() => accessory);
+            ((homebridge.api.platformAccessory as unknown) as jest.Mock).mockImplementation(() => accessory);
             (accessory.getService as jest.Mock).mockImplementation(() => accessoryInfoService);
             (accessoryInfoService.setCharacteristic as jest.Mock).mockImplementation(() => accessoryInfoService);
             (scout.listener.getConnectionState as jest.Mock).mockImplementation(() => ConnectionState.Connected);
@@ -92,7 +92,7 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
             expect(accessory.context.custom.modes).toBe(modes);
 
             expect(homebridge.api.hap.uuid.generate as jest.Mock).toBeCalledWith(hub.id);
-            expect(homebridge.api.platformAccessory as jest.Mock).toBeCalledWith(name, uuid, Categories.SECURITY_SYSTEM);
+            expect((homebridge.api.platformAccessory as unknown) as jest.Mock).toBeCalledWith(name, uuid, Categories.SECURITY_SYSTEM);
 
             expect(accessory.getService as jest.Mock).toBeCalledWith(homebridge.api.hap.Service.AccessoryInformation);
 

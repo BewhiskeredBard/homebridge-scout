@@ -1,9 +1,10 @@
+import { CharacteristicValue, Characteristic, Service } from "homebridge";
 import { DeviceType, AccessSensorState, DoorPanelState, DeviceEventType, DeviceTriggerEvent } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
 import { ContactSensorServiceFactory } from "../../../src/serviceFactory/sensor/contactSensorServiceFactory";
-import { Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
+import { CharacteristicConstructor } from "../../../src/types";
 import * as mocks from "../../mocks";
 
 describe(`${ContactSensorServiceFactory.name}`, () => {

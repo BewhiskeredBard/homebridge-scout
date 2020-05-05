@@ -1,17 +1,30 @@
 import * as fs from "fs";
 import * as tjs from "typescript-json-schema";
-import { ScoutPlatform } from "../src/scoutPlatform";
+import { ScoutPlatformPlugin } from "../src/scoutPlatformPlugin";
 
 const program = tjs.programFromConfig("tsconfig.json");
+const generator = tjs.buildGenerator(program, {
+    uniqueNames: true,
+    noExtraProps: true,
+    required: true,
+    strictNullChecks: true,
+});
+
+if (!generator) {
+    throw new Error("Failed to build schema generator.");
+}
+
+const configSymbol = generator.getSymbols("HomebridgeConfig").find(symbol => 0 < symbol.fullyQualifiedName.indexOf("src/context/homebridge"));
+
+if (!configSymbol) {
+    throw new Error("Failed to find HomebridgeConfig symbol.");
+}
+
 const schema = {
-    pluginAlias: ScoutPlatform.PLATFORM_NAME,
+    pluginAlias: ScoutPlatformPlugin.PLATFORM_NAME,
     pluginType: "platform",
     singular: true,
-    schema: tjs.generateSchema(program, "HomebridgeConfig", {
-        noExtraProps: true,
-        required: true,
-        strictNullChecks: true,
-    }),
+    schema: generator.getSchemaForSymbol(configSymbol.name),
     layout: [
         {
             type: "fieldset",

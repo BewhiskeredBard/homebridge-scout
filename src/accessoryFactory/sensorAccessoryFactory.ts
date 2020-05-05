@@ -1,7 +1,6 @@
 import { Device, DeviceType, DeviceEventType, DeviceTriggerEvent, DevicePairEvent } from "scout-api";
 import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory } from "../accessoryFactory";
-import { ScoutPlatform } from "../scoutPlatform";
-import { Categories } from "../types";
+import { ScoutPlatformPlugin } from "../scoutPlatformPlugin";
 
 export interface SensorAccessoryContext {
     device: Device;
@@ -50,7 +49,7 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
         return {
             name: device.name,
             id: device.id,
-            category: Categories.SENSOR,
+            category: this.homebridge.api.hap.Categories.SENSOR,
             context: {
                 device,
             },
@@ -85,7 +84,7 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
 
             this.configureAccessory(accessory);
 
-            this.homebridge.api.registerPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, [accessory]);
+            this.homebridge.api.registerPlatformAccessories(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [accessory]);
         }
     }
 
@@ -95,7 +94,7 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
         this.homebridge.logger.debug(`Device pair event: ${JSON.stringify(event)}`);
 
         if (accessory && event.event === DeviceEventType.Unpaired) {
-            this.homebridge.api.unregisterPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, [accessory]);
+            this.homebridge.api.unregisterPlatformAccessories(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [accessory]);
 
             this.accessories.delete(event.id);
         }

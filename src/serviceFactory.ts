@@ -1,6 +1,7 @@
+import type { Service, CharacteristicValue } from "homebridge";
 import { AccessoryContext } from "./accessoryFactory";
 import { HomebridgeContext, ScoutContext } from "./context";
-import { ServiceConstructor, CharacteristicConstructor, CharacteristicValue, Service } from "./types/hap";
+import { ServiceConstructor, CharacteristicConstructor } from "./types";
 
 export abstract class ServiceFactory<T> {
     // eslint-disable-next-line no-useless-constructor

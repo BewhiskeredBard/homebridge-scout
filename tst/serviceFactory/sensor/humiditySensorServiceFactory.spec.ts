@@ -1,9 +1,10 @@
+import { Service, CharacteristicValue, Characteristic } from "homebridge";
 import { DeviceType } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
 import { HumiditySensorServiceFactory } from "../../../src/serviceFactory/sensor/humiditySensorServiceFactory";
-import { Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
+import { CharacteristicConstructor } from "../../../src/types";
 import * as mocks from "../../mocks";
 
 describe(`${HumiditySensorServiceFactory.name}`, () => {

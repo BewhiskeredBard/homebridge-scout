@@ -1,9 +1,10 @@
+import { CharacteristicValue, Service, Characteristic } from "homebridge";
 import { DeviceType, MotionSensorState } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
 import { MotionSensorServiceFactory } from "../../../src/serviceFactory/sensor/motionSensorServiceFactory";
-import { Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
+import { CharacteristicConstructor } from "../../../src/types";
 import * as mocks from "../../mocks";
 
 describe(`${MotionSensorServiceFactory.name}`, () => {

@@ -1,8 +1,9 @@
+import type { Service, CharacteristicValue, CharacteristicSetCallback, CharacteristicEventTypes } from "homebridge";
 import { ModeState, ModeStateUpdateType, Mode } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
 import { HomebridgeConfigMode } from "../../context";
-import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor, Service, CharacteristicSetCallback } from "../../types";
+import { ServiceConstructor, CharacteristicConstructor } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 
 export class SecuritySystemServiceFactory extends HubServiceFactory {
@@ -42,11 +43,13 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
 
         super.configureService(service, context);
 
-        service.getCharacteristic(Characteristic.SecuritySystemTargetState).on("set", (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-            this.setTargetState(service, context, value)
-                .then(() => callback())
-                .catch(callback);
-        });
+        service
+            .getCharacteristic(Characteristic.SecuritySystemTargetState)
+            .on("set" as CharacteristicEventTypes, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
+                this.setTargetState(service, context, value)
+                    .then(() => callback())
+                    .catch(callback);
+            });
     }
 
     protected getCharacteristics(context: AccessoryContext<SecuritySystemContext>): Map<CharacteristicConstructor<unknown>, CharacteristicValue> {

@@ -1,7 +1,8 @@
+import type { PlatformAccessory, Categories, Service } from "homebridge";
 import { ConnectionState, ConnectionStateEvent } from "scout-api";
 import { HomebridgeContext, ScoutContext } from "./context";
 import { ServiceFactory } from "./serviceFactory";
-import { Categories, PlatformAccessory, Service, ServiceConstructor } from "./types";
+import { ServiceConstructor } from "./types";
 
 export interface AccessoryInfo<T> {
     name: string;

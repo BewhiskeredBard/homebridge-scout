@@ -59,28 +59,28 @@ export function mockHomebridgeContext(): HomebridgeContext {
         },
     } as HomebridgeContext;
 
-    homebridge.api.hap.Characteristic.ChargingState.CHARGING = 123;
-    homebridge.api.hap.Characteristic.ChargingState.NOT_CHARGING = 234;
+    (homebridge.api.hap.Characteristic.ChargingState.CHARGING as unknown) = 123;
+    (homebridge.api.hap.Characteristic.ChargingState.NOT_CHARGING as unknown) = 234;
 
-    homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_DETECTED = 123;
-    homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED = 234;
+    (homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_DETECTED as unknown) = 123;
+    (homebridge.api.hap.Characteristic.ContactSensorState.CONTACT_NOT_DETECTED as unknown) = 234;
 
-    homebridge.api.hap.Characteristic.LeakDetected.LEAK_DETECTED = 123;
-    homebridge.api.hap.Characteristic.LeakDetected.LEAK_NOT_DETECTED = 234;
+    (homebridge.api.hap.Characteristic.LeakDetected.LEAK_DETECTED as unknown) = 123;
+    (homebridge.api.hap.Characteristic.LeakDetected.LEAK_NOT_DETECTED as unknown) = 234;
 
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED = 12;
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.AWAY_ARM = 23;
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.DISARMED = 34;
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.NIGHT_ARM = 45;
-    homebridge.api.hap.Characteristic.SecuritySystemCurrentState.STAY_ARM = 56;
+    (homebridge.api.hap.Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED as unknown) = 12;
+    (homebridge.api.hap.Characteristic.SecuritySystemCurrentState.AWAY_ARM as unknown) = 23;
+    (homebridge.api.hap.Characteristic.SecuritySystemCurrentState.DISARMED as unknown) = 34;
+    (homebridge.api.hap.Characteristic.SecuritySystemCurrentState.NIGHT_ARM as unknown) = 45;
+    (homebridge.api.hap.Characteristic.SecuritySystemCurrentState.STAY_ARM as unknown) = 56;
 
-    homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM = 21;
-    homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM = 32;
-    homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM = 43;
-    homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM = 54;
+    (homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM as unknown) = 21;
+    (homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM as unknown) = 32;
+    (homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM as unknown) = 43;
+    (homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM as unknown) = 54;
 
-    homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_DETECTED = 123;
-    homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_NOT_DETECTED = 234;
+    (homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_DETECTED as unknown) = 123;
+    (homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_NOT_DETECTED as unknown) = 234;
 
     return homebridge;
 }
