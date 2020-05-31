@@ -1,22 +1,23 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 
+import { API, Logging, PlatformAccessory, PlatformConfig } from "homebridge";
 import { Location } from "scout-api";
 import { AccessoryFactory } from "../src/accessoryFactory";
 import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from "../src/context";
-import { ScoutPlatform } from "../src/scoutPlatform";
-import { PlatformAccessory, API, Logger } from "../src/types";
+import { Orchestrator } from "../src/orchestrator";
+import { ScoutPlatformPlugin } from "../src/scoutPlatformPlugin";
 import * as mocks from "./mocks";
 
-describe(`${ScoutPlatform.name}`, () => {
+describe(`${Orchestrator.name}`, () => {
     let api: API;
-    let logger: Logger;
-    let config: unknown;
+    let logger: Logging;
+    let config: PlatformConfig;
     let homebridge: HomebridgeContext;
     let homebridgeContextFactory: HomebridgeContextFactory;
     let scout: ScoutContext;
     let scoutContextFactory: ScoutContextFactory;
     let location: Location;
-    let scoutPlatform: ScoutPlatform;
+    let orchestrator: Orchestrator;
     let accessoryFactories: (homebridgeContext: HomebridgeContext, scoutContext: ScoutContext) => AccessoryFactory<unknown>[];
     let accessoryFactory: AccessoryFactory<unknown>;
     let accessory: PlatformAccessory;
@@ -64,21 +65,21 @@ describe(`${ScoutPlatform.name}`, () => {
             configureAccessory: jest.fn() as unknown,
         } as AccessoryFactory<unknown>;
 
-        accessory = {
+        accessory = ({
             UUID: "uuid1",
             context: {
                 foo: "bar",
             },
-        } as PlatformAccessory;
+        } as unknown) as PlatformAccessory;
 
-        cachedAccessory = {
+        cachedAccessory = ({
             UUID: "uuid1",
             context: {
                 boo: "baz",
             },
-        } as PlatformAccessory;
+        } as unknown) as PlatformAccessory;
 
-        scoutPlatform = new ScoutPlatform(api, logger, config, homebridgeContextFactory, scoutContextFactory, accessoryFactories);
+        orchestrator = new Orchestrator(api, logger, config, homebridgeContextFactory, scoutContextFactory, accessoryFactories);
     });
 
     afterEach(() => {
@@ -111,6 +112,28 @@ describe(`${ScoutPlatform.name}`, () => {
         expect(homebridge.logger.error as jest.Mock).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
     });
 
+    test("using admin account", async () => {
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        location.admin_ids = [scout.memberId];
+
+        (scout.api.getLocations as jest.Mock).mockImplementation(() => {
+            return {
+                data: [location],
+            };
+        });
+
+        (accessoryFactories as jest.Mock).mockImplementation(() => {
+            return [];
+        });
+
+        await listen();
+
+        expect(homebridge.logger.warn as jest.Mock).toBeCalledWith(
+            "The authenticated member [memberId1] is an admin. It is highly recommended to use a non-admin member.",
+        );
+        expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
+    });
+
     test("register new accessory", async () => {
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
@@ -129,8 +152,14 @@ describe(`${ScoutPlatform.name}`, () => {
         await listen();
 
         expect(accessoryFactory.configureAccessory as jest.Mock).toBeCalledWith(accessory);
-        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, [accessory]);
-        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, []);
+        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [
+            accessory,
+        ]);
+        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(
+            ScoutPlatformPlugin.PLUGIN_NAME,
+            ScoutPlatformPlugin.PLATFORM_NAME,
+            [],
+        );
         expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
     });
 
@@ -149,13 +178,13 @@ describe(`${ScoutPlatform.name}`, () => {
             return [];
         });
 
-        scoutPlatform.configureAccessory(cachedAccessory);
+        orchestrator.configureAccessory(cachedAccessory);
 
         await listen();
 
         expect(accessoryFactory.configureAccessory as jest.Mock).not.toBeCalled();
-        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, []);
-        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, [
+        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
+        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [
             cachedAccessory,
         ]);
         expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
@@ -176,14 +205,18 @@ describe(`${ScoutPlatform.name}`, () => {
             return [accessory];
         });
 
-        scoutPlatform.configureAccessory(cachedAccessory);
+        orchestrator.configureAccessory(cachedAccessory);
 
         await listen();
 
         expect(cachedAccessory.context).toStrictEqual(accessory.context);
         expect(accessoryFactory.configureAccessory as jest.Mock).toBeCalledWith(cachedAccessory);
-        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, []);
-        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, []);
+        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
+        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(
+            ScoutPlatformPlugin.PLUGIN_NAME,
+            ScoutPlatformPlugin.PLATFORM_NAME,
+            [],
+        );
         expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
     });
 });

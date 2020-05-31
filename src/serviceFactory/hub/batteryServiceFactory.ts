@@ -1,7 +1,8 @@
+import type { CharacteristicValue } from "homebridge";
 import { HubType } from "scout-api";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
+import { ServiceConstructor, CharacteristicConstructor } from "../../types";
 import { HubServiceFactory } from "./hubServiceFactory";
 
 export class BatteryServiceFactory extends HubServiceFactory {
@@ -23,24 +24,22 @@ export class BatteryServiceFactory extends HubServiceFactory {
     }
 
     protected getCharacteristics(context: AccessoryContext<SecuritySystemContext>): Map<CharacteristicConstructor<unknown>, CharacteristicValue> {
-        const Characteristic = this.homebridge.api.hap.Characteristic;
+        const ChargingState = this.homebridge.api.hap.Characteristic.ChargingState;
+        const StatusLowBattery = this.homebridge.api.hap.Characteristic.StatusLowBattery;
+        const BatteryLevel = this.homebridge.api.hap.Characteristic.BatteryLevel;
+
         const characteristics = super.getCharacteristics(context);
         const batteryLevel = this.getBatteryLevel(context);
 
         if (undefined !== batteryLevel) {
-            characteristics.set(
-                Characteristic.ChargingState,
-                context.custom.hub.reported?.battery.active ? Characteristic.ChargingState.NOT_CHARGING : Characteristic.ChargingState.CHARGING,
-            );
+            characteristics.set(ChargingState, context.custom.hub.reported?.battery.active ? ChargingState.NOT_CHARGING : ChargingState.CHARGING);
 
             characteristics.set(
-                Characteristic.StatusLowBattery,
-                context.custom.hub.reported?.battery.low
-                    ? Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW
-                    : Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL,
+                StatusLowBattery,
+                context.custom.hub.reported?.battery.low ? StatusLowBattery.BATTERY_LEVEL_LOW : StatusLowBattery.BATTERY_LEVEL_NORMAL,
             );
 
-            characteristics.set(Characteristic.BatteryLevel, batteryLevel);
+            characteristics.set(BatteryLevel, batteryLevel);
         }
 
         return characteristics;

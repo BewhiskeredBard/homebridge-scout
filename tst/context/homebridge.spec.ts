@@ -1,16 +1,16 @@
+import { API, Logging } from "homebridge";
 import { HomebridgeContextFactory, HomebridgeConfigMode, HomebridgeConfig } from "../../src/context";
-import { API, Logger } from "../../src/types";
 
 describe(`${HomebridgeContextFactory.name}`, () => {
     const factory = new HomebridgeContextFactory();
 
     let api: API;
-    let logger: Logger;
+    let logger: Logging;
     let config: HomebridgeConfig;
 
     beforeEach(() => {
         api = {} as API;
-        logger = {} as Logger;
+        logger = {} as Logging;
         config = {
             platform: "ScoutAlarm",
             auth: {

@@ -1,17 +1,15 @@
+import type { PlatformAccessory, API, Logging } from "homebridge";
 import { Location } from "scout-api";
 import { AccessoryFactory, TypedPlatformAccessory } from "./accessoryFactory";
 import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from "./context";
-import { Platform, PlatformAccessory, API, Logger } from "./types";
+import { ScoutPlatformPlugin } from "./scoutPlatformPlugin";
 
-export class ScoutPlatform implements Platform {
-    public static PLUGIN_NAME = "homebridge-scout";
-    public static PLATFORM_NAME = "ScoutAlarm";
-
+export class Orchestrator {
     private readonly cachedAccessories = new Map<string, PlatformAccessory>();
 
     public constructor(
         private readonly api: API,
-        private readonly logger: Logger,
+        private readonly logger: Logging,
         private readonly config: unknown,
         private readonly homebridgeContextFactory: HomebridgeContextFactory,
         private readonly scoutContextFactory: ScoutContextFactory,
@@ -28,7 +26,7 @@ export class ScoutPlatform implements Platform {
         this.cachedAccessories.set(accessory.UUID, accessory);
     }
 
-    private async init(): Promise<void> {
+    public async init(): Promise<void> {
         const homebridge = this.homebridgeContextFactory.create(this.api, this.logger, this.config);
         const scout = await this.scoutContextFactory.create(homebridge);
         const location = await this.getLocation(homebridge, scout);
@@ -90,11 +88,11 @@ export class ScoutPlatform implements Platform {
 
         this.logger.info(`Registering new accessories [${[...newAccessories.map(accessory => accessory.UUID)].join(", ")}].`);
 
-        this.api.registerPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, newAccessories);
+        this.api.registerPlatformAccessories(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, newAccessories);
 
         this.logger.info(`Removing old cached accessories [${[...this.cachedAccessories.keys()].join(", ")}].`);
 
-        this.api.unregisterPlatformAccessories(ScoutPlatform.PLUGIN_NAME, ScoutPlatform.PLATFORM_NAME, [...this.cachedAccessories.values()]);
+        this.api.unregisterPlatformAccessories(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [...this.cachedAccessories.values()]);
 
         this.cachedAccessories.clear();
     }

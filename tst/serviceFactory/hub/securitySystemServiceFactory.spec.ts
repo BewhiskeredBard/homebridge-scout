@@ -1,9 +1,10 @@
+import { Service, Characteristic, CharacteristicValue } from "homebridge";
 import { ModeState, Mode, ModeStateUpdateType } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SecuritySystemContext } from "../../../src/accessoryFactory/securitySystemAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
 import { SecuritySystemServiceFactory } from "../../../src/serviceFactory/hub/securitySystemServiceFactory";
-import { Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
+import { CharacteristicConstructor } from "../../../src/types";
 import * as mocks from "../../mocks";
 
 describe(`${SecuritySystemServiceFactory.name}`, () => {

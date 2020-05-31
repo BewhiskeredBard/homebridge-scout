@@ -33,8 +33,6 @@ rules:
         - ignoreEnums: true
           ignoreReadonlyClassProperties: true
           ignore: [0, 1, 100]
-    "@typescript-eslint/indent":
-        - error
     complexity:
         - error
         - max: 6

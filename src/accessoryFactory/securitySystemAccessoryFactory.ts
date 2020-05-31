@@ -1,6 +1,5 @@
 import { Hub, HubChirpType, ModeEvent, Mode } from "scout-api";
 import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory, AccessoryContext } from "../accessoryFactory";
-import { Categories } from "../types";
 
 export interface SecuritySystemContext {
     hub: Hub;
@@ -21,13 +20,12 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
         const hubId = accessory.context.custom.hub.id;
 
         this.locationHubs.set(locationId, hubId);
+        this.accessories.set(hubId, accessory);
 
-        this.accessories.set(accessory.context.custom.hub.id, accessory);
-
-        accessory.on("identify", (paired: boolean, callback) => {
-            this.identify(accessory.context)
-                .then(() => callback())
-                .catch(callback);
+        accessory.on("identify", () => {
+            this.identify(accessory.context).catch(e => {
+                this.homebridge.logger.error(e);
+            });
         });
     }
 
@@ -46,7 +44,7 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
             {
                 name: SecuritySystemAccessoryFactory.NAME,
                 id: hub.id,
-                category: Categories.SECURITY_SYSTEM,
+                category: this.homebridge.api.hap.Categories.SECURITY_SYSTEM,
                 context: {
                     hub,
                     modes,

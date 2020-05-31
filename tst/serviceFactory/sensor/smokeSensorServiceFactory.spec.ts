@@ -1,9 +1,10 @@
+import { Service, CharacteristicValue, Characteristic } from "homebridge";
 import { DeviceType, SmokeState, CoState, SmokeAlarmState } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
 import { SmokeSensorServiceFactory } from "../../../src/serviceFactory/sensor/smokeSensorServiceFactory";
-import { Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
+import { CharacteristicConstructor } from "../../../src/types";
 import * as mocks from "../../mocks";
 
 describe(`${SmokeSensorServiceFactory.name}`, () => {

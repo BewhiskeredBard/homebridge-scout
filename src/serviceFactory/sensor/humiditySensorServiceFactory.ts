@@ -1,6 +1,7 @@
+import type { CharacteristicValue } from "homebridge";
 import { AccessoryContext } from "../../accessoryFactory";
 import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { CharacteristicConstructor, CharacteristicValue, ServiceConstructor } from "../../types";
+import { ServiceConstructor, CharacteristicConstructor } from "../../types";
 import { SensorServiceFactory } from "./sensorServiceFactory";
 
 export class HumiditySensorServiceFactory extends SensorServiceFactory {

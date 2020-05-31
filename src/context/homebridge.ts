@@ -1,5 +1,5 @@
 import * as Ajv from "ajv";
-import { API, Logger } from "../types";
+import type { API, Logging } from "homebridge";
 
 export enum HomebridgeConfigMode {
     Stay = "stay",
@@ -22,7 +22,7 @@ export interface HomebridgeConfig {
 
 export interface HomebridgeContext {
     api: API;
-    logger: Logger;
+    logger: Logging;
     config: HomebridgeConfig;
 }
 
@@ -35,7 +35,7 @@ export class HomebridgeContextFactory {
         this.schema = require(HomebridgeContextFactory.JSON_SCHEMA_PATH).schema;
     }
 
-    public create(api: API, logger: Logger, config: unknown): HomebridgeContext {
+    public create(api: API, logger: Logging, config: unknown): HomebridgeContext {
         const ajv = new Ajv();
         const isValid = ajv.validate(this.schema, config) as boolean;
 

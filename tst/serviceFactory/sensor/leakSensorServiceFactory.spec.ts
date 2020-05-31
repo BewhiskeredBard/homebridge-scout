@@ -1,9 +1,10 @@
+import { Service, CharacteristicValue, Characteristic } from "homebridge";
 import { DeviceType, WaterSensorState } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
 import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
 import { HomebridgeContext, ScoutContext } from "../../../src/context";
 import { LeakSensorServiceFactory } from "../../../src/serviceFactory/sensor/leakSensorServiceFactory";
-import { Service, CharacteristicConstructor, Characteristic, CharacteristicValue } from "../../../src/types";
+import { CharacteristicConstructor } from "../../../src/types";
 import * as mocks from "../../mocks";
 
 describe(`${LeakSensorServiceFactory.name}`, () => {
