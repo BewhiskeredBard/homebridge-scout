@@ -39,14 +39,14 @@ describe(`${SensorServiceFactory.name}`, () => {
 
     describe(".configureService()", () => {
         let service: Service;
-        let updatedCharacteristics: Map<CharacteristicConstructor<unknown>, CharacteristicValue>;
+        const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
         beforeEach(() => {
             service = {
                 getCharacteristic: jest.fn() as unknown,
             } as Service;
 
-            updatedCharacteristics = new Map();
+            updatedCharacteristics.clear();
 
             (service.getCharacteristic as jest.Mock<Characteristic>).mockImplementation((type: CharacteristicConstructor<unknown>) => {
                 return {
@@ -64,7 +64,7 @@ describe(`${SensorServiceFactory.name}`, () => {
             ${true}      | ${true}
         `("tamper status with tamper = $tamper", ({ tamper, isTampered }) => {
             const StatusTampered = homebridge.api.hap.Characteristic.StatusTampered;
-            context.custom.device.reported!.trigger!.tamper = tamper;
+            context.custom.device.reported!.trigger!.tamper = tamper as boolean | undefined;
 
             serviceFactory.configureService(service, context);
 
@@ -81,8 +81,8 @@ describe(`${SensorServiceFactory.name}`, () => {
             ${true}  | ${new Date()} | ${true}
         `("low battery status with timedout = $timedout and low battery = $lowBattery", ({ timedout, lowBattery, isBatteryLow }) => {
             const StatusLowBattery = homebridge.api.hap.Characteristic.StatusLowBattery;
-            context.custom.device.reported!.timedout = timedout;
-            context.custom.device.reported!.battery!.low = lowBattery;
+            context.custom.device.reported!.timedout = timedout as boolean;
+            context.custom.device.reported!.battery!.low = lowBattery as Date | undefined;
 
             serviceFactory.configureService(service, context);
 

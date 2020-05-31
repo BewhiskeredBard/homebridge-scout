@@ -55,14 +55,14 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
 
     describe(".configureService()", () => {
         let service: Service;
-        let updatedCharacteristics: Map<CharacteristicConstructor<unknown>, CharacteristicValue>;
+        const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
         beforeEach(() => {
             service = {
                 getCharacteristic: jest.fn() as unknown,
             } as Service;
 
-            updatedCharacteristics = new Map();
+            updatedCharacteristics.clear();
 
             (service.getCharacteristic as jest.Mock<Characteristic>).mockImplementation((type: CharacteristicConstructor<unknown>) => {
                 return {

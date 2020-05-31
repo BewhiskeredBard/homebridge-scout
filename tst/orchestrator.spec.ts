@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/unbound-method */
 
 import { API, Logging, PlatformAccessory, PlatformConfig } from "homebridge";
@@ -24,7 +25,7 @@ describe(`${Orchestrator.name}`, () => {
     let cachedAccessory: PlatformAccessory;
 
     const listen = async (): Promise<void> => {
-        const listener = (homebridge.api.on as jest.Mock).mock.calls[0][1];
+        const listener = (homebridge.api.on as jest.Mock).mock.calls[0][1] as () => void;
 
         listener();
 
@@ -113,7 +114,6 @@ describe(`${Orchestrator.name}`, () => {
     });
 
     test("using admin account", async () => {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         location.admin_ids = [scout.memberId];
 
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {

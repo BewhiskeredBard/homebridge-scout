@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/unbound-method */
 
 import { Service, Categories } from "homebridge";
@@ -20,12 +22,9 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
         hub = {
             id: "hubId1",
             type: HubType.Scout1S,
-            // eslint-disable-next-line @typescript-eslint/camelcase
             serial_number: "serial1",
             reported: {
-                // eslint-disable-next-line @typescript-eslint/camelcase
                 fw_version: "firmware1",
-                // eslint-disable-next-line @typescript-eslint/camelcase
                 hw_version: "hardware1",
             },
         } as Hub;
