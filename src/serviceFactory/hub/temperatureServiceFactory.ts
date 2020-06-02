@@ -1,8 +1,8 @@
-import type { CharacteristicValue } from "homebridge";
-import { AccessoryContext } from "../../accessoryFactory";
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { ServiceConstructor, CharacteristicConstructor } from "../../types";
-import { HubServiceFactory } from "./hubServiceFactory";
+import type { CharacteristicValue } from 'homebridge';
+import { AccessoryContext } from '../../accessoryFactory';
+import { SecuritySystemContext } from '../../accessoryFactory/securitySystemAccessoryFactory';
+import { ServiceConstructor, CharacteristicConstructor } from '../../types';
+import { HubServiceFactory } from './hubServiceFactory';
 
 export class TemperatureServiceFactory extends HubServiceFactory {
     public getService(context: AccessoryContext<SecuritySystemContext>): ServiceConstructor | undefined {

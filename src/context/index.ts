@@ -1,2 +1,2 @@
-export * from "./homebridge";
-export * from "./scout";
+export * from './homebridge';
+export * from './scout';

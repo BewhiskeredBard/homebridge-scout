@@ -1,5 +1,5 @@
-import { AuthenticatedApi, LocationListener, AuthenticatorFactory } from "scout-api";
-import { HomebridgeContext } from "./homebridge";
+import { AuthenticatedApi, LocationListener, AuthenticatorFactory } from 'scout-api';
+import { HomebridgeContext } from './homebridge';
 
 export interface ScoutContext {
     memberId: string;

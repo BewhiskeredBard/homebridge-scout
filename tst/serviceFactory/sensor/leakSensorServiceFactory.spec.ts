@@ -1,11 +1,11 @@
-import { Service, CharacteristicValue, Characteristic } from "homebridge";
-import { DeviceType, WaterSensorState } from "scout-api";
-import { AccessoryContext } from "../../../src/accessoryFactory";
-import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../../src/context";
-import { LeakSensorServiceFactory } from "../../../src/serviceFactory/sensor/leakSensorServiceFactory";
-import { CharacteristicConstructor } from "../../../src/types";
-import * as mocks from "../../mocks";
+import { Service, CharacteristicValue, Characteristic } from 'homebridge';
+import { DeviceType, WaterSensorState } from 'scout-api';
+import { AccessoryContext } from '../../../src/accessoryFactory';
+import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
+import { HomebridgeContext, ScoutContext } from '../../../src/context';
+import { LeakSensorServiceFactory } from '../../../src/serviceFactory/sensor/leakSensorServiceFactory';
+import { CharacteristicConstructor } from '../../../src/types';
+import * as mocks from '../../mocks';
 
 describe(`${LeakSensorServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
@@ -32,25 +32,25 @@ describe(`${LeakSensorServiceFactory.name}`, () => {
         serviceFactory = new LeakSensorServiceFactory(homebridge, scout);
     });
 
-    describe(".getService()", () => {
-        test("water sensor without state", () => {
+    describe('.getService()', () => {
+        test('water sensor without state', () => {
             delete context.custom.device.reported!.trigger!.state;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
 
-        test("water sensor with state", () => {
+        test('water sensor with state', () => {
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.LeakSensor);
         });
 
-        test("other device type with state", () => {
+        test('other device type with state', () => {
             context.custom.device.type = DeviceType.DoorPanel;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
     });
 
-    describe(".configureService()", () => {
+    describe('.configureService()', () => {
         let service: Service;
         const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
@@ -70,7 +70,7 @@ describe(`${LeakSensorServiceFactory.name}`, () => {
             });
         });
 
-        test("without state", () => {
+        test('without state', () => {
             delete context.custom.device.reported!.trigger!.state;
 
             serviceFactory.configureService(service, context);
@@ -78,7 +78,7 @@ describe(`${LeakSensorServiceFactory.name}`, () => {
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.LeakDetected)).toBeUndefined();
         });
 
-        test("leak detected", () => {
+        test('leak detected', () => {
             context.custom.device.reported!.trigger!.state = WaterSensorState.Wet;
 
             serviceFactory.configureService(service, context);
@@ -88,7 +88,7 @@ describe(`${LeakSensorServiceFactory.name}`, () => {
             );
         });
 
-        test("leak not detected", () => {
+        test('leak not detected', () => {
             context.custom.device.reported!.trigger!.state = WaterSensorState.Dry;
 
             serviceFactory.configureService(service, context);

@@ -1,11 +1,11 @@
-import { Service, CharacteristicValue, Characteristic } from "homebridge";
-import { DeviceType, SmokeState, CoState, SmokeAlarmState } from "scout-api";
-import { AccessoryContext } from "../../../src/accessoryFactory";
-import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../../src/context";
-import { SmokeSensorServiceFactory } from "../../../src/serviceFactory/sensor/smokeSensorServiceFactory";
-import { CharacteristicConstructor } from "../../../src/types";
-import * as mocks from "../../mocks";
+import { Service, CharacteristicValue, Characteristic } from 'homebridge';
+import { DeviceType, SmokeState, CoState, SmokeAlarmState } from 'scout-api';
+import { AccessoryContext } from '../../../src/accessoryFactory';
+import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
+import { HomebridgeContext, ScoutContext } from '../../../src/context';
+import { SmokeSensorServiceFactory } from '../../../src/serviceFactory/sensor/smokeSensorServiceFactory';
+import { CharacteristicConstructor } from '../../../src/types';
+import * as mocks from '../../mocks';
 
 describe(`${SmokeSensorServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
@@ -35,25 +35,25 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
         serviceFactory = new SmokeSensorServiceFactory(homebridge, scout);
     });
 
-    describe(".getService()", () => {
-        test("smoke alarm without state", () => {
+    describe('.getService()', () => {
+        test('smoke alarm without state', () => {
             delete context.custom.device.reported!.trigger!.state;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
 
-        test("smoke alarm with state", () => {
+        test('smoke alarm with state', () => {
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.SmokeSensor);
         });
 
-        test("other device type with state", () => {
+        test('other device type with state', () => {
             context.custom.device.type = DeviceType.DoorPanel;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
     });
 
-    describe(".configureService()", () => {
+    describe('.configureService()', () => {
         let service: Service;
         const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
@@ -73,7 +73,7 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
             });
         });
 
-        test("without state", () => {
+        test('without state', () => {
             delete context.custom.device.reported!.trigger!.state;
 
             serviceFactory.configureService(service, context);
@@ -81,7 +81,7 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.LeakDetected)).toBeUndefined();
         });
 
-        test("emergency", () => {
+        test('emergency', () => {
             (context.custom.device.reported!.trigger!.state as SmokeAlarmState).smoke = SmokeState.Emergency;
 
             serviceFactory.configureService(service, context);
@@ -91,7 +91,7 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
             );
         });
 
-        test("ok", () => {
+        test('ok', () => {
             (context.custom.device.reported!.trigger!.state as SmokeAlarmState).smoke = SmokeState.Ok;
 
             serviceFactory.configureService(service, context);
@@ -101,7 +101,7 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
             );
         });
 
-        test("testing", () => {
+        test('testing', () => {
             (context.custom.device.reported!.trigger!.state as SmokeAlarmState).smoke = SmokeState.Testing;
 
             serviceFactory.configureService(service, context);

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/unbound-method */
 
-import { API, Logging, PlatformAccessory, PlatformConfig } from "homebridge";
-import { Location } from "scout-api";
-import { AccessoryFactory } from "../src/accessoryFactory";
-import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from "../src/context";
-import { Orchestrator } from "../src/orchestrator";
-import { ScoutPlatformPlugin } from "../src/scoutPlatformPlugin";
-import * as mocks from "./mocks";
+import { API, Logging, PlatformAccessory, PlatformConfig } from 'homebridge';
+import { Location } from 'scout-api';
+import { AccessoryFactory } from '../src/accessoryFactory';
+import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from '../src/context';
+import { Orchestrator } from '../src/orchestrator';
+import { ScoutPlatformPlugin } from '../src/scoutPlatformPlugin';
+import * as mocks from './mocks';
 
 describe(`${Orchestrator.name}`, () => {
     let api: API;
@@ -56,7 +56,7 @@ describe(`${Orchestrator.name}`, () => {
         });
 
         location = {
-            id: "locationId1",
+            id: 'locationId1',
             name: homebridge.config.location,
         } as Location;
 
@@ -67,16 +67,16 @@ describe(`${Orchestrator.name}`, () => {
         } as AccessoryFactory<unknown>;
 
         accessory = ({
-            UUID: "uuid1",
+            UUID: 'uuid1',
             context: {
-                foo: "bar",
+                foo: 'bar',
             },
         } as unknown) as PlatformAccessory;
 
         cachedAccessory = ({
-            UUID: "uuid1",
+            UUID: 'uuid1',
             context: {
-                boo: "baz",
+                boo: 'baz',
             },
         } as unknown) as PlatformAccessory;
 
@@ -87,7 +87,7 @@ describe(`${Orchestrator.name}`, () => {
         expect(scoutContextFactory.create as jest.Mock).toBeCalledWith(homebridge);
     });
 
-    test("no Scout locations", async () => {
+    test('no Scout locations', async () => {
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
                 data: [],
@@ -99,8 +99,8 @@ describe(`${Orchestrator.name}`, () => {
         expect(homebridge.logger.error as jest.Mock).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
     });
 
-    test("no matching Scout locations", async () => {
-        location.name = "foo";
+    test('no matching Scout locations', async () => {
+        location.name = 'foo';
 
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
@@ -113,7 +113,7 @@ describe(`${Orchestrator.name}`, () => {
         expect(homebridge.logger.error as jest.Mock).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
     });
 
-    test("using admin account", async () => {
+    test('using admin account', async () => {
         location.admin_ids = [scout.memberId];
 
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
@@ -129,12 +129,12 @@ describe(`${Orchestrator.name}`, () => {
         await listen();
 
         expect(homebridge.logger.warn as jest.Mock).toBeCalledWith(
-            "The authenticated member [memberId1] is an admin. It is highly recommended to use a non-admin member.",
+            'The authenticated member [memberId1] is an admin. It is highly recommended to use a non-admin member.',
         );
         expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
     });
 
-    test("register new accessory", async () => {
+    test('register new accessory', async () => {
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
                 data: [location],
@@ -163,7 +163,7 @@ describe(`${Orchestrator.name}`, () => {
         expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
     });
 
-    test("configured accessory not found", async () => {
+    test('configured accessory not found', async () => {
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
                 data: [location],
@@ -190,7 +190,7 @@ describe(`${Orchestrator.name}`, () => {
         expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
     });
 
-    test("configured accessory found", async () => {
+    test('configured accessory found', async () => {
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
                 data: [location],

@@ -1,5 +1,5 @@
-import { Hub, HubChirpType, ModeEvent, Mode } from "scout-api";
-import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory, AccessoryContext } from "../accessoryFactory";
+import { Hub, HubChirpType, ModeEvent, Mode } from 'scout-api';
+import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory, AccessoryContext } from '../accessoryFactory';
 
 export interface SecuritySystemContext {
     hub: Hub;
@@ -7,8 +7,8 @@ export interface SecuritySystemContext {
 }
 
 export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySystemContext> {
-    private static readonly NAME = "Security System";
-    private static readonly MANUFACTURER = "Scout";
+    private static readonly NAME = 'Security System';
+    private static readonly MANUFACTURER = 'Scout';
 
     private readonly accessories = new Map<string, TypedPlatformAccessory<SecuritySystemContext>>();
     private readonly locationHubs = new Map<string, string>();
@@ -22,7 +22,7 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
         this.locationHubs.set(locationId, hubId);
         this.accessories.set(hubId, accessory);
 
-        accessory.on("identify", () => {
+        accessory.on('identify', () => {
             this.identify(accessory.context).catch(e => {
                 this.homebridge.logger.error(e);
             });
@@ -52,7 +52,7 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
                 manufacturer: SecuritySystemAccessoryFactory.MANUFACTURER,
                 model: hub.type,
                 serialNumber: hub.serial_number,
-                firmwareRevision: hub?.reported?.fw_version || "unknown",
+                firmwareRevision: hub?.reported?.fw_version || 'unknown',
                 hardwareRevision: hub?.reported?.hw_version,
             },
         ];

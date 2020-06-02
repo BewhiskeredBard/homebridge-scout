@@ -1,11 +1,11 @@
-import { Service, CharacteristicValue, Characteristic } from "homebridge";
-import { HubType } from "scout-api";
-import { AccessoryContext } from "../../../src/accessoryFactory";
-import { SecuritySystemContext } from "../../../src/accessoryFactory/securitySystemAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../../src/context";
-import { BatteryServiceFactory } from "../../../src/serviceFactory/hub/batteryServiceFactory";
-import { CharacteristicConstructor } from "../../../src/types";
-import * as mocks from "../../mocks";
+import { Service, CharacteristicValue, Characteristic } from 'homebridge';
+import { HubType } from 'scout-api';
+import { AccessoryContext } from '../../../src/accessoryFactory';
+import { SecuritySystemContext } from '../../../src/accessoryFactory/securitySystemAccessoryFactory';
+import { HomebridgeContext, ScoutContext } from '../../../src/context';
+import { BatteryServiceFactory } from '../../../src/serviceFactory/hub/batteryServiceFactory';
+import { CharacteristicConstructor } from '../../../src/types';
+import * as mocks from '../../mocks';
 
 describe(`${BatteryServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
@@ -33,19 +33,19 @@ describe(`${BatteryServiceFactory.name}`, () => {
         serviceFactory = new BatteryServiceFactory(homebridge, scout);
     });
 
-    describe(".getService()", () => {
-        test("without battery", () => {
+    describe('.getService()', () => {
+        test('without battery', () => {
             delete context.custom.hub.reported!.battery;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
 
-        test("with battery", () => {
+        test('with battery', () => {
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.BatteryService);
         });
     });
 
-    describe(".configureService()", () => {
+    describe('.configureService()', () => {
         let service: Service;
         const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
@@ -65,7 +65,7 @@ describe(`${BatteryServiceFactory.name}`, () => {
             });
         });
 
-        test("without battery", () => {
+        test('without battery', () => {
             delete context.custom.hub.reported!.battery;
 
             serviceFactory.configureService(service, context);
@@ -73,7 +73,7 @@ describe(`${BatteryServiceFactory.name}`, () => {
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.BatteryLevel)).toBeUndefined();
         });
 
-        test("battery charging", () => {
+        test('battery charging', () => {
             context.custom.hub.reported!.battery.active = false;
 
             serviceFactory.configureService(service, context);
@@ -83,7 +83,7 @@ describe(`${BatteryServiceFactory.name}`, () => {
             );
         });
 
-        test("battery not charging", () => {
+        test('battery not charging', () => {
             context.custom.hub.reported!.battery.active = true;
 
             serviceFactory.configureService(service, context);

@@ -1,14 +1,14 @@
-import * as Ajv from "ajv";
-import type { API, Logging } from "homebridge";
+import * as Ajv from 'ajv';
+import type { API, Logging } from 'homebridge';
 
 export enum HomebridgeConfigMode {
-    Stay = "stay",
-    Away = "away",
-    Night = "night",
+    Stay = 'stay',
+    Away = 'away',
+    Night = 'night',
 }
 
 export interface HomebridgeConfig {
-    platform: "ScoutAlarm";
+    platform: 'ScoutAlarm';
     auth: {
         email: string;
         password: string;
@@ -27,7 +27,7 @@ export interface HomebridgeContext {
 }
 
 export class HomebridgeContextFactory {
-    private static readonly JSON_SCHEMA_PATH = "../../config.schema.json";
+    private static readonly JSON_SCHEMA_PATH = '../../config.schema.json';
 
     private readonly schema: Record<string, unknown>;
 
@@ -41,7 +41,7 @@ export class HomebridgeContextFactory {
 
         if (!isValid && ajv.errors && 0 < ajv.errors.length) {
             const error = ajv.errors[0];
-            const message = `Configuration error: config${error.dataPath} ${error.message || ""}`;
+            const message = `Configuration error: config${error.dataPath} ${error.message || ''}`;
 
             throw new Error(message);
         }

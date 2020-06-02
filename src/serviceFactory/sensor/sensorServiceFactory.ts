@@ -1,8 +1,8 @@
-import type { CharacteristicValue } from "homebridge";
-import { AccessoryContext } from "../../accessoryFactory";
-import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { ServiceFactory } from "../../serviceFactory";
-import { CharacteristicConstructor, ServiceConstructor } from "../../types";
+import type { CharacteristicValue } from 'homebridge';
+import { AccessoryContext } from '../../accessoryFactory';
+import { SensorAccessoryContext } from '../../accessoryFactory/sensorAccessoryFactory';
+import { ServiceFactory } from '../../serviceFactory';
+import { CharacteristicConstructor, ServiceConstructor } from '../../types';
 
 export abstract class SensorServiceFactory extends ServiceFactory<SensorAccessoryContext> {
     protected getCharacteristics(context: AccessoryContext<SensorAccessoryContext>): Map<CharacteristicConstructor<unknown>, CharacteristicValue> {

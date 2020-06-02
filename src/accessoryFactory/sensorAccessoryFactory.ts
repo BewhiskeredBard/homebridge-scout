@@ -1,6 +1,6 @@
-import { Device, DeviceType, DeviceEventType, DeviceTriggerEvent, DevicePairEvent } from "scout-api";
-import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory } from "../accessoryFactory";
-import { ScoutPlatformPlugin } from "../scoutPlatformPlugin";
+import { Device, DeviceType, DeviceEventType, DeviceTriggerEvent, DevicePairEvent } from 'scout-api';
+import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory } from '../accessoryFactory';
+import { ScoutPlatformPlugin } from '../scoutPlatformPlugin';
 
 export interface SensorAccessoryContext {
     device: Device;
@@ -53,10 +53,10 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
             context: {
                 device,
             },
-            manufacturer: device.reported?.manufacturer || "Scout",
-            model: device.reported?.model || "unknown",
+            manufacturer: device.reported?.manufacturer || 'Scout',
+            model: device.reported?.model || 'unknown',
             serialNumber: device.id,
-            firmwareRevision: device.reported?.fw_version || "unknown",
+            firmwareRevision: device.reported?.fw_version || 'unknown',
         };
     }
 

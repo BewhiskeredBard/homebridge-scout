@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Service, Characteristic, CharacteristicValue } from "homebridge";
-import { ModeState, Mode, ModeStateUpdateType } from "scout-api";
-import { AccessoryContext } from "../../../src/accessoryFactory";
-import { SecuritySystemContext } from "../../../src/accessoryFactory/securitySystemAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../../src/context";
-import { SecuritySystemServiceFactory } from "../../../src/serviceFactory/hub/securitySystemServiceFactory";
-import { CharacteristicConstructor } from "../../../src/types";
-import * as mocks from "../../mocks";
+import { Service, Characteristic, CharacteristicValue } from 'homebridge';
+import { ModeState, Mode, ModeStateUpdateType } from 'scout-api';
+import { AccessoryContext } from '../../../src/accessoryFactory';
+import { SecuritySystemContext } from '../../../src/accessoryFactory/securitySystemAccessoryFactory';
+import { HomebridgeContext, ScoutContext } from '../../../src/context';
+import { SecuritySystemServiceFactory } from '../../../src/serviceFactory/hub/securitySystemServiceFactory';
+import { CharacteristicConstructor } from '../../../src/types';
+import * as mocks from '../../mocks';
 
 describe(`${SecuritySystemServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
@@ -19,9 +19,9 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
         homebridge = mocks.mockHomebridgeContext();
 
         homebridge.config.modes = {
-            away: ["name0"],
-            night: ["name1"],
-            stay: ["name2", "name3"],
+            away: ['name0'],
+            night: ['name1'],
+            stay: ['name2', 'name3'],
         };
 
         context = {
@@ -29,23 +29,23 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 hub: {},
                 modes: [
                     {
-                        id: "mode0",
-                        name: "name0",
+                        id: 'mode0',
+                        name: 'name0',
                         state: ModeState.Disarmed,
                     },
                     {
-                        id: "mode1",
-                        name: "name1",
+                        id: 'mode1',
+                        name: 'name1',
                         state: ModeState.Disarmed,
                     },
                     {
-                        id: "mode2",
-                        name: "name2",
+                        id: 'mode2',
+                        name: 'name2',
                         state: ModeState.Disarmed,
                     },
                     {
-                        id: "mode3",
-                        name: "name3",
+                        id: 'mode3',
+                        name: 'name3',
                         state: ModeState.Disarmed,
                     },
                 ],
@@ -55,25 +55,25 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
         serviceFactory = new SecuritySystemServiceFactory(homebridge, scout);
     });
 
-    describe(".getService()", () => {
-        test("without configured modes", () => {
+    describe('.getService()', () => {
+        test('without configured modes', () => {
             delete homebridge.config.modes;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
 
-        test("with configured modes", () => {
+        test('with configured modes', () => {
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.SecuritySystem);
         });
 
-        test("missing configured mode", () => {
-            context.custom.modes[0].name = "nameMissing";
+        test('missing configured mode', () => {
+            context.custom.modes[0].name = 'nameMissing';
 
             expect(() => serviceFactory.getService(context)).toThrowError(`No configuration for Scout mode named "nameMissing"`);
         });
 
-        test("missing Scout mode", () => {
-            homebridge.config.modes!.away = ["nameMissing"];
+        test('missing Scout mode', () => {
+            homebridge.config.modes!.away = ['nameMissing'];
 
             context.custom.modes.shift();
 
@@ -81,7 +81,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
         });
     });
 
-    describe(".configureService()", () => {
+    describe('.configureService()', () => {
         let service: Service;
         const characteristics = new Map<CharacteristicConstructor<unknown>, Characteristic>();
         const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
@@ -112,7 +112,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             });
         });
 
-        test("disarmed", () => {
+        test('disarmed', () => {
             serviceFactory.configureService(service, context);
 
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemCurrentState)).toEqual(
@@ -124,7 +124,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             );
         });
 
-        test("arming", () => {
+        test('arming', () => {
             context.custom.modes[0].state = ModeState.Arming;
 
             serviceFactory.configureService(service, context);
@@ -138,7 +138,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             );
         });
 
-        test("armed", () => {
+        test('armed', () => {
             context.custom.modes[1].state = ModeState.Armed;
 
             serviceFactory.configureService(service, context);
@@ -152,7 +152,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             );
         });
 
-        test("triggered", () => {
+        test('triggered', () => {
             context.custom.modes[0].state = ModeState.Triggered;
 
             serviceFactory.configureService(service, context);
@@ -166,7 +166,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             );
         });
 
-        test("alarmed", () => {
+        test('alarmed', () => {
             context.custom.modes[0].state = ModeState.Alarmed;
 
             serviceFactory.configureService(service, context);
@@ -180,7 +180,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             );
         });
 
-        test("arm when disarmed", () => {
+        test('arm when disarmed', () => {
             (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
                 return new Promise(resolve => {
                     resolve();
@@ -196,13 +196,13 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM, resolve);
             }).then(() => {
                 // eslint-disable-next-line @typescript-eslint/unbound-method
-                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith("mode2", {
+                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith('mode2', {
                     state: ModeStateUpdateType.Arming,
                 });
             });
         });
 
-        test("arm when already armed", () => {
+        test('arm when already armed', () => {
             (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
                 return new Promise(resolve => {
                     resolve();
@@ -221,13 +221,13 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM, resolve);
             }).then(() => {
                 // eslint-disable-next-line @typescript-eslint/unbound-method
-                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith("mode1", {
+                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith('mode1', {
                     state: ModeStateUpdateType.Arming,
                 });
             });
         });
 
-        test("disarm when already armed", () => {
+        test('disarm when already armed', () => {
             (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
                 return new Promise(resolve => {
                     resolve();
@@ -246,12 +246,12 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM, resolve);
             }).then(() => {
                 // eslint-disable-next-line @typescript-eslint/unbound-method
-                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith("mode2", {
+                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith('mode2', {
                     state: ModeStateUpdateType.Disarm,
                 });
             });
         });
 
-        test.todo("so many use cases…");
+        test.todo('so many use cases…');
     });
 });

@@ -1,10 +1,10 @@
-import { CharacteristicValue, Service, Characteristic } from "homebridge";
-import { AccessoryContext } from "../../../src/accessoryFactory";
-import { SecuritySystemContext } from "../../../src/accessoryFactory/securitySystemAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../../src/context";
-import { TemperatureServiceFactory } from "../../../src/serviceFactory/hub/temperatureServiceFactory";
-import { CharacteristicConstructor } from "../../../src/types";
-import * as mocks from "../../mocks";
+import { CharacteristicValue, Service, Characteristic } from 'homebridge';
+import { AccessoryContext } from '../../../src/accessoryFactory';
+import { SecuritySystemContext } from '../../../src/accessoryFactory/securitySystemAccessoryFactory';
+import { HomebridgeContext, ScoutContext } from '../../../src/context';
+import { TemperatureServiceFactory } from '../../../src/serviceFactory/hub/temperatureServiceFactory';
+import { CharacteristicConstructor } from '../../../src/types';
+import * as mocks from '../../mocks';
 
 describe(`${TemperatureServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
@@ -28,19 +28,19 @@ describe(`${TemperatureServiceFactory.name}`, () => {
         serviceFactory = new TemperatureServiceFactory(homebridge, scout);
     });
 
-    describe(".getService()", () => {
-        test("without temperature", () => {
+    describe('.getService()', () => {
+        test('without temperature', () => {
             delete context.custom.hub.reported!.temperature;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
 
-        test("with temperature", () => {
+        test('with temperature', () => {
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.TemperatureSensor);
         });
     });
 
-    describe(".configureService()", () => {
+    describe('.configureService()', () => {
         let service: Service;
         const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
@@ -60,7 +60,7 @@ describe(`${TemperatureServiceFactory.name}`, () => {
             });
         });
 
-        test("without temperature", () => {
+        test('without temperature', () => {
             delete context.custom.hub.reported!.temperature;
 
             serviceFactory.configureService(service, context);
@@ -68,7 +68,7 @@ describe(`${TemperatureServiceFactory.name}`, () => {
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.CurrentTemperature)).toBeUndefined();
         });
 
-        test("with temperature", () => {
+        test('with temperature', () => {
             serviceFactory.configureService(service, context);
 
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.CurrentTemperature)).toEqual(context.custom.hub.reported?.temperature);

@@ -1,9 +1,9 @@
-import type { CharacteristicValue } from "homebridge";
-import { AccessSensorState, Device, DeviceEvent, DeviceType, DoorPanelState } from "scout-api";
-import { AccessoryContext } from "../../accessoryFactory";
-import { SensorAccessoryContext } from "../../accessoryFactory/sensorAccessoryFactory";
-import { ServiceConstructor, CharacteristicConstructor } from "../../types";
-import { SensorServiceFactory } from "./sensorServiceFactory";
+import type { CharacteristicValue } from 'homebridge';
+import { AccessSensorState, Device, DeviceEvent, DeviceType, DoorPanelState } from 'scout-api';
+import { AccessoryContext } from '../../accessoryFactory';
+import { SensorAccessoryContext } from '../../accessoryFactory/sensorAccessoryFactory';
+import { ServiceConstructor, CharacteristicConstructor } from '../../types';
+import { SensorServiceFactory } from './sensorServiceFactory';
 
 export class ContactSensorServiceFactory extends SensorServiceFactory {
     public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor | undefined {
@@ -70,6 +70,6 @@ export class ContactSensorServiceFactory extends SensorServiceFactory {
     }
 
     private isDeviceEvent(device: Device | DeviceEvent): device is DeviceEvent {
-        return "event" in device;
+        return 'event' in device;
     }
 }

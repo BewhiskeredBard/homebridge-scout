@@ -1,10 +1,10 @@
-import type { Service, CharacteristicValue, CharacteristicSetCallback, CharacteristicEventTypes } from "homebridge";
-import { ModeState, ModeStateUpdateType, Mode } from "scout-api";
-import { AccessoryContext } from "../../accessoryFactory";
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { HomebridgeConfigMode } from "../../context";
-import { ServiceConstructor, CharacteristicConstructor } from "../../types";
-import { HubServiceFactory } from "./hubServiceFactory";
+import type { Service, CharacteristicValue, CharacteristicSetCallback, CharacteristicEventTypes } from 'homebridge';
+import { ModeState, ModeStateUpdateType, Mode } from 'scout-api';
+import { AccessoryContext } from '../../accessoryFactory';
+import { SecuritySystemContext } from '../../accessoryFactory/securitySystemAccessoryFactory';
+import { HomebridgeConfigMode } from '../../context';
+import { ServiceConstructor, CharacteristicConstructor } from '../../types';
+import { HubServiceFactory } from './hubServiceFactory';
 
 export class SecuritySystemServiceFactory extends HubServiceFactory {
     private static readonly ARMING_MODE_STATES = new Set<ModeState>([ModeState.Arming]);
@@ -45,7 +45,7 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
 
         service
             .getCharacteristic(Characteristic.SecuritySystemTargetState)
-            .on("set" as CharacteristicEventTypes, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
+            .on('set' as CharacteristicEventTypes, (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
                 this.setTargetState(service, context, value)
                     .then(() => callback())
                     .catch(callback);

@@ -1,17 +1,17 @@
-import { AuthenticatedApi, ConfigurationParameters, LocationListener, AuthenticatorFactory, Authenticator } from "scout-api";
-import { ScoutContextFactory } from "../../src/context";
-import * as mocks from "../mocks";
+import { AuthenticatedApi, ConfigurationParameters, LocationListener, AuthenticatorFactory, Authenticator } from 'scout-api';
+import { ScoutContextFactory } from '../../src/context';
+import * as mocks from '../mocks';
 
-jest.mock("scout-api");
+jest.mock('scout-api');
 
 describe(`${ScoutContextFactory.name}`, () => {
-    test(".create()", async () => {
+    test('.create()', async () => {
         const AuthenticatedApiMock = AuthenticatedApi as jest.Mock<AuthenticatedApi>;
         const AuthenticatorFactoryMock = AuthenticatorFactory as jest.Mock<AuthenticatorFactory>;
         const LocationListenerMock = LocationListener as jest.Mock<LocationListener>;
 
-        const token = "token1";
-        const memberId = "memberId1";
+        const token = 'token1';
+        const memberId = 'memberId1';
         const homebridge = mocks.mockHomebridgeContext();
         const scoutContextFactory = new ScoutContextFactory();
         const authenticatorFactory = {
@@ -31,10 +31,10 @@ describe(`${ScoutContextFactory.name}`, () => {
 
         AuthenticatedApiMock.mockImplementation((arg: ConfigurationParameters) => {
             expect(arg.apiKey).toBeDefined();
-            if (typeof arg.apiKey === "string") {
+            if (typeof arg.apiKey === 'string') {
                 expect(arg.apiKey).toEqual(token);
             } else if (undefined !== arg.apiKey) {
-                expect(arg.apiKey("foo")).toEqual(token);
+                expect(arg.apiKey('foo')).toEqual(token);
             }
 
             return authenticatedApi;

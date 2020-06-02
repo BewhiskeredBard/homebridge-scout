@@ -1,12 +1,12 @@
 root: true
-parser: "@typescript-eslint/parser"
+parser: '@typescript-eslint/parser'
 parserOptions:
-    tsconfigRootDir: "./"
+    tsconfigRootDir: './'
     project:
-        - "./tsconfig.lint.json"
+        - './tsconfig.lint.json'
 plugins:
-    - "@typescript-eslint"
-    - "import"
+    - '@typescript-eslint'
+    - 'import'
 extends:
     - eslint:recommended
     - plugin:@typescript-eslint/eslint-recommended
@@ -18,17 +18,17 @@ extends:
     - plugin:import/warnings
     - plugin:import/typescript
 rules:
-    "@typescript-eslint/explicit-member-accessibility":
+    '@typescript-eslint/explicit-member-accessibility':
         - error
-    "@typescript-eslint/explicit-module-boundary-types":
+    '@typescript-eslint/explicit-module-boundary-types':
         - error
-    "@typescript-eslint/member-ordering":
+    '@typescript-eslint/member-ordering':
         - error
-    "@typescript-eslint/no-floating-promises":
+    '@typescript-eslint/no-floating-promises':
         - error
-    "@typescript-eslint/prefer-readonly":
+    '@typescript-eslint/prefer-readonly':
         - error
-    "@typescript-eslint/no-magic-numbers":
+    '@typescript-eslint/no-magic-numbers':
         - error
         - ignoreEnums: true
           ignoreReadonlyClassProperties: true
@@ -40,7 +40,7 @@ rules:
         - error
     id-length:
         - error
-        - exceptions: ["e"]
+        - exceptions: ['e']
     import/order:
         - error
         - alphabetize:

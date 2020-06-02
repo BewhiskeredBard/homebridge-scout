@@ -1,26 +1,26 @@
-import type { DynamicPlatformPlugin, Logging, PlatformConfig, API, PlatformAccessory } from "homebridge";
-import { SecuritySystemAccessoryFactory } from "./accessoryFactory/securitySystemAccessoryFactory";
-import { SensorAccessoryFactory } from "./accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContextFactory, ScoutContextFactory } from "./context";
-import { Orchestrator } from "./orchestrator";
-import { BatteryServiceFactory } from "./serviceFactory/hub/batteryServiceFactory";
-import { SecuritySystemServiceFactory } from "./serviceFactory/hub/securitySystemServiceFactory";
-import { TemperatureServiceFactory } from "./serviceFactory/hub/temperatureServiceFactory";
-import { ContactSensorServiceFactory } from "./serviceFactory/sensor/contactSensorServiceFactory";
-import { HumiditySensorServiceFactory } from "./serviceFactory/sensor/humiditySensorServiceFactory";
-import { LeakSensorServiceFactory } from "./serviceFactory/sensor/leakSensorServiceFactory";
-import { MotionSensorServiceFactory } from "./serviceFactory/sensor/motionSensorServiceFactory";
-import { SmokeSensorServiceFactory } from "./serviceFactory/sensor/smokeSensorServiceFactory";
-import { TemperatureSensorServiceFactory } from "./serviceFactory/sensor/temperatureSensorServiceFactory";
+import type { DynamicPlatformPlugin, Logging, PlatformConfig, API, PlatformAccessory } from 'homebridge';
+import { SecuritySystemAccessoryFactory } from './accessoryFactory/securitySystemAccessoryFactory';
+import { SensorAccessoryFactory } from './accessoryFactory/sensorAccessoryFactory';
+import { HomebridgeContextFactory, ScoutContextFactory } from './context';
+import { Orchestrator } from './orchestrator';
+import { BatteryServiceFactory } from './serviceFactory/hub/batteryServiceFactory';
+import { SecuritySystemServiceFactory } from './serviceFactory/hub/securitySystemServiceFactory';
+import { TemperatureServiceFactory } from './serviceFactory/hub/temperatureServiceFactory';
+import { ContactSensorServiceFactory } from './serviceFactory/sensor/contactSensorServiceFactory';
+import { HumiditySensorServiceFactory } from './serviceFactory/sensor/humiditySensorServiceFactory';
+import { LeakSensorServiceFactory } from './serviceFactory/sensor/leakSensorServiceFactory';
+import { MotionSensorServiceFactory } from './serviceFactory/sensor/motionSensorServiceFactory';
+import { SmokeSensorServiceFactory } from './serviceFactory/sensor/smokeSensorServiceFactory';
+import { TemperatureSensorServiceFactory } from './serviceFactory/sensor/temperatureSensorServiceFactory';
 
 export class ScoutPlatformPlugin implements DynamicPlatformPlugin {
-    public static PLUGIN_NAME = "homebridge-scout";
-    public static PLATFORM_NAME = "ScoutAlarm";
+    public static PLUGIN_NAME = 'homebridge-scout';
+    public static PLATFORM_NAME = 'ScoutAlarm';
 
     private readonly orchestrator: Orchestrator;
 
     public constructor(logger: Logging, config: PlatformConfig, api: API) {
-        const pluginVersion = (require("../package.json") as Record<string, unknown>).version as string;
+        const pluginVersion = (require('../package.json') as Record<string, unknown>).version as string;
 
         logger.info(`Running ${config.platform}-${pluginVersion} on homebridge-${api.serverVersion}.`);
 

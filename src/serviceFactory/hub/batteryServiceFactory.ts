@@ -1,9 +1,9 @@
-import type { CharacteristicValue } from "homebridge";
-import { HubType } from "scout-api";
-import { AccessoryContext } from "../../accessoryFactory";
-import { SecuritySystemContext } from "../../accessoryFactory/securitySystemAccessoryFactory";
-import { ServiceConstructor, CharacteristicConstructor } from "../../types";
-import { HubServiceFactory } from "./hubServiceFactory";
+import type { CharacteristicValue } from 'homebridge';
+import { HubType } from 'scout-api';
+import { AccessoryContext } from '../../accessoryFactory';
+import { SecuritySystemContext } from '../../accessoryFactory/securitySystemAccessoryFactory';
+import { ServiceConstructor, CharacteristicConstructor } from '../../types';
+import { HubServiceFactory } from './hubServiceFactory';
 
 export class BatteryServiceFactory extends HubServiceFactory {
     private static readonly MAX_BATTERY_LEVELS = new Map([

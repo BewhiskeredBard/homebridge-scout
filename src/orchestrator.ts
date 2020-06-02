@@ -1,8 +1,8 @@
-import type { PlatformAccessory, API, Logging } from "homebridge";
-import { Location } from "scout-api";
-import { AccessoryFactory, TypedPlatformAccessory } from "./accessoryFactory";
-import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from "./context";
-import { ScoutPlatformPlugin } from "./scoutPlatformPlugin";
+import type { PlatformAccessory, API, Logging } from 'homebridge';
+import { Location } from 'scout-api';
+import { AccessoryFactory, TypedPlatformAccessory } from './accessoryFactory';
+import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from './context';
+import { ScoutPlatformPlugin } from './scoutPlatformPlugin';
 
 export class Orchestrator {
     private readonly cachedAccessories = new Map<string, PlatformAccessory>();
@@ -15,7 +15,7 @@ export class Orchestrator {
         private readonly scoutContextFactory: ScoutContextFactory,
         private readonly accessoryFactories: (homebridge: HomebridgeContext, scout: ScoutContext) => AccessoryFactory<unknown>[],
     ) {
-        api.on("didFinishLaunching", () => {
+        api.on('didFinishLaunching', () => {
             this.init().catch(e => logger.error(e));
         });
     }
@@ -86,11 +86,11 @@ export class Orchestrator {
             }
         }
 
-        this.logger.info(`Registering new accessories [${[...newAccessories.map(accessory => accessory.UUID)].join(", ")}].`);
+        this.logger.info(`Registering new accessories [${[...newAccessories.map(accessory => accessory.UUID)].join(', ')}].`);
 
         this.api.registerPlatformAccessories(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, newAccessories);
 
-        this.logger.info(`Removing old cached accessories [${[...this.cachedAccessories.keys()].join(", ")}].`);
+        this.logger.info(`Removing old cached accessories [${[...this.cachedAccessories.keys()].join(', ')}].`);
 
         this.api.unregisterPlatformAccessories(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [...this.cachedAccessories.values()]);
 

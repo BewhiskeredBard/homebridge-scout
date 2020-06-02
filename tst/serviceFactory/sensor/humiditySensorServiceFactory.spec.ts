@@ -1,11 +1,11 @@
-import { Service, CharacteristicValue, Characteristic } from "homebridge";
-import { DeviceType } from "scout-api";
-import { AccessoryContext } from "../../../src/accessoryFactory";
-import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../../src/context";
-import { HumiditySensorServiceFactory } from "../../../src/serviceFactory/sensor/humiditySensorServiceFactory";
-import { CharacteristicConstructor } from "../../../src/types";
-import * as mocks from "../../mocks";
+import { Service, CharacteristicValue, Characteristic } from 'homebridge';
+import { DeviceType } from 'scout-api';
+import { AccessoryContext } from '../../../src/accessoryFactory';
+import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
+import { HomebridgeContext, ScoutContext } from '../../../src/context';
+import { HumiditySensorServiceFactory } from '../../../src/serviceFactory/sensor/humiditySensorServiceFactory';
+import { CharacteristicConstructor } from '../../../src/types';
+import * as mocks from '../../mocks';
 
 describe(`${HumiditySensorServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
@@ -32,19 +32,19 @@ describe(`${HumiditySensorServiceFactory.name}`, () => {
         serviceFactory = new HumiditySensorServiceFactory(homebridge, scout);
     });
 
-    describe(".getService()", () => {
-        test("without humdity", () => {
+    describe('.getService()', () => {
+        test('without humdity', () => {
             delete context.custom.device.reported!.humidity;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
 
-        test("with humidity", () => {
+        test('with humidity', () => {
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.HumiditySensor);
         });
     });
 
-    describe(".configureService()", () => {
+    describe('.configureService()', () => {
         let service: Service;
         const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
@@ -64,7 +64,7 @@ describe(`${HumiditySensorServiceFactory.name}`, () => {
             });
         });
 
-        test("without humidity", () => {
+        test('without humidity', () => {
             delete context.custom.device.reported!.humidity;
 
             serviceFactory.configureService(service, context);
@@ -72,7 +72,7 @@ describe(`${HumiditySensorServiceFactory.name}`, () => {
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.CurrentRelativeHumidity)).toBeUndefined();
         });
 
-        test("with humidity", () => {
+        test('with humidity', () => {
             serviceFactory.configureService(service, context);
 
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.CurrentRelativeHumidity)).toEqual(

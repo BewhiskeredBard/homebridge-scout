@@ -1,11 +1,11 @@
-import { CharacteristicValue, Service, Characteristic } from "homebridge";
-import { DeviceType, MotionSensorState } from "scout-api";
-import { AccessoryContext } from "../../../src/accessoryFactory";
-import { SensorAccessoryContext } from "../../../src/accessoryFactory/sensorAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../../src/context";
-import { MotionSensorServiceFactory } from "../../../src/serviceFactory/sensor/motionSensorServiceFactory";
-import { CharacteristicConstructor } from "../../../src/types";
-import * as mocks from "../../mocks";
+import { CharacteristicValue, Service, Characteristic } from 'homebridge';
+import { DeviceType, MotionSensorState } from 'scout-api';
+import { AccessoryContext } from '../../../src/accessoryFactory';
+import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
+import { HomebridgeContext, ScoutContext } from '../../../src/context';
+import { MotionSensorServiceFactory } from '../../../src/serviceFactory/sensor/motionSensorServiceFactory';
+import { CharacteristicConstructor } from '../../../src/types';
+import * as mocks from '../../mocks';
 
 describe(`${MotionSensorServiceFactory.name}`, () => {
     let homebridge: HomebridgeContext;
@@ -32,25 +32,25 @@ describe(`${MotionSensorServiceFactory.name}`, () => {
         serviceFactory = new MotionSensorServiceFactory(homebridge, scout);
     });
 
-    describe(".getService()", () => {
-        test("motion sensor without state", () => {
+    describe('.getService()', () => {
+        test('motion sensor without state', () => {
             delete context.custom.device.reported!.trigger!.state;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
 
-        test("motion sensor with state", () => {
+        test('motion sensor with state', () => {
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.MotionSensor);
         });
 
-        test("other device type with state", () => {
+        test('other device type with state', () => {
             context.custom.device.type = DeviceType.DoorPanel;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
     });
 
-    describe(".configureService()", () => {
+    describe('.configureService()', () => {
         let service: Service;
         const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
@@ -70,7 +70,7 @@ describe(`${MotionSensorServiceFactory.name}`, () => {
             });
         });
 
-        test("without state", () => {
+        test('without state', () => {
             delete context.custom.device.reported!.trigger!.state;
 
             serviceFactory.configureService(service, context);
@@ -78,7 +78,7 @@ describe(`${MotionSensorServiceFactory.name}`, () => {
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.MotionDetected)).toBeUndefined();
         });
 
-        test("motion detected", () => {
+        test('motion detected', () => {
             context.custom.device.reported!.trigger!.state = MotionSensorState.Start;
 
             serviceFactory.configureService(service, context);
@@ -86,7 +86,7 @@ describe(`${MotionSensorServiceFactory.name}`, () => {
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.MotionDetected)).toStrictEqual(true);
         });
 
-        test("motion not detected", () => {
+        test('motion not detected', () => {
             context.custom.device.reported!.trigger!.state = MotionSensorState.Stop;
 
             serviceFactory.configureService(service, context);

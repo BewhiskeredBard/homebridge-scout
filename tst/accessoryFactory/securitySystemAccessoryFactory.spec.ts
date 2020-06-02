@@ -2,15 +2,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/unbound-method */
 
-import { Service, Categories } from "homebridge";
-import { Hub, HubType, ConnectionState, Mode, HubChirpType } from "scout-api";
-import { TypedPlatformAccessory } from "../../src/accessoryFactory";
-import { SecuritySystemAccessoryFactory, SecuritySystemContext } from "../../src/accessoryFactory/securitySystemAccessoryFactory";
-import { HomebridgeContext, ScoutContext } from "../../src/context";
-import * as mocks from "../mocks";
+import { Service, Categories } from 'homebridge';
+import { Hub, HubType, ConnectionState, Mode, HubChirpType } from 'scout-api';
+import { TypedPlatformAccessory } from '../../src/accessoryFactory';
+import { SecuritySystemAccessoryFactory, SecuritySystemContext } from '../../src/accessoryFactory/securitySystemAccessoryFactory';
+import { HomebridgeContext, ScoutContext } from '../../src/context';
+import * as mocks from '../mocks';
 
 describe(`${SecuritySystemAccessoryFactory.name}`, () => {
-    const locationId = "locationId1";
+    const locationId = 'locationId1';
     let homebridge: HomebridgeContext;
     let scout: ScoutContext;
     let hub: Hub;
@@ -20,20 +20,20 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
         homebridge = mocks.mockHomebridgeContext();
         scout = mocks.mockScoutContext();
         hub = {
-            id: "hubId1",
+            id: 'hubId1',
             type: HubType.Scout1S,
-            serial_number: "serial1",
+            serial_number: 'serial1',
             reported: {
-                fw_version: "firmware1",
-                hw_version: "hardware1",
+                fw_version: 'firmware1',
+                hw_version: 'hardware1',
             },
         } as Hub;
 
         accessoryFactory = new SecuritySystemAccessoryFactory(homebridge, scout, []);
     });
 
-    describe(".createAccessories()", () => {
-        test("without configuration", async () => {
+    describe('.createAccessories()', () => {
+        test('without configuration', async () => {
             delete homebridge.config.modes;
 
             const accessories = await accessoryFactory.createAccessories(locationId);
@@ -41,10 +41,10 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
             expect(accessories).toHaveLength(0);
         });
 
-        test("with configuration", async () => {
-            const name = "Security System";
-            const uuid = "uuid1";
-            const manufacturer = "Scout";
+        test('with configuration', async () => {
+            const name = 'Security System';
+            const uuid = 'uuid1';
+            const manufacturer = 'Scout';
 
             const accessory = {
                 getService: jest.fn() as unknown,
@@ -56,7 +56,7 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
 
             const modes = [
                 {
-                    id: "modeId1",
+                    id: 'modeId1',
                 } as Mode,
             ];
 
@@ -107,7 +107,7 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
         });
     });
 
-    describe(".configureAccessory()", () => {
+    describe('.configureAccessory()', () => {
         let accessory: TypedPlatformAccessory<SecuritySystemContext>;
 
         beforeEach(() => {
@@ -124,8 +124,8 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
             } as TypedPlatformAccessory<SecuritySystemContext>;
         });
 
-        describe("identify event", () => {
-            test("success", async () => {
+        describe('identify event', () => {
+            test('success', async () => {
                 (scout.api.setChirp as jest.Mock).mockImplementation(() => {
                     return accessory.context.custom.hub;
                 });
@@ -142,7 +142,7 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
                 });
             });
 
-            test("failure", async () => {
+            test('failure', async () => {
                 const error = new Error();
 
                 (scout.api.setChirp as jest.Mock).mockImplementation(() => {

@@ -1,4 +1,4 @@
-import { HomebridgeContext, ScoutContext } from "../src/context";
+import { HomebridgeContext, ScoutContext } from '../src/context';
 
 export function mockHomebridgeContext(): HomebridgeContext {
     const homebridge = {
@@ -41,14 +41,14 @@ export function mockHomebridgeContext(): HomebridgeContext {
         },
         config: {
             auth: {
-                email: "email1",
-                password: "password1",
+                email: 'email1',
+                password: 'password1',
             },
-            location: "locationName1",
+            location: 'locationName1',
             modes: {
-                away: ["awayModeName"],
-                night: ["nightModeName"],
-                stay: ["stayModeName"],
+                away: ['awayModeName'],
+                night: ['nightModeName'],
+                stay: ['stayModeName'],
             },
         },
         logger: {
@@ -91,7 +91,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
 
 export function mockScoutContext(): ScoutContext {
     return {
-        memberId: "memberId1",
+        memberId: 'memberId1',
         api: {
             getHub: jest.fn() as unknown,
             getModes: jest.fn() as unknown,
