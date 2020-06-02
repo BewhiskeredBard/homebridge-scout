@@ -29,10 +29,10 @@ export interface HomebridgeContext {
 export class HomebridgeContextFactory {
     private static readonly JSON_SCHEMA_PATH = "../../config.schema.json";
 
-    private readonly schema: object;
+    private readonly schema: Record<string, unknown>;
 
     public constructor() {
-        this.schema = require(HomebridgeContextFactory.JSON_SCHEMA_PATH).schema;
+        this.schema = (require(HomebridgeContextFactory.JSON_SCHEMA_PATH) as Record<string, unknown>).schema as Record<string, unknown>;
     }
 
     public create(api: API, logger: Logging, config: unknown): HomebridgeContext {
@@ -41,7 +41,7 @@ export class HomebridgeContextFactory {
 
         if (!isValid && ajv.errors && 0 < ajv.errors.length) {
             const error = ajv.errors[0];
-            const message = `Configuration error: config${error.dataPath} ${error.message}`;
+            const message = `Configuration error: config${error.dataPath} ${error.message || ""}`;
 
             throw new Error(message);
         }

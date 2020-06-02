@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Service, Characteristic, CharacteristicValue } from "homebridge";
 import { ModeState, Mode, ModeStateUpdateType } from "scout-api";
 import { AccessoryContext } from "../../../src/accessoryFactory";
@@ -82,16 +83,16 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
 
     describe(".configureService()", () => {
         let service: Service;
-        let characteristics: Map<CharacteristicConstructor<unknown>, Characteristic>;
-        let updatedCharacteristics: Map<CharacteristicConstructor<unknown>, CharacteristicValue>;
+        const characteristics = new Map<CharacteristicConstructor<unknown>, Characteristic>();
+        const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
 
         beforeEach(() => {
             service = {
                 getCharacteristic: jest.fn() as unknown,
             } as Service;
 
-            characteristics = new Map();
-            updatedCharacteristics = new Map();
+            characteristics.clear();
+            updatedCharacteristics.clear();
 
             (service.getCharacteristic as jest.Mock<Characteristic>).mockImplementation((type: CharacteristicConstructor<unknown>) => {
                 let characteristic = characteristics.get(type);
@@ -189,7 +190,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             serviceFactory.configureService(service, context);
 
             const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
-            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1];
+            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1] as (...args: any[]) => void;
 
             return new Promise(resolve => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM, resolve);
@@ -214,7 +215,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             serviceFactory.configureService(service, context);
 
             const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
-            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1];
+            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1] as (...args: any[]) => void;
 
             return new Promise(resolve => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM, resolve);
@@ -239,7 +240,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             serviceFactory.configureService(service, context);
 
             const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
-            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1];
+            const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1] as (...args: any[]) => void;
 
             return new Promise(resolve => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM, resolve);

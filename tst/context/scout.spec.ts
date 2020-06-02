@@ -1,4 +1,4 @@
-import { AuthenticatedApi, LocationListener, AuthenticatorFactory, Authenticator } from "scout-api";
+import { AuthenticatedApi, ConfigurationParameters, LocationListener, AuthenticatorFactory, Authenticator } from "scout-api";
 import { ScoutContextFactory } from "../../src/context";
 import * as mocks from "../mocks";
 
@@ -29,8 +29,13 @@ describe(`${ScoutContextFactory.name}`, () => {
         const authenticatedApi = {} as AuthenticatedApi;
         const locationListener = {} as LocationListener;
 
-        AuthenticatedApiMock.mockImplementation(arg => {
-            expect(arg.apiKey()).toEqual(token);
+        AuthenticatedApiMock.mockImplementation((arg: ConfigurationParameters) => {
+            expect(arg.apiKey).toBeDefined();
+            if (typeof arg.apiKey === "string") {
+                expect(arg.apiKey).toEqual(token);
+            } else if (undefined !== arg.apiKey) {
+                expect(arg.apiKey("foo")).toEqual(token);
+            }
 
             return authenticatedApi;
         });
