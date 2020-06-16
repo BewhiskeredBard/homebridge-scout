@@ -1,5 +1,5 @@
 import { Service, CharacteristicValue, Characteristic } from 'homebridge';
-import { DeviceType, SmokeState, CoState, SmokeAlarmState } from 'scout-api';
+import { DeviceReport, DeviceType, SmokeState, CoState } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
 import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
 import { HomebridgeContext, ScoutContext } from '../../../src/context';
@@ -37,7 +37,7 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
 
     describe('.getService()', () => {
         test('smoke alarm without state', () => {
-            delete context.custom.device.reported!.trigger!.state;
+            delete context.custom.device.reported?.trigger?.state;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
@@ -74,7 +74,7 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
         });
 
         test('without state', () => {
-            delete context.custom.device.reported!.trigger!.state;
+            delete context.custom.device.reported?.trigger?.state;
 
             serviceFactory.configureService(service, context);
 
@@ -82,7 +82,13 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
         });
 
         test('emergency', () => {
-            (context.custom.device.reported!.trigger!.state as SmokeAlarmState).smoke = SmokeState.Emergency;
+            context.custom.device.reported = {
+                trigger: {
+                    state: {
+                        smoke: SmokeState.Emergency,
+                    },
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -92,7 +98,13 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
         });
 
         test('ok', () => {
-            (context.custom.device.reported!.trigger!.state as SmokeAlarmState).smoke = SmokeState.Ok;
+            context.custom.device.reported = {
+                trigger: {
+                    state: {
+                        smoke: SmokeState.Ok,
+                    },
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -102,7 +114,13 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
         });
 
         test('testing', () => {
-            (context.custom.device.reported!.trigger!.state as SmokeAlarmState).smoke = SmokeState.Testing;
+            context.custom.device.reported = {
+                trigger: {
+                    state: {
+                        smoke: SmokeState.Testing,
+                    },
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 

@@ -30,7 +30,7 @@ describe(`${TemperatureServiceFactory.name}`, () => {
 
     describe('.getService()', () => {
         test('without temperature', () => {
-            delete context.custom.hub.reported!.temperature;
+            delete context.custom.hub.reported?.temperature;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
@@ -61,7 +61,7 @@ describe(`${TemperatureServiceFactory.name}`, () => {
         });
 
         test('without temperature', () => {
-            delete context.custom.hub.reported!.temperature;
+            delete context.custom.hub.reported?.temperature;
 
             serviceFactory.configureService(service, context);
 

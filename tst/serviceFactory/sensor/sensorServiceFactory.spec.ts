@@ -1,5 +1,5 @@
 import { Service, CharacteristicValue, Characteristic } from 'homebridge';
-import { DeviceType } from 'scout-api';
+import { DeviceReport, DeviceType } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
 import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
 import { HomebridgeContext, ScoutContext } from '../../../src/context';
@@ -64,7 +64,11 @@ describe(`${SensorServiceFactory.name}`, () => {
             ${true}      | ${true}
         `('tamper status with tamper = $tamper', ({ tamper, isTampered }) => {
             const StatusTampered = homebridge.api.hap.Characteristic.StatusTampered;
-            context.custom.device.reported!.trigger!.tamper = tamper as boolean | undefined;
+            context.custom.device.reported = {
+                trigger: {
+                    tamper: tamper as boolean | undefined,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -81,8 +85,12 @@ describe(`${SensorServiceFactory.name}`, () => {
             ${true}  | ${new Date()} | ${true}
         `('low battery status with timedout = $timedout and low battery = $lowBattery', ({ timedout, lowBattery, isBatteryLow }) => {
             const StatusLowBattery = homebridge.api.hap.Characteristic.StatusLowBattery;
-            context.custom.device.reported!.timedout = timedout as boolean;
-            context.custom.device.reported!.battery!.low = lowBattery as string | null;
+            context.custom.device.reported = {
+                timedout: timedout as boolean,
+                battery: {
+                    low: lowBattery as string | null,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 

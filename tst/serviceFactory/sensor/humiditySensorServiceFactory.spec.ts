@@ -34,7 +34,7 @@ describe(`${HumiditySensorServiceFactory.name}`, () => {
 
     describe('.getService()', () => {
         test('without humdity', () => {
-            delete context.custom.device.reported!.humidity;
+            delete context.custom.device.reported?.humidity;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
@@ -65,7 +65,7 @@ describe(`${HumiditySensorServiceFactory.name}`, () => {
         });
 
         test('without humidity', () => {
-            delete context.custom.device.reported!.humidity;
+            delete context.custom.device.reported?.humidity;
 
             serviceFactory.configureService(service, context);
 

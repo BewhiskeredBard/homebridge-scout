@@ -34,7 +34,7 @@ describe(`${TemperatureSensorServiceFactory.name}`, () => {
 
     describe('.getService()', () => {
         test('without temperature', () => {
-            delete context.custom.device.reported!.temperature;
+            delete context.custom.device.reported?.temperature;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });

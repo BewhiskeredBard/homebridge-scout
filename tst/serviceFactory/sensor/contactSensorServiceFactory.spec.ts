@@ -1,5 +1,5 @@
 import { CharacteristicValue, Characteristic, Service } from 'homebridge';
-import { DeviceType, AccessSensorState, DoorPanelState, DeviceEventType, DeviceTriggerEvent } from 'scout-api';
+import { DeviceReport, DeviceType, AccessSensorState, DoorPanelState, DeviceEventType, DeviceTriggerEvent } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
 import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
 import { HomebridgeContext, ScoutContext } from '../../../src/context';
@@ -38,7 +38,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
 
         test('door panel with state', () => {
             context.custom.device.type = DeviceType.DoorPanel;
-            context.custom.device.reported!.trigger!.state = DoorPanelState.Open;
+            context.custom.device.reported = {
+                trigger: {
+                    state: DoorPanelState.Open,
+                },
+            } as DeviceReport;
 
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.ContactSensor);
         });
@@ -51,7 +55,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
 
         test('access sensor with state', () => {
             context.custom.device.type = DeviceType.AccessSensor;
-            context.custom.device.reported!.trigger!.state = AccessSensorState.Open;
+            context.custom.device.reported = {
+                trigger: {
+                    state: DoorPanelState.Open,
+                },
+            } as DeviceReport;
 
             expect(serviceFactory.getService(context)).toStrictEqual(homebridge.api.hap.Service.ContactSensor);
         });
@@ -93,7 +101,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
 
         test('door panel open', () => {
             context.custom.device.type = DeviceType.DoorPanel;
-            context.custom.device.reported!.trigger!.state = DoorPanelState.Open;
+            context.custom.device.reported = {
+                trigger: {
+                    state: DoorPanelState.Open,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -104,7 +116,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
 
         test('door panel closed', () => {
             context.custom.device.type = DeviceType.DoorPanel;
-            context.custom.device.reported!.trigger!.state = DoorPanelState.Close;
+            context.custom.device.reported = {
+                trigger: {
+                    state: DoorPanelState.Close,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -123,7 +139,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
 
         test('access sensor open', () => {
             context.custom.device.type = DeviceType.AccessSensor;
-            context.custom.device.reported!.trigger!.state = AccessSensorState.Open;
+            context.custom.device.reported = {
+                trigger: {
+                    state: AccessSensorState.Open,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -134,7 +154,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
 
         test('access sensor closed', () => {
             context.custom.device.type = DeviceType.AccessSensor;
-            context.custom.device.reported!.trigger!.state = AccessSensorState.Close;
+            context.custom.device.reported = {
+                trigger: {
+                    state: AccessSensorState.Close,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -150,7 +174,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
             });
 
             test('initial state close', () => {
-                context.custom.device.reported!.trigger!.state = AccessSensorState.Close;
+                context.custom.device.reported = {
+                    trigger: {
+                        state: AccessSensorState.Close,
+                    },
+                } as DeviceReport;
 
                 serviceFactory.configureService(service, context);
 
@@ -160,7 +188,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
             });
 
             test('initial state open', () => {
-                context.custom.device.reported!.trigger!.state = AccessSensorState.Open;
+                context.custom.device.reported = {
+                    trigger: {
+                        state: AccessSensorState.Open,
+                    },
+                } as DeviceReport;
 
                 serviceFactory.configureService(service, context);
 
@@ -171,7 +203,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
 
             test('event state close', () => {
                 (context.custom.device as DeviceTriggerEvent).event = DeviceEventType.Triggered;
-                context.custom.device.reported!.trigger!.state = AccessSensorState.Close;
+                context.custom.device.reported = {
+                    trigger: {
+                        state: AccessSensorState.Close,
+                    },
+                } as DeviceReport;
 
                 serviceFactory.configureService(service, context);
 
@@ -182,7 +218,11 @@ describe(`${ContactSensorServiceFactory.name}`, () => {
 
             test('event state open', () => {
                 (context.custom.device as DeviceTriggerEvent).event = DeviceEventType.Triggered;
-                context.custom.device.reported!.trigger!.state = AccessSensorState.Open;
+                context.custom.device.reported = {
+                    trigger: {
+                        state: AccessSensorState.Open,
+                    },
+                } as DeviceReport;
 
                 serviceFactory.configureService(service, context);
 

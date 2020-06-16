@@ -1,5 +1,5 @@
 import { CharacteristicValue, Service, Characteristic } from 'homebridge';
-import { DeviceType, MotionSensorState } from 'scout-api';
+import { DeviceType, DeviceReport, MotionSensorState } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
 import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
 import { HomebridgeContext, ScoutContext } from '../../../src/context';
@@ -34,7 +34,7 @@ describe(`${MotionSensorServiceFactory.name}`, () => {
 
     describe('.getService()', () => {
         test('motion sensor without state', () => {
-            delete context.custom.device.reported!.trigger!.state;
+            delete context.custom.device.reported?.trigger?.state;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
@@ -71,7 +71,7 @@ describe(`${MotionSensorServiceFactory.name}`, () => {
         });
 
         test('without state', () => {
-            delete context.custom.device.reported!.trigger!.state;
+            delete context.custom.device.reported?.trigger?.state;
 
             serviceFactory.configureService(service, context);
 
@@ -79,7 +79,11 @@ describe(`${MotionSensorServiceFactory.name}`, () => {
         });
 
         test('motion detected', () => {
-            context.custom.device.reported!.trigger!.state = MotionSensorState.Start;
+            context.custom.device.reported = {
+                trigger: {
+                    state: MotionSensorState.Start,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -87,7 +91,11 @@ describe(`${MotionSensorServiceFactory.name}`, () => {
         });
 
         test('motion not detected', () => {
-            context.custom.device.reported!.trigger!.state = MotionSensorState.Stop;
+            context.custom.device.reported = {
+                trigger: {
+                    state: MotionSensorState.Stop,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 

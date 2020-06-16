@@ -1,5 +1,5 @@
 import { Service, CharacteristicValue, Characteristic } from 'homebridge';
-import { HubType } from 'scout-api';
+import { HubReport, HubType } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
 import { SecuritySystemContext } from '../../../src/accessoryFactory/securitySystemAccessoryFactory';
 import { HomebridgeContext, ScoutContext } from '../../../src/context';
@@ -35,7 +35,7 @@ describe(`${BatteryServiceFactory.name}`, () => {
 
     describe('.getService()', () => {
         test('without battery', () => {
-            delete context.custom.hub.reported!.battery;
+            delete context.custom.hub.reported?.battery;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
@@ -66,7 +66,7 @@ describe(`${BatteryServiceFactory.name}`, () => {
         });
 
         test('without battery', () => {
-            delete context.custom.hub.reported!.battery;
+            delete context.custom.hub.reported?.battery;
 
             serviceFactory.configureService(service, context);
 
@@ -74,7 +74,11 @@ describe(`${BatteryServiceFactory.name}`, () => {
         });
 
         test('battery charging', () => {
-            context.custom.hub.reported!.battery.active = false;
+            context.custom.hub.reported = {
+                battery: {
+                    active: false,
+                },
+            } as HubReport;
 
             serviceFactory.configureService(service, context);
 
@@ -84,7 +88,11 @@ describe(`${BatteryServiceFactory.name}`, () => {
         });
 
         test('battery not charging', () => {
-            context.custom.hub.reported!.battery.active = true;
+            context.custom.hub.reported = {
+                battery: {
+                    active: true,
+                },
+            } as HubReport;
 
             serviceFactory.configureService(service, context);
 
@@ -96,7 +104,12 @@ describe(`${BatteryServiceFactory.name}`, () => {
         test(`${HubType.Scout1S} battery level`, () => {
             const batteryLevel = 1.23;
             context.custom.hub.type = HubType.Scout1S;
-            context.custom.hub.reported!.battery.level = batteryLevel;
+            context.custom.hub.reported = {
+                battery: {
+                    active: true,
+                    level: batteryLevel,
+                },
+            } as HubReport;
 
             serviceFactory.configureService(service, context);
 
@@ -107,7 +120,12 @@ describe(`${BatteryServiceFactory.name}`, () => {
         test(`${HubType.Scout1} battery level`, () => {
             const batteryLevel = 123;
             context.custom.hub.type = HubType.Scout1;
-            context.custom.hub.reported!.battery.level = batteryLevel;
+            context.custom.hub.reported = {
+                battery: {
+                    active: true,
+                    level: batteryLevel,
+                },
+            } as HubReport;
 
             serviceFactory.configureService(service, context);
 

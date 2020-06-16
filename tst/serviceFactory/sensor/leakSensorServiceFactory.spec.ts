@@ -1,5 +1,5 @@
 import { Service, CharacteristicValue, Characteristic } from 'homebridge';
-import { DeviceType, WaterSensorState } from 'scout-api';
+import { DeviceReport, DeviceType, WaterSensorState } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
 import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
 import { HomebridgeContext, ScoutContext } from '../../../src/context';
@@ -34,7 +34,7 @@ describe(`${LeakSensorServiceFactory.name}`, () => {
 
     describe('.getService()', () => {
         test('water sensor without state', () => {
-            delete context.custom.device.reported!.trigger!.state;
+            delete context.custom.device.reported?.trigger?.state;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
@@ -71,7 +71,7 @@ describe(`${LeakSensorServiceFactory.name}`, () => {
         });
 
         test('without state', () => {
-            delete context.custom.device.reported!.trigger!.state;
+            delete context.custom.device.reported?.trigger?.state;
 
             serviceFactory.configureService(service, context);
 
@@ -79,7 +79,11 @@ describe(`${LeakSensorServiceFactory.name}`, () => {
         });
 
         test('leak detected', () => {
-            context.custom.device.reported!.trigger!.state = WaterSensorState.Wet;
+            context.custom.device.reported = {
+                trigger: {
+                    state: WaterSensorState.Wet,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
@@ -89,7 +93,11 @@ describe(`${LeakSensorServiceFactory.name}`, () => {
         });
 
         test('leak not detected', () => {
-            context.custom.device.reported!.trigger!.state = WaterSensorState.Dry;
+            context.custom.device.reported = {
+                trigger: {
+                    state: WaterSensorState.Dry,
+                },
+            } as DeviceReport;
 
             serviceFactory.configureService(service, context);
 
