@@ -1,12 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "declaration": false,
-    "outDir": "./lib",
-    "strict": true,
-    "allowSyntheticDefaultImports": true
-  },
+  "extends": "./tsconfig.json",
   "include": ["scripts", "src", "tst"],
   "exclude": ["node_modules"]
 }
