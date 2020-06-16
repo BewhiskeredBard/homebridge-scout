@@ -82,7 +82,7 @@ describe(`${SensorServiceFactory.name}`, () => {
         `('low battery status with timedout = $timedout and low battery = $lowBattery', ({ timedout, lowBattery, isBatteryLow }) => {
             const StatusLowBattery = homebridge.api.hap.Characteristic.StatusLowBattery;
             context.custom.device.reported!.timedout = timedout as boolean;
-            context.custom.device.reported!.battery!.low = lowBattery as Date | undefined;
+            context.custom.device.reported!.battery!.low = lowBattery as string | null;
 
             serviceFactory.configureService(service, context);
 

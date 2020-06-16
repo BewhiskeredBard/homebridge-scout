@@ -100,10 +100,11 @@ export function mockScoutContext(): ScoutContext {
             toggleRecipe: jest.fn() as unknown,
         },
         listener: {
-            addConnectionStateListener: jest.fn() as unknown,
             getConnectionState: jest.fn() as unknown,
-            addHubListener: jest.fn() as unknown,
-            addModeListener: jest.fn() as unknown,
+            addLocation: jest.fn() as unknown,
+            removeLocation: jest.fn() as unknown,
+            on: jest.fn() as unknown,
+            off: jest.fn() as unknown,
         },
     } as ScoutContext;
 }

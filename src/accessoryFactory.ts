@@ -1,5 +1,5 @@
 import type { PlatformAccessory, Categories, Service } from 'homebridge';
-import { ConnectionState, ConnectionStateEvent } from 'scout-api';
+import { ConnectionState, ConnectionStateEvent, LocationEventType } from 'scout-api';
 import { HomebridgeContext, ScoutContext } from './context';
 import { ServiceFactory } from './serviceFactory';
 import { ServiceConstructor } from './types';
@@ -28,16 +28,17 @@ export interface TypedPlatformAccessory<T> extends PlatformAccessory {
 
 export abstract class AccessoryFactory<T> {
     private readonly configuredAccessories = new Set<TypedPlatformAccessory<T>>();
-    private readonly listeningLocations = new Set<string>();
 
     public constructor(
         protected readonly homebridge: HomebridgeContext,
         protected readonly scout: ScoutContext,
         protected readonly serviceFactories: ServiceFactory<T>[],
     ) {
-        this.scout.listener.addConnectionStateListener(event => {
+        this.scout.listener.on(LocationEventType.ConnectionState, event => {
             this.onConnectionStateEvent(event);
         });
+
+        this.addLocationListeners();
     }
 
     public async createAccessories(locationId: string): Promise<TypedPlatformAccessory<T>[]> {
@@ -67,17 +68,9 @@ export abstract class AccessoryFactory<T> {
         });
 
         this.configuredAccessories.add(accessory);
-
-        const locationId = accessory.context.locationId;
-
-        if (!this.listeningLocations.has(locationId)) {
-            this.addLocationListeners(locationId);
-
-            this.listeningLocations.add(locationId);
-        }
     }
 
-    protected addLocationListeners(locationId: string): void {
+    protected addLocationListeners(): void {
         return;
     }
 

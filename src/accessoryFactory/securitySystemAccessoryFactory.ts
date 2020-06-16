@@ -1,4 +1,4 @@
-import { Hub, HubChirpType, ModeEvent, Mode } from 'scout-api';
+import { Hub, HubChirpType, LocationEventType, ModeEvent, Mode } from 'scout-api';
 import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory, AccessoryContext } from '../accessoryFactory';
 
 export interface SecuritySystemContext {
@@ -58,14 +58,14 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
         ];
     }
 
-    protected addLocationListeners(locationId: string): void {
-        super.addLocationListeners(locationId);
+    protected addLocationListeners(): void {
+        super.addLocationListeners();
 
-        this.scout.listener.addHubListener(locationId, event => {
+        this.scout.listener.on(LocationEventType.Hub, event => {
             this.onHubEvent(event);
         });
 
-        this.scout.listener.addModeListener(locationId, event => {
+        this.scout.listener.on(LocationEventType.Mode, (event, locationId) => {
             this.onModeEvent(event, locationId);
         });
     }

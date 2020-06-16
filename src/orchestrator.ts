@@ -31,6 +31,8 @@ export class Orchestrator {
         const scout = await this.scoutContextFactory.create(homebridge);
         const location = await this.getLocation(homebridge, scout);
 
+        scout.listener.addLocation(location.id);
+
         await this.registerAccessories(homebridge, scout, location.id);
     }
 

@@ -1,4 +1,4 @@
-import { Device, DeviceType, DeviceEventType, DeviceTriggerEvent, DevicePairEvent } from 'scout-api';
+import { Device, DeviceType, DeviceEventType, DeviceTriggerEvent, DevicePairEvent, LocationEventType } from 'scout-api';
 import { AccessoryFactory, AccessoryInfo, TypedPlatformAccessory } from '../accessoryFactory';
 import { ScoutPlatformPlugin } from '../scoutPlatformPlugin';
 
@@ -60,12 +60,12 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
         };
     }
 
-    protected addLocationListeners(locationId: string): void {
-        this.scout.listener.addDeviceTriggerListener(locationId, event => {
+    protected addLocationListeners(): void {
+        this.scout.listener.on(LocationEventType.DeviceTrigger, event => {
             this.onDeviceTriggerEvent(event);
         });
 
-        this.scout.listener.addDevicePairListener(locationId, event => {
+        this.scout.listener.on(LocationEventType.DevicePair, event => {
             this.onDevicePairEvent(event);
         });
     }

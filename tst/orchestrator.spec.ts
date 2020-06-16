@@ -128,6 +128,7 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
+        expect(scout.listener.addLocation as jest.Mock).toBeCalledWith(location.id);
         expect(homebridge.logger.warn as jest.Mock).toBeCalledWith(
             'The authenticated member [memberId1] is an admin. It is highly recommended to use a non-admin member.',
         );
@@ -151,6 +152,7 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
+        expect(scout.listener.addLocation as jest.Mock).toBeCalledWith(location.id);
         expect(accessoryFactory.configureAccessory as jest.Mock).toBeCalledWith(accessory);
         expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [
             accessory,
@@ -182,6 +184,7 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
+        expect(scout.listener.addLocation as jest.Mock).toBeCalledWith(location.id);
         expect(accessoryFactory.configureAccessory as jest.Mock).not.toBeCalled();
         expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
         expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [
@@ -209,6 +212,7 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
+        expect(scout.listener.addLocation as jest.Mock).toBeCalledWith(location.id);
         expect(cachedAccessory.context).toStrictEqual(accessory.context);
         expect(accessoryFactory.configureAccessory as jest.Mock).toBeCalledWith(cachedAccessory);
         expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
