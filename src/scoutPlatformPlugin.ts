@@ -20,6 +20,8 @@ export class ScoutPlatformPlugin implements DynamicPlatformPlugin {
     private readonly orchestrator: Orchestrator;
 
     public constructor(logger: Logging, config: PlatformConfig, api: API) {
+        // TODO: Replace `require` (see https://github.com/jordanryanmoore/homebridge-scout/issues/100).
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const pluginVersion = (require('../package.json') as Record<string, unknown>).version as string;
 
         logger.info(`Running ${config.platform}-${pluginVersion} on homebridge-${api.serverVersion}.`);
