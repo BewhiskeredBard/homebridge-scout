@@ -228,6 +228,35 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
         });
 
         test('disarm when already armed', () => {
+            (scout.api.getModes as jest.Mock<unknown>).mockImplementation(() => {
+                return new Promise(resolve => {
+                    resolve({
+                        data: [
+                            {
+                                id: 'mode0',
+                                name: 'name0',
+                                state: ModeState.Disarmed,
+                            },
+                            {
+                                id: 'mode1',
+                                name: 'name1',
+                                state: ModeState.Disarmed,
+                            },
+                            {
+                                id: 'mode2',
+                                name: 'name2',
+                                state: ModeState.Armed,
+                            },
+                            {
+                                id: 'mode3',
+                                name: 'name3',
+                                state: ModeState.Disarmed,
+                            },
+                        ],
+                    });
+                });
+            });
+
             (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
                 return new Promise(resolve => {
                     resolve();
@@ -235,7 +264,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             });
 
             // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-            context.custom.modes[2].state = ModeState.Armed;
+            context.custom.modes[0].state = ModeState.Armed;
 
             serviceFactory.configureService(service, context);
 
