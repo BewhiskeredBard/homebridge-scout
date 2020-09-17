@@ -88,7 +88,9 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         }
 
         if (!targetMode) {
-            // TODO: Fix #172.
+            // There's always a chance that a mode event was missed because the event listener was (temporarily) disconnected.
+            // Grab the latest mode state so we're certain which one to disarm.
+            context.custom.modes = (await this.scout.api.getModes(context.locationId)).data;
             targetMode = this.getActiveMode(context);
             stateUpdate = ModeStateUpdateType.Disarm;
         }
