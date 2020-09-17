@@ -88,6 +88,7 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         }
 
         if (!targetMode) {
+            // TODO: Fix #172.
             targetMode = this.getActiveMode(context);
             stateUpdate = ModeStateUpdateType.Disarm;
         }
