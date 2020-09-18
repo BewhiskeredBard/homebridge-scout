@@ -1,12 +1,13 @@
 import { API, Logging } from 'homebridge';
 import { HomebridgeContextFactory, HomebridgeConfigMode, HomebridgeConfig } from '../../src/context';
+import { RecursivePartial } from '../../src/types';
 
 describe(`${HomebridgeContextFactory.name}`, () => {
     const factory = new HomebridgeContextFactory();
 
     let api: API;
     let logger: Logging;
-    let config: HomebridgeConfig;
+    let config: RecursivePartial<HomebridgeConfig>;
 
     beforeEach(() => {
         api = {} as API;
@@ -36,13 +37,13 @@ describe(`${HomebridgeContextFactory.name}`, () => {
         });
 
         test('missing config.auth.email', () => {
-            delete config.auth.email;
+            delete config.auth?.email;
 
             expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config.auth should have required property 'email'");
         });
 
         test('missing config.auth.password', () => {
-            delete config.auth.password;
+            delete config.auth?.password;
 
             expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config.auth should have required property 'password'");
         });
