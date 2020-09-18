@@ -35,7 +35,7 @@ describe(`${BatteryServiceFactory.name}`, () => {
 
     describe('.getService()', () => {
         test('without battery', () => {
-            delete context.custom.hub.reported?.battery;
+            delete context.custom.hub.reported;
 
             expect(serviceFactory.getService(context)).toBeUndefined();
         });
@@ -66,7 +66,7 @@ describe(`${BatteryServiceFactory.name}`, () => {
         });
 
         test('without battery', () => {
-            delete context.custom.hub.reported?.battery;
+            delete context.custom.hub.reported;
 
             serviceFactory.configureService(service, context);
 
