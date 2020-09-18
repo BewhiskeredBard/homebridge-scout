@@ -1,4 +1,4 @@
-import type { PlatformAccessory, API, Logging } from 'homebridge';
+import type { PlatformAccessory, API, Logging, PlatformConfig } from 'homebridge';
 import { Location } from 'scout-api';
 import { AccessoryFactory, TypedPlatformAccessory } from './accessoryFactory';
 import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from './context';
@@ -10,7 +10,7 @@ export class Orchestrator {
     public constructor(
         private readonly api: API,
         private readonly logger: Logging,
-        private readonly config: unknown,
+        private readonly config: PlatformConfig,
         private readonly homebridgeContextFactory: HomebridgeContextFactory,
         private readonly scoutContextFactory: ScoutContextFactory,
         private readonly accessoryFactories: (homebridge: HomebridgeContext, scout: ScoutContext) => AccessoryFactory<unknown>[],

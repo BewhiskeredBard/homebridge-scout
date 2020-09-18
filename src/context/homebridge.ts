@@ -1,5 +1,5 @@
 import * as Ajv from 'ajv';
-import type { API, Logging } from 'homebridge';
+import type { API, Logging, PlatformConfig } from 'homebridge';
 
 export enum HomebridgeConfigMode {
     Stay = 'stay',
@@ -7,7 +7,7 @@ export enum HomebridgeConfigMode {
     Night = 'night',
 }
 
-export interface HomebridgeConfig {
+export interface HomebridgeConfig extends PlatformConfig {
     platform: 'ScoutAlarm';
     auth: {
         email: string;
