@@ -33,7 +33,7 @@ describe(`${ScoutContextFactory.name}`, () => {
             expect(arg.apiKey).toBeDefined();
             if (typeof arg.apiKey === 'string') {
                 expect(arg.apiKey).toEqual(token);
-            } else if (undefined !== arg.apiKey) {
+            } else if (typeof arg.apiKey === 'function') {
                 expect(arg.apiKey('foo')).toEqual(token);
             }
 
