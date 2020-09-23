@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "ajv": "^6.12.2",
-    "scout-api": "^0.5.0"
+    "scout-api": "^0.6.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.3",

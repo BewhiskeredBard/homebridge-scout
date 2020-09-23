@@ -84,7 +84,7 @@ describe(`${Orchestrator.name}`, () => {
     });
 
     afterEach(() => {
-        expect(scoutContextFactory.create as jest.Mock).toBeCalledWith(homebridge);
+        expect(scoutContextFactory.create).toBeCalledWith(homebridge);
     });
 
     test('no Scout locations', async () => {
@@ -96,7 +96,7 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(homebridge.logger.error as jest.Mock).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
+        expect(homebridge.logger.error).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
     });
 
     test('no matching Scout locations', async () => {
@@ -110,11 +110,11 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(homebridge.logger.error as jest.Mock).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
+        expect(homebridge.logger.error).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
     });
 
     test('using admin account', async () => {
-        location.admin_ids = [scout.memberId];
+        location.admin_ids = [await scout.memberId];
 
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
@@ -128,11 +128,10 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(scout.listener.addLocation as jest.Mock).toBeCalledWith(location.id);
-        expect(homebridge.logger.warn as jest.Mock).toBeCalledWith(
-            'The authenticated member [memberId1] is an admin. It is highly recommended to use a non-admin member.',
-        );
-        expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
+        expect(scout.listener.connect).toBeCalled();
+        expect(scout.listener.addLocation).toBeCalledWith(location.id);
+        expect(homebridge.logger.warn).toBeCalledWith('The authenticated member [memberId1] is an admin. It is highly recommended to use a non-admin member.');
+        expect(homebridge.logger.error).not.toBeCalled();
     });
 
     test('register new accessory', async () => {
@@ -152,17 +151,12 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(scout.listener.addLocation as jest.Mock).toBeCalledWith(location.id);
-        expect(accessoryFactory.configureAccessory as jest.Mock).toBeCalledWith(accessory);
-        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [
-            accessory,
-        ]);
-        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(
-            ScoutPlatformPlugin.PLUGIN_NAME,
-            ScoutPlatformPlugin.PLATFORM_NAME,
-            [],
-        );
-        expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
+        expect(scout.listener.connect).toBeCalled();
+        expect(scout.listener.addLocation).toBeCalledWith(location.id);
+        expect(accessoryFactory.configureAccessory).toBeCalledWith(accessory);
+        expect(homebridge.api.registerPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [accessory]);
+        expect(homebridge.api.unregisterPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
+        expect(homebridge.logger.error).not.toBeCalled();
     });
 
     test('configured accessory not found', async () => {
@@ -184,13 +178,14 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(scout.listener.addLocation as jest.Mock).toBeCalledWith(location.id);
-        expect(accessoryFactory.configureAccessory as jest.Mock).not.toBeCalled();
-        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
-        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [
+        expect(scout.listener.connect).toBeCalled();
+        expect(scout.listener.addLocation).toBeCalledWith(location.id);
+        expect(accessoryFactory.configureAccessory).not.toBeCalled();
+        expect(homebridge.api.registerPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
+        expect(homebridge.api.unregisterPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [
             cachedAccessory,
         ]);
-        expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
+        expect(homebridge.logger.error).not.toBeCalled();
     });
 
     test('configured accessory found', async () => {
@@ -212,15 +207,12 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(scout.listener.addLocation as jest.Mock).toBeCalledWith(location.id);
+        expect(scout.listener.connect).toBeCalled();
+        expect(scout.listener.addLocation).toBeCalledWith(location.id);
         expect(cachedAccessory.context).toStrictEqual(accessory.context);
-        expect(accessoryFactory.configureAccessory as jest.Mock).toBeCalledWith(cachedAccessory);
-        expect(homebridge.api.registerPlatformAccessories as jest.Mock).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
-        expect(homebridge.api.unregisterPlatformAccessories as jest.Mock).toBeCalledWith(
-            ScoutPlatformPlugin.PLUGIN_NAME,
-            ScoutPlatformPlugin.PLATFORM_NAME,
-            [],
-        );
-        expect(homebridge.logger.error as jest.Mock).not.toBeCalled();
+        expect(accessoryFactory.configureAccessory).toBeCalledWith(cachedAccessory);
+        expect(homebridge.api.registerPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
+        expect(homebridge.api.unregisterPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
+        expect(homebridge.logger.error).not.toBeCalled();
     });
 });

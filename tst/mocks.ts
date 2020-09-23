@@ -91,7 +91,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
 
 export function mockScoutContext(): ScoutContext {
     return {
-        memberId: 'memberId1',
+        memberId: Promise.resolve('memberId1'),
         api: {
             getHub: jest.fn() as unknown,
             getModes: jest.fn() as unknown,
@@ -100,6 +100,7 @@ export function mockScoutContext(): ScoutContext {
             toggleRecipe: jest.fn() as unknown,
         },
         listener: {
+            connect: jest.fn() as unknown,
             getConnectionState: jest.fn() as unknown,
             addLocation: jest.fn() as unknown,
             removeLocation: jest.fn() as unknown,

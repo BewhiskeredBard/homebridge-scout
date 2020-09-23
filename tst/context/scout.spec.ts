@@ -18,23 +18,19 @@ describe(`${ScoutContextFactory.name}`, () => {
             create: jest.fn() as unknown,
         } as AuthenticatorFactory;
         const authenticator = {
-            getToken: () => token,
-            getPayload: () => {
-                return {
-                    id: memberId,
-                };
-            },
-            refresh: jest.fn() as unknown,
+            getToken: () => Promise.resolve(token),
+            getPayload: () => Promise.resolve({ id: memberId }),
         } as Authenticator;
         const authenticatedApi = {} as AuthenticatedApi;
         const locationListener = {} as LocationListener;
+        let apiKey: string | Promise<string> | undefined;
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         AuthenticatedApiMock.mockImplementation((arg: ConfigurationParameters) => {
-            expect(arg.apiKey).toBeDefined();
             if (typeof arg.apiKey === 'string') {
-                expect(arg.apiKey).toEqual(token);
+                apiKey = arg.apiKey;
             } else if (typeof arg.apiKey === 'function') {
-                expect(arg.apiKey('foo')).toEqual(token);
+                apiKey = arg.apiKey('foo');
             }
 
             return authenticatedApi;
@@ -50,12 +46,16 @@ describe(`${ScoutContextFactory.name}`, () => {
 
         (authenticatorFactory.create as jest.Mock).mockImplementation(() => authenticator);
 
-        const scoutContext = await scoutContextFactory.create(homebridge);
+        const scoutContext = scoutContextFactory.create(homebridge);
 
+        await expect(scoutContext.memberId).resolves.toEqual(memberId);
         expect(scoutContext.api).toBe(authenticatedApi);
         expect(scoutContext.listener).toBe(locationListener);
-        expect(scoutContext.memberId).toEqual(memberId);
-        // eslint-disable-next-line @typescript-eslint/unbound-method
-        expect(authenticator.refresh as jest.Mock).toBeCalled();
+
+        if (typeof apiKey === 'string') {
+            expect(apiKey).toEqual(token);
+        } else if (apiKey instanceof Promise) {
+            await expect(apiKey).resolves.toEqual(token);
+        }
     });
 });

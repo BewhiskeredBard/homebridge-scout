@@ -28,16 +28,17 @@ export class Orchestrator {
 
     public async init(): Promise<void> {
         const homebridge = this.homebridgeContextFactory.create(this.api, this.logger, this.config);
-        const scout = await this.scoutContextFactory.create(homebridge);
+        const scout = this.scoutContextFactory.create(homebridge);
         const location = await this.getLocation(homebridge, scout);
 
+        await scout.listener.connect();
         scout.listener.addLocation(location.id);
 
         await this.registerAccessories(homebridge, scout, location.id);
     }
 
     private async getLocation(homebridge: HomebridgeContext, scout: ScoutContext): Promise<Location> {
-        const memberId = scout.memberId;
+        const memberId = await scout.memberId;
         const locations = (await scout.api.getLocations(memberId)).data;
 
         this.logger.debug(`Locations: ${JSON.stringify(locations)}`);
