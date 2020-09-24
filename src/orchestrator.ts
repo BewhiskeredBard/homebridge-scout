@@ -38,7 +38,7 @@ export class Orchestrator {
     }
 
     private async getLocation(homebridge: HomebridgeContext, scout: ScoutContext): Promise<Location> {
-        const memberId = await scout.memberId;
+        const memberId = (await scout.api.getMember()).data.id;
         const locations = (await scout.api.getLocations(memberId)).data;
 
         this.logger.debug(`Locations: ${JSON.stringify(locations)}`);

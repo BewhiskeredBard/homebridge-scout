@@ -48,7 +48,6 @@ describe(`${ScoutContextFactory.name}`, () => {
 
         const scoutContext = scoutContextFactory.create(homebridge);
 
-        await expect(scoutContext.memberId).resolves.toEqual(memberId);
         expect(scoutContext.api).toBe(authenticatedApi);
         expect(scoutContext.listener).toBe(locationListener);
 

@@ -2,7 +2,6 @@ import { AuthenticatedApi, LocationListener, AuthenticatorFactory } from 'scout-
 import { HomebridgeContext } from './homebridge';
 
 export interface ScoutContext {
-    memberId: Promise<string>;
     api: AuthenticatedApi;
     listener: LocationListener;
 }
@@ -15,12 +14,6 @@ export class ScoutContextFactory {
         });
 
         return {
-            memberId: new Promise((resolve, reject) => {
-                authenticator
-                    .getPayload()
-                    .then(payload => resolve(payload.id))
-                    .catch(reject);
-            }),
             api: new AuthenticatedApi({
                 apiKey: (): Promise<string> => authenticator.getToken(),
             }),

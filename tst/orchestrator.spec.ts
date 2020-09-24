@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 
 import { API, Logging, PlatformAccessory, PlatformConfig } from 'homebridge';
-import { Location } from 'scout-api';
+import { AuthenticatedMember, Location } from 'scout-api';
 import { AccessoryFactory } from '../src/accessoryFactory';
 import { HomebridgeContext, ScoutContextFactory, ScoutContext, HomebridgeContextFactory } from '../src/context';
 import { Orchestrator } from '../src/orchestrator';
@@ -17,6 +17,7 @@ describe(`${Orchestrator.name}`, () => {
     let homebridgeContextFactory: HomebridgeContextFactory;
     let scout: ScoutContext;
     let scoutContextFactory: ScoutContextFactory;
+    let authMember: AuthenticatedMember;
     let location: Location;
     let orchestrator: Orchestrator;
     let accessoryFactories: (homebridgeContext: HomebridgeContext, scoutContext: ScoutContext) => AccessoryFactory<unknown>[];
@@ -53,6 +54,18 @@ describe(`${Orchestrator.name}`, () => {
 
         (scoutContextFactory.create as jest.Mock).mockImplementation(() => {
             return scout;
+        });
+
+        authMember = {
+            id: 'memberId1',
+            email: 'email@domain.tld',
+            fname: 'name1',
+        };
+
+        (scout.api.getMember as jest.Mock).mockImplementation(() => {
+            return {
+                data: authMember,
+            };
         });
 
         location = {
@@ -114,7 +127,7 @@ describe(`${Orchestrator.name}`, () => {
     });
 
     test('using admin account', async () => {
-        location.admin_ids = [await scout.memberId];
+        location.admin_ids = [authMember.id];
 
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
