@@ -1,6 +1,7 @@
+import * as fs from 'fs';
+import * as path from 'path';
 import * as Ajv from 'ajv';
 import type { API, Logging, PlatformConfig } from 'homebridge';
-import * as schema from '../../config.schema.json';
 
 export enum HomebridgeConfigMode {
     Stay = 'stay',
@@ -28,15 +29,37 @@ export interface HomebridgeContext {
 }
 
 export class HomebridgeContextFactory {
-    private readonly schema: Record<string, unknown>;
+    public create(api: API, logger: Logging, config: unknown): HomebridgeContext {
+        this.validateConfig(this.getSchema(), config);
 
-    public constructor() {
-        this.schema = (schema as Record<string, unknown>).schema as Record<string, unknown>;
+        return {
+            api,
+            logger,
+            config: config as HomebridgeConfig,
+        };
     }
 
-    public create(api: API, logger: Logging, config: unknown): HomebridgeContext {
+    private getSchema(): Record<string, unknown> {
+        try {
+            const schemaPath = require.resolve('../../config.schema.json');
+            const file = fs.readFileSync(schemaPath, 'utf8');
+            const schema = JSON.parse(file) as Record<string, unknown>;
+
+            return schema.schema as Record<string, unknown>;
+        } catch (e: unknown) {
+            let message = 'Unable to read/parse configuration schema';
+
+            if (this.hasMessage(e)) {
+                message = `${message}: ${e.message}`;
+            }
+
+            throw new Error(message);
+        }
+    }
+
+    private validateConfig(schema: Record<string, unknown>, config: unknown): void {
         const ajv = new Ajv();
-        const isValid = ajv.validate(this.schema, config) as boolean;
+        const isValid = ajv.validate(schema, config) as boolean;
 
         if (!isValid && ajv.errors && 0 < ajv.errors.length) {
             const error = ajv.errors[0];
@@ -44,11 +67,9 @@ export class HomebridgeContextFactory {
 
             throw new Error(message);
         }
+    }
 
-        return {
-            api,
-            logger,
-            config: config as HomebridgeConfig,
-        };
+    private hasMessage(error: unknown): error is { message: string } {
+        return 'object' === typeof error && null !== error && 'message' in error;
     }
 }
