@@ -1,5 +1,6 @@
 import * as Ajv from 'ajv';
 import type { API, Logging, PlatformConfig } from 'homebridge';
+import * as schema from '../../config.schema.json';
 
 export enum HomebridgeConfigMode {
     Stay = 'stay',
@@ -27,14 +28,10 @@ export interface HomebridgeContext {
 }
 
 export class HomebridgeContextFactory {
-    private static readonly JSON_SCHEMA_PATH = '../../config.schema.json';
-
     private readonly schema: Record<string, unknown>;
 
     public constructor() {
-        // TODO: Replace `require` (see https://github.com/jordanryanmoore/homebridge-scout/issues/100).
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        this.schema = (require(HomebridgeContextFactory.JSON_SCHEMA_PATH) as Record<string, unknown>).schema as Record<string, unknown>;
+        this.schema = (schema as Record<string, unknown>).schema as Record<string, unknown>;
     }
 
     public create(api: API, logger: Logging, config: unknown): HomebridgeContext {
