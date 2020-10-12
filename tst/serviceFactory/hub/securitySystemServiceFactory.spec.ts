@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Service, Characteristic, CharacteristicValue } from 'homebridge';
+import { Service, Characteristic, CharacteristicProps, CharacteristicValue } from 'homebridge';
 import { ModeState, Mode, ModeStateUpdateType } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
 import { SecuritySystemContext } from '../../../src/accessoryFactory/securitySystemAccessoryFactory';
@@ -85,6 +85,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
         let service: Service;
         const characteristics = new Map<CharacteristicConstructor<unknown>, Characteristic>();
         const updatedCharacteristics = new Map<CharacteristicConstructor<unknown>, CharacteristicValue>();
+        const updatedCharacteristicProps = new Map<CharacteristicConstructor<unknown>, Partial<CharacteristicProps>>();
 
         beforeEach(() => {
             service = {
@@ -93,22 +94,40 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
 
             characteristics.clear();
             updatedCharacteristics.clear();
+            updatedCharacteristicProps.clear();
 
             (service.getCharacteristic as jest.Mock<Characteristic>).mockImplementation((type: CharacteristicConstructor<unknown>) => {
                 let characteristic = characteristics.get(type);
 
                 if (!characteristic) {
-                    characteristic = {
-                        updateValue: jest.fn().mockImplementation((value: CharacteristicValue) => {
-                            updatedCharacteristics.set(type, value);
-                        }) as unknown,
-                        on: jest.fn() as unknown,
-                    } as Characteristic;
+                    characteristic = {} as Characteristic;
+
+                    characteristic.updateValue = jest.fn().mockImplementation((value: CharacteristicValue) => {
+                        updatedCharacteristics.set(type, value);
+                    });
+
+                    characteristic.setProps = jest.fn().mockImplementation((props: Partial<CharacteristicProps>) => {
+                        updatedCharacteristicProps.set(type, props);
+                        return characteristic;
+                    });
+
+                    characteristic.on = jest.fn();
 
                     characteristics.set(type, characteristic);
                 }
 
                 return characteristic;
+            });
+        });
+
+        afterEach(() => {
+            expect(updatedCharacteristicProps.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual({
+                validValues: [
+                    homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM,
+                    homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM,
+                    homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM,
+                    homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM,
+                ],
             });
         });
 

@@ -39,15 +39,18 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
     }
 
     public configureService(service: Service, context: AccessoryContext<SecuritySystemContext>): void {
-        const Characteristic = this.homebridge.api.hap.Characteristic;
-
         super.configureService(service, context);
 
-        service.getCharacteristic(Characteristic.SecuritySystemTargetState).on('set', (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-            this.setTargetState(service, context, value)
-                .then(() => callback())
-                .catch(callback);
-        });
+        service
+            .getCharacteristic(this.homebridge.api.hap.Characteristic.SecuritySystemTargetState)
+            .setProps({
+                validValues: this.getValidTargetStates(),
+            })
+            .on('set', (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
+                this.setTargetState(service, context, value)
+                    .then(() => callback())
+                    .catch(callback);
+            });
     }
 
     protected getCharacteristics(context: AccessoryContext<SecuritySystemContext>): Map<CharacteristicConstructor<unknown>, CharacteristicValue> {
@@ -117,11 +120,13 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         });
     }
 
-    private getTargetState(mode: Mode): number {
-        const SecuritySystemTargetState = this.homebridge.api.hap.Characteristic.SecuritySystemTargetState;
+    private getTargetState(mode: Mode): number;
+    private getTargetState(mode: HomebridgeConfigMode): number;
+    private getTargetState(mode: Mode | HomebridgeConfigMode): number {
+        if ('string' === typeof mode) {
+            const SecuritySystemTargetState = this.homebridge.api.hap.Characteristic.SecuritySystemTargetState;
 
-        return this.getState(mode, config => {
-            switch (config) {
+            switch (mode) {
                 case HomebridgeConfigMode.Away:
                     return SecuritySystemTargetState.AWAY_ARM;
                 case HomebridgeConfigMode.Night:
@@ -129,7 +134,23 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
                 case HomebridgeConfigMode.Stay:
                     return SecuritySystemTargetState.STAY_ARM;
             }
+        }
+
+        return this.getState(mode, config => {
+            return this.getTargetState(config);
         });
+    }
+
+    private getValidTargetStates(): number[] {
+        const validTargetStates: number[] = [this.homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM];
+
+        for (const key of Object.values(HomebridgeConfigMode)) {
+            if (0 < this.getModeNames(key).length) {
+                validTargetStates.push(this.getTargetState(key));
+            }
+        }
+
+        return validTargetStates;
     }
 
     private getState(mode: Mode, mapper: (key: HomebridgeConfigMode) => number | undefined): number {
