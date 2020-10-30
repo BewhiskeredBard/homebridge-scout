@@ -61,7 +61,7 @@ const schema = {
                 {
                     type: 'help',
                     helpvalue:
-                        'If modes are defined, your Scout system will be added as a HomeKit security system. These map the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit mode must be mapped to one (or more†) Scout mode(s).',
+                        'If modes are defined, your Scout system will be added as a HomeKit security system. These map the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit can be mapped to zero or more† Scout mode(s). If a HomeKit mode is empty or not provided, it will not be shown in Apple’s Home app.',
                 },
                 {
                     key: 'modes.stay',
