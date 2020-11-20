@@ -201,7 +201,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
 
         test('arm when disarmed', () => {
             (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
-                return new Promise(resolve => {
+                return new Promise<void>(resolve => {
                     resolve();
                 });
             });
@@ -223,7 +223,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
 
         test('arm when already armed', () => {
             (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
-                return new Promise(resolve => {
+                return new Promise<void>(resolve => {
                     resolve();
                 });
             });
@@ -277,7 +277,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             });
 
             (scout.api.toggleRecipe as jest.Mock<unknown>).mockImplementation(() => {
-                return new Promise(resolve => {
+                return new Promise<void>(resolve => {
                     resolve();
                 });
             });
