@@ -1,6 +1,6 @@
 {
   "name": "homebridge-scout",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A Homebridge plugin that enables HomeKit integration for the Scout security system.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -34,12 +34,12 @@
   "homepage": "https://github.com/jordanryanmoore/homebridge-scout#readme",
   "funding": [
     {
-      "type" : "github",
-      "url" : "https://github.com/sponsors/jordanryanmoore"
+      "type": "github",
+      "url": "https://github.com/sponsors/jordanryanmoore"
     },
     {
-      "type" : "paypal",
-      "url" : "https://paypal.me/jordanryanmoore"
+      "type": "paypal",
+      "url": "https://paypal.me/jordanryanmoore"
     }
   ],
   "engines": {
