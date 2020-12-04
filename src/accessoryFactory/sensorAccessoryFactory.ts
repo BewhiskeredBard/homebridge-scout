@@ -37,7 +37,7 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
         }
 
         // Scout's original mesh-based motion sensors do not properly trigger motion events.
-        // See https://github.com/jordanryanmoore/homebridge-scout/issues/51 for more details.
+        // See https://github.com/BewhiskeredBard/homebridge-scout/issues/51 for more details.
         if (DeviceType.MotionSensor === device.type && undefined !== device.reported?.mesh_address) {
             return false;
         }
