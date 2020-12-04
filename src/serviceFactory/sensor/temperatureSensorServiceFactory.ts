@@ -27,7 +27,7 @@ export class TemperatureSensorServiceFactory extends SensorServiceFactory {
         const device = context.custom.device;
 
         // The smoke alarm's temperature reading is entirely unreliable:
-        // https://github.com/jordanryanmoore/homebridge-scout/issues/13
+        // https://github.com/BewhiskeredBard/homebridge-scout/issues/13
         if (device.type === DeviceType.SmokeAlarm) {
             return;
         }
