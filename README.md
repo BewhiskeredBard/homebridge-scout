@@ -1,11 +1,11 @@
-![homebridge-scout](https://raw.githubusercontent.com/jordanryanmoore/homebridge-scout/master/logo.png)
+![homebridge-scout](https://raw.githubusercontent.com/BewhiskeredBard/homebridge-scout/master/logo.png)
 
 A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration for the [Scout](https://scoutalarm.com/) security system.
 
-![demo](https://raw.githubusercontent.com/jordanryanmoore/homebridge-scout/master/demo.gif)
+![demo](https://raw.githubusercontent.com/BewhiskeredBard/homebridge-scout/master/demo.gif)
 
-[![build status](https://img.shields.io/github/workflow/status/jordanryanmoore/homebridge-scout/Build)](https://github.com/jordanryanmoore/homebridge-scout/actions?query=workflow%3ABuild)
-[![test coverage](https://img.shields.io/codecov/c/github/jordanryanmoore/homebridge-scout)](https://codecov.io/gh/jordanryanmoore/homebridge-scout)
+[![build status](https://img.shields.io/github/workflow/status/BewhiskeredBard/homebridge-scout/Build)](https://github.com/BewhiskeredBard/homebridge-scout/actions?query=workflow%3ABuild)
+[![test coverage](https://img.shields.io/codecov/c/github/BewhiskeredBard/homebridge-scout)](https://codecov.io/gh/BewhiskeredBard/homebridge-scout)
 [![npm version](https://img.shields.io/npm/v/homebridge-scout)](https://npmjs.com/package/homebridge-scout)
 [![npm downloads](https://img.shields.io/npm/dw/homebridge-scout)](https://npmjs.com/package/homebridge-scout)
 [![license](https://img.shields.io/npm/l/homebridge-scout)](https://npmjs.com/package/homebridge-scout)
@@ -91,14 +91,13 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
 | Motion Sensor‡     | MotionSensor<br>TemperatureSensor                                    |
 | Water Sensor       | LeakSensor<br>TemperatureSensor                                      |
 | Smoke Alarm        | SmokeSensor                                                          |
-| Glass Break Sensor | [#27](https://github.com/jordanryanmoore/homebridge-scout/issues/27) |
-| Video Doorbell     | [#18](https://github.com/jordanryanmoore/homebridge-scout/issues/18) |
-| Indoor Camera      | [#17](https://github.com/jordanryanmoore/homebridge-scout/issues/17) |
+| Glass Break Sensor | [#27](https://github.com/BewhiskeredBard/homebridge-scout/issues/27) |
+| Video Doorbell     | [#18](https://github.com/BewhiskeredBard/homebridge-scout/issues/18) |
+| Indoor Camera      | [#17](https://github.com/BewhiskeredBard/homebridge-scout/issues/17) |
 
 <small>‡ Not supported by Scout's original mesh-based hardware. These devices do not have humidity or temperature sensors, and the motion sensors do not properly trigger motion events.</small>
 
 ## Credits
 
-* [@jordanryanmoore](https://github.com/jordanryanmoore), the original author.
 * [@Tom2527](https://github.com/Tom2527), for their assistance in debugging and testing v1 hardware support.
 * [Scout Security Inc](https://www.scoutalarm.com), for providing a open, well-designed API *and* supplying free motion and water sensors for this project.
