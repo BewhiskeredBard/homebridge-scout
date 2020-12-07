@@ -4,6 +4,7 @@ A [Homebridge](https://homebridge.io/) plug-in that enables HomeKit integration 
 
 ![demo](https://raw.githubusercontent.com/BewhiskeredBard/homebridge-scout/master/demo.gif)
 
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
 [![build status](https://img.shields.io/github/workflow/status/BewhiskeredBard/homebridge-scout/Build)](https://github.com/BewhiskeredBard/homebridge-scout/actions?query=workflow%3ABuild)
 [![test coverage](https://img.shields.io/codecov/c/github/BewhiskeredBard/homebridge-scout)](https://codecov.io/gh/BewhiskeredBard/homebridge-scout)
 [![npm version](https://img.shields.io/npm/v/homebridge-scout)](https://npmjs.com/package/homebridge-scout)
