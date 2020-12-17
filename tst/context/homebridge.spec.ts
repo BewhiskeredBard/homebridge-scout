@@ -33,19 +33,19 @@ describe(`${HomebridgeContextFactory.name}`, () => {
         });
 
         test('empty config', () => {
-            expect(() => factory.create(api, logger, {})).toThrowError("Configuration error: config should have required property 'platform'");
+            expect(() => factory.create(api, logger, {})).toThrowError("Configuration error: config should have required property 'auth'");
         });
 
         test('missing config.auth.email', () => {
             delete config.auth?.email;
 
-            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config.auth should have required property 'email'");
+            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config/auth should have required property 'email'");
         });
 
         test('missing config.auth.password', () => {
             delete config.auth?.password;
 
-            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config.auth should have required property 'password'");
+            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config/auth should have required property 'password'");
         });
 
         test('missing config.location', () => {
@@ -66,14 +66,14 @@ describe(`${HomebridgeContextFactory.name}`, () => {
                     delete config.modes[mode];
                 }
 
-                expect(() => factory.create(api, logger, config)).toThrowError(`Configuration error: config.modes should have required property '${mode}'`);
+                expect(() => factory.create(api, logger, config)).toThrowError(`Configuration error: config/modes should have required property '${mode}'`);
             });
         });
 
         test('invalid config.reverseSensorState', () => {
             (config.reverseSensorState as unknown) = 'true';
 
-            expect(() => factory.create(api, logger, config)).toThrowError('Configuration error: config.reverseSensorState should be boolean');
+            expect(() => factory.create(api, logger, config)).toThrowError('Configuration error: config/reverseSensorState should be boolean');
         });
 
         test('valid', () => {

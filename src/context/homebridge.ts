@@ -1,6 +1,5 @@
 import * as fs from 'fs';
-import * as path from 'path';
-import * as Ajv from 'ajv';
+import { default as Ajv } from 'ajv';
 import type { API, Logging, PlatformConfig } from 'homebridge';
 
 export enum HomebridgeConfigMode {
@@ -30,12 +29,10 @@ export interface HomebridgeContext {
 
 export class HomebridgeContextFactory {
     public create(api: API, logger: Logging, config: unknown): HomebridgeContext {
-        this.validateConfig(this.getSchema(), config);
-
         return {
             api,
             logger,
-            config: config as HomebridgeConfig,
+            config: this.validateConfig(this.getSchema(), config),
         };
     }
 
@@ -57,16 +54,21 @@ export class HomebridgeContextFactory {
         }
     }
 
-    private validateConfig(schema: Record<string, unknown>, config: unknown): void {
+    private validateConfig(schema: Record<string, unknown>, config: unknown): HomebridgeConfig {
         const ajv = new Ajv();
-        const isValid = ajv.validate(schema, config) as boolean;
 
-        if (!isValid && ajv.errors && 0 < ajv.errors.length) {
+        if (ajv.validate<HomebridgeConfig>(schema, config)) {
+            return config;
+        }
+
+        if (ajv.errors && 0 < ajv.errors.length) {
             const error = ajv.errors[0];
             const message = `Configuration error: config${error.dataPath} ${error.message || ''}`;
 
             throw new Error(message);
         }
+
+        throw new Error('Unknown configuration error');
     }
 
     private hasMessage(error: unknown): error is { message: string } {
