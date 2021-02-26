@@ -9,7 +9,7 @@ import * as mocks from '../../mocks';
 
 class MockSensorServiceFactory extends SensorServiceFactory {
     public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor {
-        return this.homebridge.api.hap.Service.Label;
+        return this.homebridge.api.hap.Service.ServiceLabel;
     }
 }
 
