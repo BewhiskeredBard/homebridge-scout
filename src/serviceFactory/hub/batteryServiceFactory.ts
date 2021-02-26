@@ -45,6 +45,10 @@ export class BatteryServiceFactory extends HubServiceFactory {
         return characteristics;
     }
 
+    protected hasStatusFault(): boolean {
+        return false;
+    }
+
     private getBatteryLevel(context: AccessoryContext<SecuritySystemContext>): number | undefined {
         const hub = context.custom.hub;
         const battery = hub.reported?.battery;

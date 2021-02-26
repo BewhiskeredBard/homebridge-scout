@@ -23,6 +23,10 @@ export class TemperatureServiceFactory extends HubServiceFactory {
         return characteristics;
     }
 
+    protected hasStatusFault(): boolean {
+        return true;
+    }
+
     private getTemperature(context: AccessoryContext<SecuritySystemContext>): number | undefined {
         return context.custom.hub.reported?.temperature;
     }

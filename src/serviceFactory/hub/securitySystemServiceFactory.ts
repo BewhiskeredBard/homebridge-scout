@@ -79,6 +79,10 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         return characteristics;
     }
 
+    protected hasStatusFault(): boolean {
+        return true;
+    }
+
     private async setTargetState(service: Service, context: AccessoryContext<SecuritySystemContext>, state: CharacteristicValue): Promise<void> {
         const modeName = this.getModeNameForTargetState(state);
 
