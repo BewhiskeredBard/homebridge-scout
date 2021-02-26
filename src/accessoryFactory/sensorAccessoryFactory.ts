@@ -46,6 +46,8 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
     }
 
     protected createDeviceAccessoryInfo(device: Device): AccessoryInfo<SensorAccessoryContext> {
+        const firmwareVersion = device.reported?.fw_version;
+
         return {
             name: device.name,
             id: device.id,
@@ -56,7 +58,7 @@ export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryCont
             manufacturer: device.reported?.manufacturer || 'Scout',
             model: device.reported?.model || 'unknown',
             serialNumber: device.id,
-            firmwareRevision: device.reported?.fw_version || 'unknown',
+            firmwareRevision: firmwareVersion ? String(firmwareVersion) : 'unknown',
         };
     }
 
