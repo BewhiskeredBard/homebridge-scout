@@ -12,7 +12,6 @@ extends:
     - plugin:@typescript-eslint/eslint-recommended
     - plugin:@typescript-eslint/recommended
     - plugin:@typescript-eslint/recommended-requiring-type-checking
-    - prettier/@typescript-eslint
     - plugin:prettier/recommended
     - plugin:import/errors
     - plugin:import/warnings
@@ -25,6 +24,8 @@ rules:
     '@typescript-eslint/member-ordering':
         - error
     '@typescript-eslint/no-floating-promises':
+        - error
+    '@typescript-eslint/no-shadow':
         - error
     '@typescript-eslint/prefer-readonly':
         - error
@@ -48,8 +49,6 @@ rules:
     no-await-in-loop:
         - warn # TODO: error
     no-console:
-        - error
-    no-shadow:
         - error
     no-unused-expressions:
         - error
