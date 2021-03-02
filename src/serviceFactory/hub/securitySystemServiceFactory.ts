@@ -7,14 +7,7 @@ import { ServiceConstructor, CharacteristicConstructor } from '../../types';
 import { HubServiceFactory } from './hubServiceFactory';
 
 export class SecuritySystemServiceFactory extends HubServiceFactory {
-    private static readonly ARMING_MODE_STATES = new Set<ModeState>([ModeState.Arming]);
-    private static readonly ARMED_MODE_STATES = new Set<ModeState>([ModeState.Armed, ModeState.Triggered]);
-    private static readonly ALARMING_MODE_STATES = new Set<ModeState>([ModeState.Alarmed]);
-    private static readonly ACTIVE_MODE_STATES = new Set<ModeState>([
-        ...SecuritySystemServiceFactory.ARMING_MODE_STATES,
-        ...SecuritySystemServiceFactory.ARMED_MODE_STATES,
-        ...SecuritySystemServiceFactory.ALARMING_MODE_STATES,
-    ]);
+    private static readonly ACTIVE_MODE_STATES = new Set<ModeState>([ModeState.Arming, ModeState.Armed, ModeState.Triggered, ModeState.Alarmed]);
 
     public getService(context: AccessoryContext<SecuritySystemContext>): ServiceConstructor | undefined {
         if (!this.homebridge.config.modes) {
@@ -47,7 +40,7 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
                 validValues: this.getValidTargetStates(),
             })
             .on('set', (value: CharacteristicValue, callback: CharacteristicSetCallback) => {
-                this.setTargetState(service, context, value)
+                this.setTargetState(context, value)
                     .then(() => callback())
                     .catch(callback);
             });
@@ -66,9 +59,9 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         if (activeMode) {
             targetState = this.getTargetState(activeMode);
 
-            if (SecuritySystemServiceFactory.ALARMING_MODE_STATES.has(activeMode.state)) {
+            if (this.isAlarming(activeMode)) {
                 currentState = SecuritySystemCurrentState.ALARM_TRIGGERED;
-            } else if (SecuritySystemServiceFactory.ARMED_MODE_STATES.has(activeMode.state)) {
+            } else if (this.isArmed(activeMode)) {
                 currentState = this.getCurrentState(activeMode);
             }
         }
@@ -83,7 +76,7 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         return true;
     }
 
-    private async setTargetState(service: Service, context: AccessoryContext<SecuritySystemContext>, state: CharacteristicValue): Promise<void> {
+    private async setTargetState(context: AccessoryContext<SecuritySystemContext>, state: CharacteristicValue): Promise<void> {
         const modeName = this.getModeNameForTargetState(state);
 
         let targetMode: Mode | undefined;
@@ -171,6 +164,28 @@ export class SecuritySystemServiceFactory extends HubServiceFactory {
         }
 
         throw new Error(`No configuration for Scout mode named "${mode.name}".`);
+    }
+
+    private isArmed(mode: Mode): boolean {
+        switch (mode.state) {
+            case ModeState.Armed:
+                return true;
+            case ModeState.Triggered:
+                return !this.homebridge.config.triggerAlarmImmediately;
+            default:
+                return false;
+        }
+    }
+
+    private isAlarming(mode: Mode): boolean {
+        switch (mode.state) {
+            case ModeState.Alarmed:
+                return true;
+            case ModeState.Triggered:
+                return !!this.homebridge.config.triggerAlarmImmediately;
+            default:
+                return false;
+        }
     }
 
     private findModeByName(context: AccessoryContext<SecuritySystemContext>, modeName: string): Mode | undefined {
