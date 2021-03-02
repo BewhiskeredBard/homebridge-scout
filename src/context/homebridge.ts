@@ -18,6 +18,7 @@ export interface HomebridgeConfig extends PlatformConfig {
     modes?: {
         [key in HomebridgeConfigMode]: string[];
     };
+    triggerAlarmImmediately?: boolean;
     reverseSensorState?: boolean;
 }
 

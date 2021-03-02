@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { config } from 'process';
 import { Service, Characteristic, CharacteristicProps, CharacteristicValue } from 'homebridge';
 import { ModeState, Mode, ModeStateUpdateType } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
@@ -171,13 +172,28 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             );
         });
 
-        test('triggered', () => {
+        test('triggered (without triggerAlarmImmediately)', () => {
             context.custom.modes[0].state = ModeState.Triggered;
 
             serviceFactory.configureService(service, context);
 
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemCurrentState)).toEqual(
                 homebridge.api.hap.Characteristic.SecuritySystemCurrentState.AWAY_ARM,
+            );
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemTargetState.AWAY_ARM,
+            );
+        });
+
+        test('triggered (with triggerAlarmImmediately)', () => {
+            homebridge.config.triggerAlarmImmediately = true;
+            context.custom.modes[0].state = ModeState.Triggered;
+
+            serviceFactory.configureService(service, context);
+
+            expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemCurrentState)).toEqual(
+                homebridge.api.hap.Characteristic.SecuritySystemCurrentState.ALARM_TRIGGERED,
             );
 
             expect(updatedCharacteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)).toEqual(

@@ -113,6 +113,12 @@ const schema = {
             title: 'Other Options',
             items: [
                 {
+                    key: 'triggerAlarmImmediately',
+                    title: 'Trigger Alarm Immediately',
+                    description:
+                        'By default, HomeKit will not consider the alarm triggered until the (optional) alarm delay has expired. Enabling this option causes HomeKit to consider the alarm triggered immediately.',
+                },
+                {
                     key: 'reverseSensorState',
                     title: 'Reverse Sensor State',
                     description:
