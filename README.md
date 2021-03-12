@@ -94,6 +94,7 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
 | Motion Sensor‡     | MotionSensor<br>TemperatureSensor                                    |
 | Water Sensor       | LeakSensor<br>TemperatureSensor                                      |
 | Smoke Alarm        | SmokeSensor                                                          |
+| Key Pad            | HumiditySensor<br>TemperatureSensor                                  |
 | Glass Break Sensor | [#27](https://github.com/BewhiskeredBard/homebridge-scout/issues/27) |
 | Video Doorbell     | [#18](https://github.com/BewhiskeredBard/homebridge-scout/issues/18) |
 | Indoor Camera      | [#17](https://github.com/BewhiskeredBard/homebridge-scout/issues/17) |
