@@ -1,6 +1,6 @@
 {
   "name": "homebridge-scout",
-  "version": "1.3.0-beta.0",
+  "version": "1.3.0-beta.1",
   "description": "A Homebridge plugin that enables HomeKit integration for the Scout security system.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
