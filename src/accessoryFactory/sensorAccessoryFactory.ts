@@ -8,11 +8,12 @@ export interface SensorAccessoryContext {
 
 export class SensorAccessoryFactory extends AccessoryFactory<SensorAccessoryContext> {
     private static readonly SUPPORTED_DEVICE_TYPES = new Set<DeviceType>([
-        DeviceType.DoorPanel,
         DeviceType.AccessSensor,
+        DeviceType.DoorPanel,
+        DeviceType.KeyPad,
         DeviceType.MotionSensor,
-        DeviceType.WaterSensor,
         DeviceType.SmokeAlarm,
+        DeviceType.WaterSensor,
     ]);
 
     private readonly accessories = new Map<string, TypedPlatformAccessory<SensorAccessoryContext>>();
