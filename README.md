@@ -86,20 +86,30 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
 
 ## Device Support
 
-| Scout Device       | HomeKit Services                                                     |
-|--------------------|----------------------------------------------------------------------|
-| Hub                | SecuritySystem<br>BatteryService<br>TemperatureSensor‡               |
-| Door Panel         | ContactSensor<br>HumiditySensor‡<br>TemperatureSensor‡               |
-| Access Sensor      | ContactSensor<br>TemperatureSensor‡                                  |
-| Motion Sensor‡     | MotionSensor<br>TemperatureSensor                                    |
-| Water Sensor       | LeakSensor<br>TemperatureSensor                                      |
-| Smoke Alarm        | SmokeSensor                                                          |
-| Key Pad            | HumiditySensor<br>TemperatureSensor                                  |
-| Glass Break Sensor | [#27](https://github.com/BewhiskeredBard/homebridge-scout/issues/27) |
-| Video Doorbell     | [#18](https://github.com/BewhiskeredBard/homebridge-scout/issues/18) |
-| Indoor Camera      | [#17](https://github.com/BewhiskeredBard/homebridge-scout/issues/17) |
+### Supported Devices
+
+| Scout Device       | HomeKit Accessory Category | HomeKit Services                                                     |
+|--------------------|----------------------------|----------------------------------------------------------------------|
+| Hub                | SECURITY_SYSTEM            | SecuritySystem<br>BatteryService<br>TemperatureSensor‡               |
+| Door Panel         | SENSOR                     | ContactSensor<br>HumiditySensor‡<br>TemperatureSensor‡               |
+| Access Sensor      | SENSOR                     | ContactSensor<br>TemperatureSensor‡                                  |
+| Motion Sensor‡     | SENSOR                     | MotionSensor<br>TemperatureSensor                                    |
+| Water Sensor       | SENSOR                     | LeakSensor<br>TemperatureSensor                                      |
+| Smoke Alarm        | SENSOR                     | SmokeSensor                                                          |
+| Key Pad            | SENSOR                     | HumiditySensor<br>TemperatureSensor                                  |
 
 <small>‡ Not supported by Scout's original mesh-based hardware. These devices do not have humidity or temperature sensors, and the motion sensors do not properly trigger motion events.</small>
+
+### Unsupported Devices
+
+| Scout Device          | Feature Request                                                      |
+|-----------------------|----------------------------------------------------------------------|
+| Glass Break Sensor    | [#27](https://github.com/BewhiskeredBard/homebridge-scout/issues/27) |
+| Video Doorbell        | [#18](https://github.com/BewhiskeredBard/homebridge-scout/issues/18) |
+| Indoor Camera         | [#17](https://github.com/BewhiskeredBard/homebridge-scout/issues/17) |
+| Siren/Zigbee Repeater | [#26](https://github.com/BewhiskeredBard/homebridge-scout/issues/26) |
+| Panic Button          |                                                                      |
+| Remote Control        |                                                                      |
 
 ## Credits
 
