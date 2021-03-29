@@ -41,7 +41,7 @@
     "homebridge": ">=0.4.50"
   },
   "dependencies": {
-    "ajv": "^7.0.0",
+    "ajv": "^8.0.1",
     "scout-api": "^0.11.0"
   },
   "devDependencies": {
