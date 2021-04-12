@@ -29,29 +29,29 @@ describe(`${HomebridgeContextFactory.name}`, () => {
 
     describe('.create(api, logger, config)', () => {
         test('undefined config', () => {
-            expect(() => factory.create(api, logger, undefined)).toThrowError('Configuration error: config should be object');
+            expect(() => factory.create(api, logger, undefined)).toThrowError('Configuration error: config must be object');
         });
 
         test('empty config', () => {
-            expect(() => factory.create(api, logger, {})).toThrowError("Configuration error: config should have required property 'auth'");
+            expect(() => factory.create(api, logger, {})).toThrowError("Configuration error: config must have required property 'auth'");
         });
 
         test('missing config.auth.email', () => {
             delete config.auth?.email;
 
-            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config/auth should have required property 'email'");
+            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config/auth must have required property 'email'");
         });
 
         test('missing config.auth.password', () => {
             delete config.auth?.password;
 
-            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config/auth should have required property 'password'");
+            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config/auth must have required property 'password'");
         });
 
         test('missing config.location', () => {
             delete config.location;
 
-            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config should have required property 'location'");
+            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config must have required property 'location'");
         });
 
         test('missing config.modes', () => {
@@ -66,14 +66,14 @@ describe(`${HomebridgeContextFactory.name}`, () => {
                     delete config.modes[mode];
                 }
 
-                expect(() => factory.create(api, logger, config)).toThrowError(`Configuration error: config/modes should have required property '${mode}'`);
+                expect(() => factory.create(api, logger, config)).toThrowError(`Configuration error: config/modes must have required property '${mode}'`);
             });
         });
 
         test('invalid config.reverseSensorState', () => {
             (config.reverseSensorState as unknown) = 'true';
 
-            expect(() => factory.create(api, logger, config)).toThrowError('Configuration error: config/reverseSensorState should be boolean');
+            expect(() => factory.create(api, logger, config)).toThrowError('Configuration error: config/reverseSensorState must be boolean');
         });
 
         test('valid', () => {

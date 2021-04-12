@@ -64,7 +64,7 @@ export class HomebridgeContextFactory {
 
         if (ajv.errors && 0 < ajv.errors.length) {
             const error = ajv.errors[0];
-            const message = `Configuration error: config${error.dataPath} ${error.message || ''}`;
+            const message = `Configuration error: config${error.instancePath || ''} ${error.message || ''}`;
 
             throw new Error(message);
         }
