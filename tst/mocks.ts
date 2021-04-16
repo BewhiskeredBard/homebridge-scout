@@ -10,6 +10,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
                 },
                 Characteristic: {
                     BatteryLevel: jest.fn() as unknown,
+                    CarbonMonoxideDetected: jest.fn() as unknown,
                     ChargingState: jest.fn() as unknown,
                     ContactSensorState: jest.fn() as unknown,
                     CurrentRelativeHumidity: jest.fn() as unknown,
@@ -26,6 +27,7 @@ export function mockHomebridgeContext(): HomebridgeContext {
                 Service: {
                     AccessoryInformation: jest.fn() as unknown,
                     BatteryService: jest.fn() as unknown,
+                    CarbonMonoxideSensor: jest.fn() as unknown,
                     ContactSensor: jest.fn() as unknown,
                     HumiditySensor: jest.fn() as unknown,
                     LeakSensor: jest.fn() as unknown,
@@ -82,6 +84,9 @@ export function mockHomebridgeContext(): HomebridgeContext {
 
     (homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_DETECTED as unknown) = 123;
     (homebridge.api.hap.Characteristic.SmokeDetected.SMOKE_NOT_DETECTED as unknown) = 234;
+
+    (homebridge.api.hap.Characteristic.CarbonMonoxideDetected.CO_LEVELS_ABNORMAL as unknown) = 698;
+    (homebridge.api.hap.Characteristic.CarbonMonoxideDetected.CO_LEVELS_NORMAL as unknown) = 456;
 
     (homebridge.api.hap.Characteristic.StatusTampered.TAMPERED as unknown) = 12;
     (homebridge.api.hap.Characteristic.StatusTampered.NOT_TAMPERED as unknown) = 23;

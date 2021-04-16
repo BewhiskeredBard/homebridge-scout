@@ -7,6 +7,7 @@ import { Orchestrator } from './orchestrator';
 import { BatteryServiceFactory } from './serviceFactory/hub/batteryServiceFactory';
 import { SecuritySystemServiceFactory } from './serviceFactory/hub/securitySystemServiceFactory';
 import { TemperatureServiceFactory } from './serviceFactory/hub/temperatureServiceFactory';
+import { CarbonMonoxideSensorFactory } from './serviceFactory/sensor/carbonMonoxideSensorFactory';
 import { ContactSensorServiceFactory } from './serviceFactory/sensor/contactSensorServiceFactory';
 import { HumiditySensorServiceFactory } from './serviceFactory/sensor/humiditySensorServiceFactory';
 import { LeakSensorServiceFactory } from './serviceFactory/sensor/leakSensorServiceFactory';
@@ -32,6 +33,7 @@ export class ScoutPlatformPlugin implements DynamicPlatformPlugin {
                 new TemperatureServiceFactory(homebridge, scout),
             ]),
             new SensorAccessoryFactory(homebridge, scout, [
+                new CarbonMonoxideSensorFactory(homebridge, scout),
                 new ContactSensorServiceFactory(homebridge, scout),
                 new MotionSensorServiceFactory(homebridge, scout),
                 new LeakSensorServiceFactory(homebridge, scout),
