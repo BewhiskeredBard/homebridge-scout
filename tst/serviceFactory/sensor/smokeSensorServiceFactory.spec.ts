@@ -1,5 +1,5 @@
 import { Service, CharacteristicValue, Characteristic } from 'homebridge';
-import { DeviceReport, DeviceType, SmokeState, CoState } from 'scout-api';
+import { DeviceReport, DeviceType, SmokeState, CarbonMonoxideState } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
 import { SensorAccessoryContext } from '../../../src/accessoryFactory/sensorAccessoryFactory';
 import { HomebridgeContext, ScoutContext } from '../../../src/context';
@@ -24,7 +24,7 @@ describe(`${SmokeSensorServiceFactory.name}`, () => {
                         trigger: {
                             state: {
                                 smoke: SmokeState.Ok,
-                                co: CoState.Ok,
+                                co: CarbonMonoxideState.Ok,
                             },
                         },
                     },

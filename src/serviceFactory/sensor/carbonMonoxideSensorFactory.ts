@@ -1,5 +1,5 @@
 import type { CharacteristicValue } from 'homebridge';
-import { CoState, Device, DeviceType, SmokeAlarmState } from 'scout-api';
+import { CarbonMonoxideState, Device, DeviceType, SmokeAlarmState } from 'scout-api';
 import { AccessoryContext } from '../../accessoryFactory';
 import { SensorAccessoryContext } from '../../accessoryFactory/sensorAccessoryFactory';
 import { ServiceConstructor, CharacteristicConstructor } from '../../types';
@@ -27,15 +27,15 @@ export class CarbonMonoxideSensorFactory extends SensorServiceFactory {
         const CarbonMonoxideDetected = this.homebridge.api.hap.Characteristic.CarbonMonoxideDetected;
 
         switch (this.getDeviceState(context.custom.device)) {
-            case CoState.Ok:
+            case CarbonMonoxideState.Ok:
                 return CarbonMonoxideDetected.CO_LEVELS_NORMAL;
-            case CoState.Emergency:
-            case CoState.Testing:
+            case CarbonMonoxideState.Emergency:
+            case CarbonMonoxideState.Testing:
                 return CarbonMonoxideDetected.CO_LEVELS_ABNORMAL;
         }
     }
 
-    private getDeviceState(device: Device): CoState | undefined {
+    private getDeviceState(device: Device): CarbonMonoxideState | undefined {
         if (device.type === DeviceType.SmokeAlarm) {
             return (device?.reported?.trigger?.state as SmokeAlarmState)?.co;
         }
