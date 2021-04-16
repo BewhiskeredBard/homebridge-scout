@@ -90,15 +90,17 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
 
 | Scout Device       | HomeKit Accessory Category | HomeKit Services                                                     |
 |--------------------|----------------------------|----------------------------------------------------------------------|
-| Hub                | SECURITY_SYSTEM            | SecuritySystem<br>BatteryService<br>TemperatureSensor‡               |
-| Door Panel         | SENSOR                     | ContactSensor<br>HumiditySensor‡<br>TemperatureSensor‡               |
-| Access Sensor      | SENSOR                     | ContactSensor<br>TemperatureSensor‡                                  |
-| Motion Sensor‡     | SENSOR                     | MotionSensor<br>TemperatureSensor                                    |
+| Hub                | SECURITY_SYSTEM            | SecuritySystem<br>BatteryService<br>TemperatureSensor¹               |
+| Door Panel         | SENSOR                     | ContactSensor<br>HumiditySensor¹<br>TemperatureSensor¹               |
+| Access Sensor      | SENSOR                     | ContactSensor<br>TemperatureSensor¹                                  |
+| Motion Sensor¹     | SENSOR                     | MotionSensor<br>TemperatureSensor                                    |
 | Water Sensor       | SENSOR                     | LeakSensor<br>TemperatureSensor                                      |
-| Smoke Alarm        | SENSOR                     | SmokeSensor                                                          |
+| Smoke Alarm        | SENSOR                     | SmokeSensor<br>CarbonMonoxideSensor²                                 |
 | Key Pad            | SENSOR                     | HumiditySensor<br>TemperatureSensor                                  |
 
-<small>‡ Not supported by Scout's original mesh-based hardware. These devices do not have humidity or temperature sensors, and the motion sensors do not properly trigger motion events.</small>
+<small>¹ Not supported by Scout's original mesh-based hardware. These devices do not have humidity or temperature sensors, and the motion sensors do not properly trigger motion events.</small>
+
+<small>² Only supported by First Alert's smoke/CO alarm — not by Scout's smoke-only alarm.</small>
 
 ### Unsupported Devices
 
