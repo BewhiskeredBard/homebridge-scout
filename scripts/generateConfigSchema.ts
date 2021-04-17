@@ -29,7 +29,7 @@ const schema = {
         {
             type: 'fieldset',
             expandable: false,
-            title: 'Required Options',
+            title: 'Basic Options',
             description: 'Your Scout login credentials. Use a member account, not an admin account.',
             items: [
                 {
@@ -48,7 +48,7 @@ const schema = {
                     title: 'Location Name',
                     placeholder: 'e.g., Home',
                     description:
-                        "The name of your Scout location. It's probably <em>Home</em> if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.",
+                        'The name of the Scout location you want to integrate. If you only have a single location (common), this option is unnecessary. You can find your location names in the sidebar of the Scout app or dashboard.',
                 },
             ],
         },

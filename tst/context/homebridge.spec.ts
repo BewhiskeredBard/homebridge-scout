@@ -48,12 +48,6 @@ describe(`${HomebridgeContextFactory.name}`, () => {
             expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config/auth must have required property 'password'");
         });
 
-        test('missing config.location', () => {
-            delete config.location;
-
-            expect(() => factory.create(api, logger, config)).toThrowError("Configuration error: config must have required property 'location'");
-        });
-
         test('missing config.modes', () => {
             delete config.modes;
 

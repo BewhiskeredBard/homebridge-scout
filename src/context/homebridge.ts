@@ -14,7 +14,7 @@ export interface HomebridgeConfig extends PlatformConfig {
         email: string;
         password: string;
     };
-    location: string;
+    location?: string;
     modes?: {
         [key in HomebridgeConfigMode]: string[];
     };

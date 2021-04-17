@@ -18,7 +18,8 @@ describe(`${Orchestrator.name}`, () => {
     let scout: ScoutContext;
     let scoutContextFactory: ScoutContextFactory;
     let authMember: AuthenticatedMember;
-    let location: Location;
+    let location1: Location;
+    let location2: Location;
     let orchestrator: Orchestrator;
     let accessoryFactories: (homebridgeContext: HomebridgeContext, scoutContext: ScoutContext) => AccessoryFactory<unknown>[];
     let accessoryFactory: AccessoryFactory<unknown>;
@@ -68,9 +69,14 @@ describe(`${Orchestrator.name}`, () => {
             };
         });
 
-        location = {
+        location1 = {
             id: 'locationId1',
-            name: homebridge.config.location,
+            name: 'Location 1',
+        } as Location;
+
+        location2 = {
+            id: 'locationId2',
+            name: 'Location 2',
         } as Location;
 
         accessoryFactories = jest.fn();
@@ -101,6 +107,8 @@ describe(`${Orchestrator.name}`, () => {
     });
 
     test('no Scout locations', async () => {
+        delete homebridge.config.location;
+
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
                 data: [],
@@ -109,11 +117,11 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(homebridge.logger.error).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
+        expect(homebridge.logger.error).toBeCalledWith(new Error(`No locations found.`));
     });
 
     test('no matching Scout locations', async () => {
-        location.name = 'foo';
+        homebridge.config.location = 'foo';
 
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
@@ -126,12 +134,27 @@ describe(`${Orchestrator.name}`, () => {
         expect(homebridge.logger.error).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
     });
 
-    test('using admin account', async () => {
-        location.admin_ids = [authMember.id];
+    test('multiple Scout locations without config', async () => {
+        delete homebridge.config.location;
 
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
-                data: [location],
+                data: [location1, location2],
+            };
+        });
+
+        await listen();
+
+        expect(homebridge.logger.error).toBeCalledWith(new Error(`You must configure one of the following locations: ${location1.name}, ${location2.name}.`));
+    });
+
+    test('using admin account', async () => {
+        homebridge.config.location = location1.name;
+        location1.admin_ids = [authMember.id];
+
+        (scout.api.getLocations as jest.Mock).mockImplementation(() => {
+            return {
+                data: [location1],
             };
         });
 
@@ -142,15 +165,17 @@ describe(`${Orchestrator.name}`, () => {
         await listen();
 
         expect(scout.listener.connect).toBeCalled();
-        expect(scout.listener.addLocation).toBeCalledWith(location.id);
+        expect(scout.listener.addLocation).toBeCalledWith(location1.id);
         expect(homebridge.logger.warn).toBeCalledWith('The authenticated member [memberId1] is an admin. It is highly recommended to use a non-admin member.');
         expect(homebridge.logger.error).not.toBeCalled();
     });
 
     test('register new accessory', async () => {
+        homebridge.config.location = location1.name;
+
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
-                data: [location],
+                data: [location1],
             };
         });
 
@@ -165,17 +190,39 @@ describe(`${Orchestrator.name}`, () => {
         await listen();
 
         expect(scout.listener.connect).toBeCalled();
-        expect(scout.listener.addLocation).toBeCalledWith(location.id);
+        expect(scout.listener.addLocation).toBeCalledWith(location1.id);
         expect(accessoryFactory.configureAccessory).toBeCalledWith(accessory);
         expect(homebridge.api.registerPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [accessory]);
         expect(homebridge.api.unregisterPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
         expect(homebridge.logger.error).not.toBeCalled();
     });
 
-    test('configured accessory not found', async () => {
+    test('single uncofigured location', async () => {
+        delete homebridge.config.location;
+
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
-                data: [location],
+                data: [location1],
+            };
+        });
+
+        (accessoryFactories as jest.Mock).mockImplementation(() => {
+            return [];
+        });
+
+        await listen();
+
+        expect(scout.listener.connect).toBeCalled();
+        expect(scout.listener.addLocation).toBeCalledWith(location1.id);
+        expect(homebridge.logger.error).not.toBeCalled();
+    });
+
+    test('configured accessory not found', async () => {
+        homebridge.config.location = location1.name;
+
+        (scout.api.getLocations as jest.Mock).mockImplementation(() => {
+            return {
+                data: [location1],
             };
         });
 
@@ -192,7 +239,7 @@ describe(`${Orchestrator.name}`, () => {
         await listen();
 
         expect(scout.listener.connect).toBeCalled();
-        expect(scout.listener.addLocation).toBeCalledWith(location.id);
+        expect(scout.listener.addLocation).toBeCalledWith(location1.id);
         expect(accessoryFactory.configureAccessory).not.toBeCalled();
         expect(homebridge.api.registerPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);
         expect(homebridge.api.unregisterPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, [
@@ -202,9 +249,11 @@ describe(`${Orchestrator.name}`, () => {
     });
 
     test('configured accessory found', async () => {
+        homebridge.config.location = location1.name;
+
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
-                data: [location],
+                data: [location1],
             };
         });
 
@@ -221,7 +270,7 @@ describe(`${Orchestrator.name}`, () => {
         await listen();
 
         expect(scout.listener.connect).toBeCalled();
-        expect(scout.listener.addLocation).toBeCalledWith(location.id);
+        expect(scout.listener.addLocation).toBeCalledWith(location1.id);
         expect(cachedAccessory.context).toStrictEqual(accessory.context);
         expect(accessoryFactory.configureAccessory).toBeCalledWith(cachedAccessory);
         expect(homebridge.api.registerPlatformAccessories).toBeCalledWith(ScoutPlatformPlugin.PLUGIN_NAME, ScoutPlatformPlugin.PLATFORM_NAME, []);

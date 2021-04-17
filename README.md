@@ -42,11 +42,11 @@ All of the following configuration options are required. If any are missing or i
 
   * **`"password"`:** Your Scout password. Don't forget to backslash-escape any double-quotes (e.g. `pwd"23` should be `"pwd\"123"`).
 
-* **`"location"`:** The name of your Scout location. It's probably `"Home"` if you only have one Scout system and haven't renamed it. You can find this in the left-hand menu of the Scout app or dashboard.
-
 #### Optional
 
 The following configuration options are optional and change the default behavior.
+
+* **`"location"`:** The name of the Scout location you want to integrate. If you only have a single location (common), this option is unnecessary. You can find your location names in the sidebar of the Scout app or dashboard.
 
 * **`"modes"`:** If modes are defined, your Scout system will be added as a HomeKit security system. These map the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit can be mapped to zero or more† Scout mode(s) (e.g., `[], ["Mode A"]` or `["Mode A", "Mode B"]`). If a HomeKit mode is empty or not provided, it will not be shown in Apple’s Home app.
 
@@ -73,7 +73,6 @@ Update the `"platforms"` section of your `~/.homebridge/config.json`:
         "email": "email@example.com",
         "password": "password123"
       },
-      "location": "Home",
       "modes": {
         "stay": ["Home"],
         "away": ["Away", "Vacation"],

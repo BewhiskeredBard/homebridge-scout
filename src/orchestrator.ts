@@ -52,15 +52,33 @@ export class Orchestrator {
             this.logger.warn(`The authenticated member [${memberId}] is an admin. It is highly recommended to use a non-admin member.`);
         }
 
-        const matchingLocation = locations.find(location => location.name === homebridge.config.location);
+        const location = this.chooseLocation(homebridge, locations);
 
-        if (!matchingLocation) {
-            throw new Error(`No location found for "${homebridge.config.location}".`);
+        this.logger.info(`Using "${location.name}" location [${location.id}].`);
+
+        return location;
+    }
+
+    private chooseLocation(homebridge: HomebridgeContext, locations: Location[]): Location {
+        const defaultLocation = locations[0];
+
+        if (!defaultLocation) {
+            throw new Error('No locations found.');
         }
 
-        this.logger.info(`Using "${homebridge.config.location}" location [${matchingLocation.id}].`);
+        if (homebridge.config.location) {
+            const matchingLocation = locations.find(location => location.name === homebridge.config.location);
 
-        return matchingLocation;
+            if (!matchingLocation) {
+                throw new Error(`No location found for "${homebridge.config.location}".`);
+            }
+
+            return matchingLocation;
+        } else if (1 < locations.length) {
+            throw new Error(`You must configure one of the following locations: ${locations.map(location => location.name).join(', ')}.`);
+        } else {
+            return defaultLocation;
+        }
     }
 
     private async registerAccessories(homebridge: HomebridgeContext, scout: ScoutContext, locationId: string): Promise<void> {
