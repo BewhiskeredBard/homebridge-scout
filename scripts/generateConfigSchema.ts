@@ -42,14 +42,7 @@ const schema = {
                     title: 'Password',
                     type: 'password',
                     description: 'Your Scout password.',
-                },
-                {
-                    key: 'location',
-                    title: 'Location Name',
-                    placeholder: 'e.g., Home',
-                    description:
-                        'The name of the Scout location you want to integrate. If you only have a single location (common), this option is unnecessary. You can find your location names in the sidebar of the Scout app or dashboard.',
-                },
+                }
             ],
         },
         {
@@ -112,6 +105,13 @@ const schema = {
             expanded: false,
             title: 'Other Options',
             items: [
+                {
+                    key: 'location',
+                    title: 'Location Name',
+                    placeholder: 'e.g., Home',
+                    description:
+                        'The name of the Scout location you want to integrate. If you only have a single location (most common), this option is unnecessary. If you have multiple locations, you need to choose which one to use. You can find your location names in the sidebar of the Scout app or dashboard.',
+                },
                 {
                     key: 'triggerAlarmImmediately',
                     title: 'Trigger Alarm Immediately',
