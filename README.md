@@ -46,8 +46,6 @@ All of the following configuration options are required. If any are missing or i
 
 The following configuration options are optional and change the default behavior.
 
-* **`"location"`:** The name of the Scout location you want to integrate. If you only have a single location (common), this option is unnecessary. You can find your location names in the sidebar of the Scout app or dashboard.
-
 * **`"modes"`:** If modes are defined, your Scout system will be added as a HomeKit security system. These map the HomeKit modes to your Scout modes. Your Scout mode names can be found in the Scout app or dashboard. Each HomeKit can be mapped to zero or more† Scout mode(s) (e.g., `[], ["Mode A"]` or `["Mode A", "Mode B"]`). If a HomeKit mode is empty or not provided, it will not be shown in Apple’s Home app.
 
   * **`"stay"`:** Possibly `["Home"]`.
@@ -55,6 +53,8 @@ The following configuration options are optional and change the default behavior
   * **`"night"`:** Possibly `["Night"]`.
 
   <small>† There are caveats to mapping a HomeKit mode to multiple Scout modes. Let's assume you have four Scout modes (*Home*, *Away*, *Vacation*, and *Night*) and have mapped the *Away* HomeKit mode to your *Away* and *Vacation* Scout modes. If you arm either the *Away* or *Vacation* Scout modes from the Scout app, HomeKit will report the mode as *Away* with no way to differentiate between the two. Additionally, if you arm the *Away* HomeKit mode via HomeKit, **the plug-in will arm whichever Scout mode is listed first**. There would be no way to arm your *Vacation* mode via HomeKit. This limitation is due to HomeKit's strict 3-mode design.</small>
+
+* **`"location"`:** The name of the Scout location you want to integrate. If you only have a single location (most common), this option is unnecessary. If you have multiple locations, you need to choose which one to use. You can find your location names in the sidebar of the Scout app or dashboard.
 
 * **`"triggerAlarmImmediately"`:** By default, HomeKit will not consider the alarm triggered until the (optional) alarm delay has expired. Enabling this option causes HomeKit to consider the alarm triggered immediately.
 
