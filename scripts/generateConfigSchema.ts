@@ -42,7 +42,7 @@ const schema = {
                     title: 'Password',
                     type: 'password',
                     description: 'Your Scout password.',
-                }
+                },
             ],
         },
         {
