@@ -41,9 +41,9 @@ describe(`${Orchestrator.name}`, () => {
         config = homebridge.config;
         scout = mocks.mockScoutContext();
 
-        homebridgeContextFactory = ({
+        homebridgeContextFactory = {
             create: jest.fn(),
-        } as unknown) as HomebridgeContextFactory;
+        } as unknown as HomebridgeContextFactory;
 
         (homebridgeContextFactory.create as jest.Mock).mockImplementation(() => {
             return homebridge;
@@ -85,19 +85,19 @@ describe(`${Orchestrator.name}`, () => {
             configureAccessory: jest.fn() as unknown,
         } as AccessoryFactory<unknown>;
 
-        accessory = ({
+        accessory = {
             UUID: 'uuid1',
             context: {
                 foo: 'bar',
             },
-        } as unknown) as PlatformAccessory;
+        } as unknown as PlatformAccessory;
 
-        cachedAccessory = ({
+        cachedAccessory = {
             UUID: 'uuid1',
             context: {
                 boo: 'baz',
             },
-        } as unknown) as PlatformAccessory;
+        } as unknown as PlatformAccessory;
 
         orchestrator = new Orchestrator(api, logger, config, homebridgeContextFactory, scoutContextFactory, accessoryFactories);
     });

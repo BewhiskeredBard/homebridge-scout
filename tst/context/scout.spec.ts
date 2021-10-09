@@ -7,7 +7,7 @@ jest.mock('scout-api');
 describe(`${ScoutContextFactory.name}`, () => {
     test('.create()', async () => {
         const AuthenticatedApiMock = AuthenticatedApi as jest.Mock<AuthenticatedApi>;
-        const AuthenticatorFactoryMock = (AuthenticatorFactory as unknown) as jest.Mock<AuthenticatorFactory>;
+        const AuthenticatorFactoryMock = AuthenticatorFactory as unknown as jest.Mock<AuthenticatorFactory>;
         const LocationListenerMock = LocationListener as jest.Mock<LocationListener>;
 
         const token = 'token1';

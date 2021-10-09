@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { config } from 'process';
 import { Service, Characteristic, CharacteristicProps, CharacteristicValue } from 'homebridge';
 import { ModeState, Mode, ModeStateUpdateType } from 'scout-api';
 import { AccessoryContext } from '../../../src/accessoryFactory';
@@ -231,7 +230,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.STAY_ARM, resolve);
             }).then(() => {
                 // eslint-disable-next-line @typescript-eslint/unbound-method
-                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith('mode2', {
+                expect(scout.api.toggleRecipe as unknown as jest.Mock<Mode>).toHaveBeenCalledWith('mode2', {
                     state: ModeStateUpdateType.Arming,
                 });
             });
@@ -256,7 +255,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.NIGHT_ARM, resolve);
             }).then(() => {
                 // eslint-disable-next-line @typescript-eslint/unbound-method
-                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith('mode1', {
+                expect(scout.api.toggleRecipe as unknown as jest.Mock<Mode>).toHaveBeenCalledWith('mode1', {
                     state: ModeStateUpdateType.Arming,
                 });
             });
@@ -310,7 +309,7 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
                 listener(homebridge.api.hap.Characteristic.SecuritySystemTargetState.DISARM, resolve);
             }).then(() => {
                 // eslint-disable-next-line @typescript-eslint/unbound-method
-                expect((scout.api.toggleRecipe as unknown) as jest.Mock<Mode>).toHaveBeenCalledWith('mode2', {
+                expect(scout.api.toggleRecipe as unknown as jest.Mock<Mode>).toHaveBeenCalledWith('mode2', {
                     state: ModeStateUpdateType.Disarm,
                 });
             });
