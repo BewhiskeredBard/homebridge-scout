@@ -125,7 +125,7 @@ describe(`${Orchestrator.name}`, () => {
 
         (scout.api.getLocations as jest.Mock).mockImplementation(() => {
             return {
-                data: [location],
+                data: [location1],
             };
         });
 
