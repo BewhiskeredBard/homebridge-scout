@@ -131,7 +131,7 @@ export abstract class AccessoryFactory<T> {
         let service = accessory.getService(serviceConstructor);
 
         if (!service) {
-            service = accessory.addService(serviceConstructor);
+            service = accessory.addService(serviceConstructor, undefined, serviceConstructor.UUID, undefined);
         }
 
         return service;
