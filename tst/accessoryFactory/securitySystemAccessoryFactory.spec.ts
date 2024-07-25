@@ -143,7 +143,7 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
             });
 
             test('failure', async () => {
-                const error = new Error();
+                const error = new Error('uh oh');
 
                 (scout.api.setChirp as jest.Mock).mockImplementation(() => {
                     throw error;
@@ -160,7 +160,7 @@ describe(`${SecuritySystemAccessoryFactory.name}`, () => {
                     type: HubChirpType.Single,
                 });
 
-                expect(homebridge.logger.error).toBeCalledWith(error);
+                expect(homebridge.logger.error).toBeCalledWith(error.message);
             });
         });
     });

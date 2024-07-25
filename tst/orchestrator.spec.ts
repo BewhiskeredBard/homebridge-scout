@@ -117,7 +117,7 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(homebridge.logger.error).toBeCalledWith(new Error(`No locations found.`));
+        expect(homebridge.logger.error).toBeCalledWith('No locations found.');
     });
 
     test('no matching Scout locations', async () => {
@@ -131,7 +131,7 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(homebridge.logger.error).toBeCalledWith(new Error(`No location found for "${homebridge.config.location}".`));
+        expect(homebridge.logger.error).toBeCalledWith(`No location found for "${homebridge.config.location}".`);
     });
 
     test('multiple Scout locations without config', async () => {
@@ -145,7 +145,7 @@ describe(`${Orchestrator.name}`, () => {
 
         await listen();
 
-        expect(homebridge.logger.error).toBeCalledWith(new Error(`You must configure one of the following locations: ${location1.name}, ${location2.name}.`));
+        expect(homebridge.logger.error).toBeCalledWith(`You must configure one of the following locations: ${location1.name}, ${location2.name}.`);
     });
 
     test('using admin account', async () => {

@@ -16,7 +16,7 @@ export class Orchestrator {
         private readonly accessoryFactories: (homebridge: HomebridgeContext, scout: ScoutContext) => AccessoryFactory<unknown>[],
     ) {
         api.on('didFinishLaunching', () => {
-            this.init().catch(e => logger.error(e));
+            this.init().catch(e => logger.error(e instanceof Error ? e.message : String(e)));
         });
     }
 

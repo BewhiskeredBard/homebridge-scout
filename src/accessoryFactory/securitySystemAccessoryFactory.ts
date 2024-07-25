@@ -24,7 +24,7 @@ export class SecuritySystemAccessoryFactory extends AccessoryFactory<SecuritySys
 
         accessory.on('identify', () => {
             this.identify(accessory.context).catch(e => {
-                this.homebridge.logger.error(e);
+                this.homebridge.logger.error(e instanceof Error ? e.message : String(e));
             });
         });
     }

@@ -5,7 +5,10 @@ import { ServiceConstructor, CharacteristicConstructor } from './types';
 
 export abstract class ServiceFactory<T> {
     // eslint-disable-next-line no-useless-constructor
-    public constructor(protected readonly homebridge: HomebridgeContext, protected readonly scout: ScoutContext) {}
+    public constructor(
+        protected readonly homebridge: HomebridgeContext,
+        protected readonly scout: ScoutContext,
+    ) {}
 
     public configureService(service: Service, context: AccessoryContext<T>): void {
         this.updateService(service, context);

@@ -224,6 +224,8 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             serviceFactory.configureService(service, context);
 
             const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1] as (...args: any[]) => void;
 
             return new Promise(resolve => {
@@ -249,6 +251,8 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             serviceFactory.configureService(service, context);
 
             const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1] as (...args: any[]) => void;
 
             return new Promise(resolve => {
@@ -303,6 +307,8 @@ describe(`${SecuritySystemServiceFactory.name}`, () => {
             serviceFactory.configureService(service, context);
 
             const characteristic = characteristics.get(homebridge.api.hap.Characteristic.SecuritySystemTargetState)!;
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const listener = (characteristic.on as jest.Mock<unknown>).mock.calls[0][1] as (...args: any[]) => void;
 
             return new Promise(resolve => {

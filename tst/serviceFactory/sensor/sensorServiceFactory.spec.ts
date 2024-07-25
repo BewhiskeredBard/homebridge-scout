@@ -8,7 +8,7 @@ import { CharacteristicConstructor, ServiceConstructor } from '../../../src/type
 import * as mocks from '../../mocks';
 
 class MockSensorServiceFactory extends SensorServiceFactory {
-    public getService(context: AccessoryContext<SensorAccessoryContext>): ServiceConstructor {
+    public getService(): ServiceConstructor {
         return this.homebridge.api.hap.Service.ServiceLabel;
     }
 }
