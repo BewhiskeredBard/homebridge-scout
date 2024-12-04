@@ -39,5 +39,5 @@ jobs:
     - name: Upload
       uses: actions/upload-artifact@v4
       with:
-        name: ${{ env.NPM_PACKAGE }}
+        name: ${{ env.NPM_PACKAGE }}-${{ matrix.node-version }}
         path: ${{ env.NPM_PACKAGE }}.tgz
