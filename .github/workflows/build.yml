@@ -37,7 +37,7 @@ jobs:
         NPM_PACKAGE=`cat package.json | jq -r '"\(.name)-\(.version)"'`
         echo "NPM_PACKAGE=$NPM_PACKAGE" >> $GITHUB_ENV
     - name: Upload
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.NPM_PACKAGE }}
         path: ${{ env.NPM_PACKAGE }}.tgz
